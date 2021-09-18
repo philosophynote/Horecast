@@ -47,7 +47,7 @@ def insert_predtable(pred_table):
     insert = pred_table[["race_id",
                          "horse_number", "pred", "favorite", "bet"]]
     insert.to_sql(name="predict", schema='public',
-                  con=engine, if_exists='replace',index=True)
+                  con=engine, if_exists='append',index=False)
 
 
 def search_sql(race_date, race_park, race_number):
@@ -111,7 +111,7 @@ def insert_race_card(df):
     race_df=race_df.reset_index(drop=True)
     horse_df=horse_df.reset_index(drop=True)
     race_df.to_sql(name="race",schema='public',con=engine,if_exists = "append",index=False)
-    horse_df.to_sql(name="horse",schema='public',con=engine,if_exists='append',index=True)
+    horse_df.to_sql(name="horse",schema='public',con=engine,if_exists='append',index=False)
 
 def umaren(df):
     umaren = df[df[0]=='馬連'][[1,2]]
@@ -128,7 +128,7 @@ def umaren(df):
     df["win_1"] = df["win_1"].astype(int)
     df["win_2"] = df["win_2"].astype(int)
     df["return"] = df["return"].astype(int)
-    df.to_sql(name="umaren",schema='public',con=engine,if_exists = "replace",index=False)
+    df.to_sql(name="umaren",schema='public',con=engine,if_exists = "append",index=False)
 
 def sanrenpuku(df):
     renpuku = df[df[0]=='3連複'][[1,2]]
@@ -145,4 +145,4 @@ def sanrenpuku(df):
     df["win_2"] = df["win_2"].astype(int)
     df["win_3"] = df["win_3"].astype(int)
     df["return"] = df["return"].astype(int)
-    df.to_sql(name="sanrenpuku",schema='public',con=engine,if_exists = "replace",index=False)
+    df.to_sql(name="sanrenpuku",schema='public',con=engine,if_exists = "append",index=False)
