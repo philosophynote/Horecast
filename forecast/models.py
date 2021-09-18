@@ -115,6 +115,7 @@ class DjangoSession(models.Model):
 
 
 class Horse(models.Model):
+    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     horse_id = models.TextField(blank=True, null=True)
     frame_number = models.BigIntegerField(blank=True, null=True)
@@ -130,11 +131,11 @@ class Horse(models.Model):
 
 
 class Predict(models.Model):
-    index = models.BigIntegerField(blank=True, null=True)
-    race_id = models.TextField(blank=True, null=True)
+    index = models.BigIntegerField(primary_key=True)
+    race = models.ForeignKey('Race', models.DO_NOTHING, blank=True, null=True)
     horse_number = models.BigIntegerField(blank=True, null=True)
     pred = models.BigIntegerField(blank=True, null=True)
-    favorite = models.BigIntegerField(blank=True, null=True)
+    center = models.BigIntegerField(blank=True, null=True)
     bet = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
@@ -179,7 +180,7 @@ class Race(models.Model):
         ('11', '11'),
         ('12', '12'),
     ]
-    race_id = models.TextField(blank=True, null=True)
+    race_id = models.TextField(primary_key=True)
     race_park = models.TextField(blank=True, null=True)
     race_name = models.TextField(blank=True, null=True)
     race_number = models.TextField(blank=True, null=True)
@@ -196,6 +197,7 @@ class Race(models.Model):
         db_table = 'race'
 
 class Result(models.Model):
+    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     rank = models.TextField(blank=True, null=True)
     horse_number = models.TextField(blank=True, null=True)
@@ -208,6 +210,7 @@ class Result(models.Model):
 
 
 class Sanrenpuku(models.Model):
+    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
@@ -220,6 +223,7 @@ class Sanrenpuku(models.Model):
 
 
 class Sanrentan(models.Model):
+    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
@@ -232,6 +236,7 @@ class Sanrentan(models.Model):
 
 
 class Umaren(models.Model):
+    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
@@ -243,6 +248,7 @@ class Umaren(models.Model):
 
 
 class Umatan(models.Model):
+    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)

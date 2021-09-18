@@ -1,19 +1,20 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from .return_calc import  bet_umaren,bet_sanrenpuku
+from django.conf import settings
+import psycopg2
+
+
+user = settings.DATABASES["default"]["USER"]
+password = settings.DATABASES["default"]["PASSWORD"]
+database = settings.DATABASES['default']['NAME']
+host = settings.DATABASES['default']['HOST']
+port = settings.DATABASES['default']['PORT']
 
 
 
-connection_config = {
-    'user': 'workuser',
-    'password': 'sundai005107D',
-    'host': '127.0.0.1',
-    'port': '5432',
-    'database': 'horecast_test'
-}
+engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{database}')
 
-engine = create_engine(
-    'postgresql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
 
 def calc_predict(model,df):
     pred = model.predict(df.drop(
@@ -46,7 +47,7 @@ def insert_predtable(pred_table):
     insert = pred_table[["race_id",
                          "horse_number", "pred", "favorite", "bet"]]
     insert.to_sql(name="predict", schema='public',
-                  con=engine, if_exists='replace')
+                  con=engine, if_exists='replace',index=True)
 
 
 def search_sql(race_date, race_park, race_number):
@@ -110,7 +111,7 @@ def insert_race_card(df):
     race_df=race_df.reset_index(drop=True)
     horse_df=horse_df.reset_index(drop=True)
     race_df.to_sql(name="race",schema='public',con=engine,if_exists = "append",index=False)
-    horse_df.to_sql(name="horse",schema='public',con=engine,if_exists='append',index=False)
+    horse_df.to_sql(name="horse",schema='public',con=engine,if_exists='append',index=True)
 
 def umaren(df):
     umaren = df[df[0]=='馬連'][[1,2]]
@@ -123,6 +124,7 @@ def umaren(df):
     df.reset_index(inplace=True)
     df =  df.rename(columns = {'index':'race_id','win_0':'win_1','win_1':'win_2'})
     df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+    df.dropna(subset=["win_1"], inplace=True)
     df["win_1"] = df["win_1"].astype(int)
     df["win_2"] = df["win_2"].astype(int)
     df["return"] = df["return"].astype(int)
@@ -138,6 +140,7 @@ def sanrenpuku(df):
     df.reset_index(inplace=True)
     df =  df.rename(columns = {'index':'race_id','win_0':'win_1','win_1':'win_2','win_2':'win_3'})
     df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+    df.dropna(subset=["win_1"], inplace=True)
     df["win_1"] = df["win_1"].astype(int)
     df["win_2"] = df["win_2"].astype(int)
     df["win_3"] = df["win_3"].astype(int)
