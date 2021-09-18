@@ -29,3 +29,5 @@ bs4
 datetime
 sqlalchemy
 psycopg2
+lxml
+html5lib
