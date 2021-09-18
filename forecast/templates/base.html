@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Horecast</title>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <!--axios-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!--cookie-->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/mdb.rtl.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+  <!--Main Navigation-->
+  <header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="{% static 'img/logo.png' %}" style="width:150px;" alt="" loading="lazy" />
+        </div>
+        <div class="list-group list-group-flush mx-3">
+          <br>
+          <a href="" type="button" class="btn btn-rounded text-start  d-flex align-items-center justify-content-center fs-6 newcard" style="width: 200px;">予想入力</a>
+          <br>
+          <ul class="sidenav-menu">
+            <li class="sidenav-item">
+                <a class="sidenav-link" href="">
+                    <i class="fas fa-home me-3"></i><span>Home</span></a>
+            </li>
+            <li class="sidenav-item">
+                <a class="sidenav-link" href="">
+                    <i class="far fa-sticky-note me-3"></i><span>ダッシュボード</span></a>
+            </li>
+            <li class="sidenav-item">
+                <a class="sidenav-link" href="">
+                    <i class="far fa-sticky-note me-3"></i><span>タイムライン</span></a>
+            </li>
+            <li class="sidenav-item">
+                <a class="sidenav-link" href="/admin" target="_blank">
+                    <i class="far fa-file fa-fw me-3"></i><span>管理画面</span></a>
+            </li>
+          </ul>
+          <form action="{% url 'forecast:search' %}" method="POST" id="search">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <table>
+              {{ form.as_p }}
+            </table>
+            <br>
+            <button id="show" type="submit" class="btn btn-primary">検索</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <!-- Sidebar -->
+  </header>
+  {% block content %}
+
+  {% endblock %}
+
+  <!-- MDB -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'js/datatable.min.js' %}" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  
+</body>
+</html>
