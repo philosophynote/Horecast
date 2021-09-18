@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Horecast</title>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <!--axios-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!--cookie-->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/mdb.rtl.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/datatable.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/datatable.rtl.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+    
+    </header>
+    <main class="mt-5">
+            {% if messages %}
+          <br>
+          {% for message in messages %}
+
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %} 
+      <img src="{% static 'img/logo.png' %}" alt="">
+      <div class="container">
+        <div class="row">
+          <form action="{% url 'forecast:scrape_rc' %}" method="POST" class="form" >  
+            {% csrf_token %}
+            <div  class="form-control mb-4">
+              <label for="race_date" class="form-label">レース開催日:</label>
+              <input type="date" id="race_date" name="race_date" class="form-control" required>
+            </div>
+            <div  class="form-control mb-4">
+              <select class="select" id="race_year" name="race_year">
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+              </select>
+              <label class="form-label select-label" for="race_year">レース開催年</label>
+            </div>
+            <div  class="form-control mb-4">
+              <select class="select" id="race_park" name="race_park">
+                <option value="01">札幌</option>
+                <option value="02">函館</option>
+                <option value="03">福島</option>
+                <option value="04">新潟</option>
+                <option value="05">東京</option>
+                <option value="06">中山</option>
+                <option value="07">中京</option>
+                <option value="08">京都</option>
+                <option value="09">阪神</option>
+                <option value="10">小倉</option>
+              </select>
+              <label class="form-label select-label" for="race_park">競馬場名</label>
+            </div>
+            <div  class="form-control mb-4">
+              <select class="select" id="race_count" name="race_count">
+                <option value="01">１回</option>
+                <option value="02">２回</option>
+                <option value="03">３回</option>
+                <option value="04">４回</option>
+                <option value="05">５回</option>
+                <option value="06">６回</option>
+                <option value="07">７回</option>
+                <option value="08">８回</option>
+                <option value="09">９回</option>
+                <option value="10">10回</option>
+                <option value="11">11回</option>
+                <option value="12">12回</option>
+              </select>
+              <label class="form-label select-label" for="race_count">回数</label>
+            </div>
+            <div  class="form-control mb-4">
+              <select class="select" id="race_hold" name="race_hold">
+                <option value="01">１日目</option>
+                <option value="02">２日目</option>
+                <option value="03">３日目</option>
+                <option value="04">４日目</option>
+                <option value="05">５日目</option>
+                <option value="06">６日目</option>
+                <option value="07">７日目</option>
+                <option value="08">８日目</option>
+                <option value="09">９日目</option>
+                <option value="10">10日目</option>
+                <option value="11">11日目</option>
+                <option value="12">12日目</option>
+              </select>
+              <label class="form-label select-label" for="race_hold">回数</label>
+            </div>
+            <button type="submit" class="save btn btn-outline-primary">スクレイピング開始</button>  
+          </form>
+        </div>
+
+
+          <br>
+          <br>
+          <br>
+
+          <div class="form-group">
+            <form action="{% url 'forecast:upload' %}"method="POST" class="form" enctype="multipart/form-data">  
+              {% csrf_token %}
+              <div class="file-upload-wrapper">
+                <p>ファイルを選択<br \>
+                   {% csrf_token %} 
+                   {{ form.as_p }}
+                </p>
+                <button type="submit" class="save btn btn-outline-primary">Upload</button>  
+               </div>
+            </form>
+          </div>
+
+
+    </main>
+  <!-- MDB -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src={% static 'js/mdb.min.js' %}></script>
+  <link rel="stylesheet" href={% static 'js/datatable.min.js' %} />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src={% static 'js/main.js' %}></script>
+</body>
+</html>

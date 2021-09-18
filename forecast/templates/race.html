@@ -1,0 +1,47 @@
+<div class="container" id="race_information" style="display: none;">
+    <div class= "card bg-dark text-white" style="width: 81rem; height: 15rem;">
+    <img src="{% static 'img/background.jpg' %}" style="width: 81rem; height: 15rem; opacity: 0.2;" class="card-img" alt="..." />
+    <div class="card-img-overlay">
+        <div class="row">
+            <div class="col-6">
+            <div class="d-flex">
+                <h1 id="race_park_hold"></h1>
+                <h1 id="race_number_hold"></h1>
+            </div>
+            <br>
+            <h1 id="race_name_hold"></h1>
+            <br>
+            <div class="d-flex">
+                <h1 id="race_type_hold"></h1>
+                <h1 id="course_len_hold"></h1>
+                <h1 id="race_turn_hold"></h1>
+            </div>
+            </div>
+            <div class="col-6">
+            <div class="d-flex">
+                <h1>天候：</h1>
+                <h1 id="weather_hold"></h1>
+            </div>
+            <br>
+            <div class="d-flex">
+                <h1>出走頭数：</h1>
+                <h1 id="n_horses_hold"></h1>
+            </div>
+            <br>
+            <div class="d-flex">
+                <h1>馬場状態：</h1>
+                <h1 id="race_condition_hold"></h1>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br>
+    <br>
+    <div class="card">
+    <div class="card-header">出馬表</div>
+    <div class="card-body">
+        <div id="showData"></div>
+    </div>
+    </div>
+</div>
