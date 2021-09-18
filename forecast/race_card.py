@@ -8,7 +8,6 @@ import pandas as pd
 import requests
 import re
 import time
-from tqdm.notebook import tqdm
 from bs4 import BeautifulSoup
 
 
@@ -21,7 +20,7 @@ class ShutubaTable(DataProcessor):
     @classmethod
     def scrape(cls, race_id_list, date):
         data = pd.DataFrame()
-        for race_id in tqdm(race_id_list):
+        for race_id in race_id_list:
 
             url = "https://race.netkeiba.com/race/shutuba.html?race_id=" + race_id
             df = pd.read_html(url)[0]
