@@ -31,4 +31,4 @@ sqlalchemy
 psycopg2
 lxml
 html5lib
-lightbgm
+lightgbm
