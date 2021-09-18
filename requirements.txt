@@ -29,3 +29,4 @@ bs4
 datetime
 tqdm
 sqlalchemy
+psycopg2
