@@ -194,3 +194,60 @@ class Race(models.Model):
     class Meta:
         managed = False
         db_table = 'race'
+
+class Result(models.Model):
+    race_id = models.TextField(blank=True, null=True)
+    rank = models.TextField(blank=True, null=True)
+    horse_number = models.TextField(blank=True, null=True)
+    favorite = models.TextField(blank=True, null=True)
+    odds = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'result'
+
+
+class Sanrenpuku(models.Model):
+    race_id = models.TextField(blank=True, null=True)
+    win_1 = models.BigIntegerField(blank=True, null=True)
+    win_2 = models.BigIntegerField(blank=True, null=True)
+    win_3 = models.BigIntegerField(blank=True, null=True)
+    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+
+    class Meta:
+        managed = False
+        db_table = 'sanrenpuku'
+
+
+class Sanrentan(models.Model):
+    race_id = models.TextField(blank=True, null=True)
+    win_1 = models.BigIntegerField(blank=True, null=True)
+    win_2 = models.BigIntegerField(blank=True, null=True)
+    win_3 = models.BigIntegerField(blank=True, null=True)
+    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+
+    class Meta:
+        managed = False
+        db_table = 'sanrentan'
+
+
+class Umaren(models.Model):
+    race_id = models.TextField(blank=True, null=True)
+    win_1 = models.BigIntegerField(blank=True, null=True)
+    win_2 = models.BigIntegerField(blank=True, null=True)
+    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+
+    class Meta:
+        managed = False
+        db_table = 'umaren'
+
+
+class Umatan(models.Model):
+    race_id = models.TextField(blank=True, null=True)
+    win_1 = models.BigIntegerField(blank=True, null=True)
+    win_2 = models.BigIntegerField(blank=True, null=True)
+    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+
+    class Meta:
+        managed = False
+        db_table = 'umatan'
