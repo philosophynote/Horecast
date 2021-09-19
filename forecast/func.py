@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from .return_calc import  bet_umaren,bet_sanrenpuku
 from django.conf import settings
 import psycopg2
+import time
 
 
 user = settings.DATABASES["default"]["USER"]
@@ -123,6 +124,35 @@ def insert_race_card(df):
     horse_df=horse_df.reset_index(drop=True)
     race_df.to_sql(name="race",schema='public',con=engine,if_exists = "append",index=False)
     horse_df.to_sql(name="horse",schema='public',con=engine,if_exists='append',index=False)
+
+def insert_result(race_id_list):
+    data = pd.DataFrame()
+    for race_id in race_id_list:
+        try:
+            url = "https://race.netkeiba.com/race/result.html?race_id=" + race_id
+            df = pd.read_html(url)[0]
+            df["race_id"] = [race_id] * len(df)
+            df["rank"] = df["着順"].astype(str)
+            df["horse_number"] = df["馬番"].astype(str)
+            df["favorite"] = df["人気"].astype(str)
+            df["odds"] = df["単勝オッズ"].astype(str)
+            df = df[["race_id","rank","horse_number","favorite","odds"]]
+        #     df.rename(columns={'馬名':'horse_name'},inplace=True)
+            data = data.append(df)
+            time.sleep(1)
+        # 存在しないrace_idを飛ばす
+        except IndexError:
+            continue
+        # wifiの接続が切れた時などでも途中までのデータを返せるようにする
+        except Exception as e:
+            print(e)
+            continue
+        # Jupyterで停止ボタンを押した時の対処
+        except:
+            break
+
+    data.reset_index(drop=True,inplace=True)
+    data.to_sql(name="result",schema='public',con=engine,if_exists = "append",index=False)
 
 def umaren(df):
     umaren = df[df[0]=='馬連'][[1,2]]
