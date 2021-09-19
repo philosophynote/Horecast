@@ -21,7 +21,6 @@ def bet_umaren(df,search_id):
 def bet_sanrenpuku(df,search_id):
     array = df[df["race_id"]==search_id][["win_1","win_2","win_3"]].drop_duplicates().values.tolist()[0]
     target = set(array)
-    print(target)
     table = df[df["race_id"]==search_id][["horse_number","center","bet"]]
     if len(table[table["center"]==1]) != 0:
         [center] = table[table["center"]==1]["horse_number"].values.tolist()
@@ -29,7 +28,6 @@ def bet_sanrenpuku(df,search_id):
         bet = table[table["bet"]==1]["horse_number"].values.tolist()
         bet.remove(center[0])
         combination = [c for c in itertools.combinations(bet,2)]   
-        print(combination)
         combinations=[]
         for c in combination:
             c = list(c)
