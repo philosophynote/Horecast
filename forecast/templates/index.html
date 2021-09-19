@@ -216,12 +216,23 @@
         axios.post('{% url "forecast:search" %}', data)
             .then(function (response){
             res = response.data;
-            console.log(res)
+            //console.log(res)
             let race_list = Object.entries(res["data_pre"]);
             let result_list = Object.entries(res["data_lat"]);
             let return_list = Object.entries(res["data_re"]);
+            console.log(result_list)
+            	
+            for (let i = 0; i < result_list.length; i++){
+             disable_judge.push(result_list[i][1]["rank"]);
+            }
 
-            console.log(return_list)
+            if (disable_judge.every(x => x == '*')){
+             $('#show_lat').prop('disabled',true);
+            }else{
+             $('#show_lat').prop('disabled',false);
+            }
+
+            
 
             $("#race_park_hold").text(`${race_list[1][1]["race_park"]}`);
             $("#race_number_hold").text(`${race_list[1][1]["race_number"]}R`);
