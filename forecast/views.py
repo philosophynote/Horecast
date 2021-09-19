@@ -8,7 +8,7 @@ import json,io,bz2,pickle
 import pandas as pd
 from django.urls import reverse_lazy,reverse
 from django.contrib import messages
-from .func import calc_predict, select_sql, making_predtable, insert_predtable,search_sql,insert_race_card
+from .func import calc_predict, select_sql_r, select_sql_h, making_predtable, insert_predtable,search_sql,insert_race_card
 from .race_card import ShutubaTable as st
 
 @csrf_exempt
@@ -25,7 +25,6 @@ def scrape_rc(request):
         
         rc.data.reset_index(inplace=True)
         rc.data.rename(columns={"index":"race_id"},inplace=True)
-        print(rc.data)
         insert_race_card(rc.data)
         messages.success(request, 'UPLOADに成功しました')
         return HttpResponseRedirect(reverse('forecast:manage'))
@@ -67,8 +66,8 @@ def upload(request):
             filename = bz2.BZ2File('forecast/HorecastModel_1.bz2', 'rb')
             lgb_clf = pickle.load(filename)
             pred, proba = calc_predict(lgb_clf,df)
-            race_df = select_sql("race")
-            horse_df = select_sql("horse")
+            race_df = select_sql_r(df,"race")
+            horse_df = select_sql_h(df,"horse")
             pred_table = race_df.merge(horse_df, left_on="race_id",
                                right_on="race_id", how="left")
             pred_table = making_predtable(pred, proba, pred_table)
@@ -111,4 +110,6 @@ def my_customized_server_error(request, template_name='500.html'):
     from django.views import debug
     error_html = debug.technical_500_response(request, *sys.exc_info()).content
     return HttpResponseServerError(error_html)
+
+
 

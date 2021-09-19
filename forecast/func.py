@@ -24,8 +24,15 @@ def calc_predict(model,df):
         ["horse_id", "date", "jockey_id", "trainer_id"], axis=1))
     return pred,proba
 
-def select_sql(tablename):
-    df = pd.read_sql(tablename, con=engine)
+def select_sql_r(df,tablename):
+    race_date = df["date"].unique()[0]  
+    df = pd.read_sql(tablename,con=engine)
+    df["race_date"] = pd.to_datetime(df["race_date"])
+    df = df[df["race_date"] == race_date]
+    return df
+
+def select_sql_h(df,tablename): 
+    df = pd.read_sql(tablename,con=engine)
     return df
 
 def making_predtable(pred,proba,race):
@@ -35,17 +42,17 @@ def making_predtable(pred,proba,race):
     rank_d = pd.DataFrame(pred_table.groupby("race_id").rank(ascending=False)[
         "pred_proba"]).rename(columns={"pred_proba": "rank_d"})
     pred_table = pd.concat([pred_table, rank_d.astype(int)], axis=1)
-    pred_table['favorite'] = 0
+    pred_table['center'] = 0
     pred_table['bet'] = 0
-    pred_table['favorite'] = pred_table.apply(
-        lambda x: x["favorite"] + 1 if x['pred'] == 0 and x['rank_d'] == 1 else x["favorite"], axis=1)
+    pred_table['center'] = pred_table.apply(
+        lambda x: x["center"] + 1 if x['pred'] == 0 and x['rank_d'] == 1 else x["center"], axis=1)
     pred_table["bet"].mask(pred_table["rank_d"] <= 4, 1, inplace=True)
     return pred_table
 
 
 def insert_predtable(pred_table):
     insert = pred_table[["race_id",
-                         "horse_number", "pred", "favorite", "bet"]]
+                         "horse_number", "pred", "center", "bet"]]
     insert.to_sql(name="predict", schema='public',
                   con=engine, if_exists='append',index=False)
 
@@ -66,13 +73,19 @@ def search_sql(race_date, race_park, race_number):
     # query = 'race_date == {race_date} and race_park == {race_park} and race_number == {race_number}'.format(
     #     **conditions)
     race_df = pd.read_sql("race", con=engine)
+    race_df["race_date"] = pd.to_datetime(race_df["race_date"])
     race_df = race_df.query('race_date == @race_date and race_park == @race_park and race_number == @race_number')
     # race_id = race_df["race_id"]
     horse_df = pd.read_sql('horse', con=engine)
+
     pred_table = pd.read_sql('predict', con=engine)
+
     result = pd.read_sql('result', con=engine)
+
     umaren =  pd.read_sql("umaren",con=engine)
+
     sanrenpuku = pd.read_sql("sanrenpuku",con=engine)
+
    
     df = race_df.merge(horse_df,left_on="race_id",right_on="race_id",how="inner")
     df = df.merge(pred_table, left_on=["race_id", "horse_number"], right_on=["race_id", "horse_number"], how="inner")
@@ -99,7 +112,6 @@ def search_sql(race_date, race_park, race_number):
     df_re = df_re.merge(sanrenpuku_df,how="left",right_on="race_id",left_on="race_id")
     
     df_re = df_re[["race_number","umaren","sanrenpuku"]]
-    print(df_re)
     return df_pre,df_lat,df_re
 
 def insert_race_card(df):
