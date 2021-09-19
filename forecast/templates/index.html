@@ -220,8 +220,8 @@
             let race_list = Object.entries(res["data_pre"]);
             let result_list = Object.entries(res["data_lat"]);
             let return_list = Object.entries(res["data_re"]);
-            console.log(result_list)
-            	
+   
+            let disable_judge = []
             for (let i = 0; i < result_list.length; i++){
              disable_judge.push(result_list[i][1]["rank"]);
             }
