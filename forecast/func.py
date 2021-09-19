@@ -75,16 +75,15 @@ def search_sql(race_date, race_park, race_number):
     race_df = pd.read_sql("race", con=engine)
     race_df["race_date"] = pd.to_datetime(race_df["race_date"])
     race_df = race_df.query('race_date == @race_date and race_park == @race_park and race_number == @race_number')
-    # race_id = race_df["race_id"]
-    horse_df = pd.read_sql('horse', con=engine)
+    race_id = race_df["race_id"].iloc[-1]
+    horse_df = pd.read_sql(f"SELECT * FROM horse WHERE race_id = '{race_id}'", con=engine)
+    pred_table = pd.read_sql(f"SELECT * FROM predict WHERE race_id = '{race_id}'", con=engine)
 
-    pred_table = pd.read_sql('predict', con=engine)
+    result = pd.read_sql(f"SELECT * FROM result WHERE race_id = '{race_id}'", con=engine)
 
-    result = pd.read_sql('result', con=engine)
+    umaren =  pd.read_sql(f"SELECT * FROM umaren WHERE race_id = '{race_id}'",con=engine)
 
-    umaren =  pd.read_sql("umaren",con=engine)
-
-    sanrenpuku = pd.read_sql("sanrenpuku",con=engine)
+    sanrenpuku = pd.read_sql(f"SELECT * FROM sanrenpuku WHERE race_id = '{race_id}'",con=engine)
 
    
     df = race_df.merge(horse_df,left_on="race_id",right_on="race_id",how="inner")
