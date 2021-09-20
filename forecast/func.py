@@ -1,9 +1,11 @@
+from django.db import connection
 import pandas as pd
 from sqlalchemy import create_engine
 from .return_calc import  bet_umaren,bet_sanrenpuku
 from django.conf import settings
 import psycopg2
 import time
+from pangres import upsert
 
 
 user = settings.DATABASES["default"]["USER"]
@@ -12,8 +14,16 @@ database = settings.DATABASES['default']['NAME']
 host = settings.DATABASES['default']['HOST']
 port = settings.DATABASES['default']['PORT']
 
+connection_config = {
+    "user":user,
+    "password":password,
+    "database":database,
+    "host":host,
+    "port":port,
+}
 
 
+# connection = psycopg2.connect(**connection_config)
 engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{database}')
 
 
@@ -27,13 +37,15 @@ def calc_predict(model,df):
 
 def select_sql_r(df,tablename):
     race_date = df["date"].unique()[0]  
-    df = pd.read_sql(tablename,con=engine)
+    df = pd.read_sql(f"SELECT * FROM {tablename}",con=connection)
     df["race_date"] = pd.to_datetime(df["race_date"])
+    
     df = df[df["race_date"] == race_date]
+
     return df
 
 def select_sql_h(df,tablename): 
-    df = pd.read_sql(tablename,con=engine)
+    df = pd.read_sql(f"SELECT * FROM {tablename}",con=connection)
     return df
 
 def making_predtable(pred,proba,race):
@@ -54,9 +66,14 @@ def making_predtable(pred,proba,race):
 def insert_predtable(pred_table):
     insert = pred_table[["race_id",
                          "horse_number", "pred", "center", "bet"]]
-    insert.to_sql(name="predict", schema='public',
-                  con=engine, if_exists='append',index=False)
-
+    insert["id"] = insert['race_id'].str.cat(insert['horse_number'].astype(str).str.zfill(2))
+    insert.reset_index(drop=True,inplace=True)
+    insert.set_index('id',inplace=True)
+    upsert(engine=engine,
+          df=insert,
+          schema="public",
+          table_name="predict",
+          if_row_exists='update') 
 
 def search_sql(race_date, race_park, race_number):
     # conditions = {
@@ -121,9 +138,20 @@ def insert_race_card(df):
     horse_df.rename(columns={'枠': 'frame_number', '馬番': 'horse_number', '馬名': 'horse_name', '性齢': "sex_age", '騎手': 'jockey_name', '斤量': 'jockey_weight'}, inplace=True)
     race_df.drop_duplicates(inplace=True)
     race_df=race_df.reset_index(drop=True)
+    race_df.set_index("race_id",inplace=True)
+    horse_df["id"] = horse_df['race_id'].str.cat(horse_df['horse_number'].astype(str).str.zfill(2))
     horse_df=horse_df.reset_index(drop=True)
-    race_df.to_sql(name="race",schema='public',con=engine,if_exists = "append",index=False)
-    horse_df.to_sql(name="horse",schema='public',con=engine,if_exists='append',index=False)
+    horse_df.set_index("id",inplace=True)
+    upsert(engine=engine,
+          df=race_df,
+          schema="public",
+          table_name="race",
+          if_row_exists='update') 
+    upsert(engine=engine,
+          df=horse_df,
+          schema="public",
+          table_name="horse",
+          if_row_exists='update')
 
 def insert_result(race_id_list):
     data = pd.DataFrame()
@@ -150,9 +178,14 @@ def insert_result(race_id_list):
         # Jupyterで停止ボタンを押した時の対処
         except:
             break
-
+    data["id"] = data['race_id'].str.cat(data['horse_number'].astype(str).str.zfill(2))
     data.reset_index(drop=True,inplace=True)
-    data.to_sql(name="result",schema='public',con=engine,if_exists = "append",index=False)
+    data.set_index("id",inplace=True)
+    upsert(engine=engine,
+          df=data,
+          schema="public",
+          table_name="result",
+          if_row_exists='update')
 
 def umaren(df):
     umaren = df[df[0]=='馬連'][[1,2]]
@@ -162,14 +195,18 @@ def umaren(df):
     return_ = return_.str.replace('円','')
     return_ = return_.str.replace(',','')
     df = pd.concat([wins, return_], axis=1) 
-    df.reset_index(inplace=True)
-    df =  df.rename(columns = {'index':'race_id','win_0':'win_1','win_1':'win_2'})
+    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2'})
     df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
     df.dropna(subset=["win_1"], inplace=True)
+    df.index.name = "race_id"
     df["win_1"] = df["win_1"].astype(int)
     df["win_2"] = df["win_2"].astype(int)
     df["return"] = df["return"].astype(int)
-    df.to_sql(name="umaren",schema='public',con=engine,if_exists = "append",index=False)
+    upsert(engine=engine,
+          df=df,
+          schema="public",
+          table_name="umaren",
+          if_row_exists='update')
 
 def sanrenpuku(df):
     renpuku = df[df[0]=='3連複'][[1,2]]
@@ -178,12 +215,16 @@ def sanrenpuku(df):
     return_ = return_.str.replace('円','')
     return_ = return_.str.replace(',','')
     df = pd.concat([wins, return_], axis=1)
-    df.reset_index(inplace=True)
-    df =  df.rename(columns = {'index':'race_id','win_0':'win_1','win_1':'win_2','win_2':'win_3'})
+    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2','win_2':'win_3'})
     df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
     df.dropna(subset=["win_1"], inplace=True)
+    df.index.name = "race_id"
     df["win_1"] = df["win_1"].astype(int)
     df["win_2"] = df["win_2"].astype(int)
     df["win_3"] = df["win_3"].astype(int)
     df["return"] = df["return"].astype(int)
-    df.to_sql(name="sanrenpuku",schema='public',con=engine,if_exists = "append",index=False)
+    upsert(engine=engine,
+          df=df,
+          schema="public",
+          table_name="sanrenpuku",
+          if_row_exists='update')

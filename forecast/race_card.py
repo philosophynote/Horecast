@@ -92,7 +92,6 @@ class ShutubaTable(DataProcessor):
             df["horse_id"] = horse_id_list
             df["jockey_id"] = jockey_id_list
             df["trainer_id"] = trainer_id_list
-
             df.index = [race_id] * len(df)
             df['n_horses'] = df.index.map(df.index.value_counts())
             data = data.append(df)
@@ -114,7 +113,7 @@ class ShutubaTable(DataProcessor):
         df["weight_j"] = pd.to_numeric(df["斤量"], errors="coerce")
         df["weight_j"] = df["weight_j"].astype(float)
 
-        df["date"] = pd.to_datetime(df["date"])
+        
 
         df["course_len"] = df["course_len"] // 100
 
