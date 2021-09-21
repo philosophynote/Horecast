@@ -50,6 +50,9 @@ class Index(TemplateView):
 class Timeline(TemplateView):
     template_name = 'timeline.html'
 
+class Toppage(TemplateView):
+    template_name = 'toppage.html'
+
 
 
 def manage(request):

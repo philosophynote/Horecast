@@ -1,25 +1,20 @@
 from pathlib import Path
 import dj_database_url
 import os
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-
-
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
+# AWS
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -63,14 +58,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Horecast.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'horecast_test',
-        'USER': 'workuser',
-        'PASSWORD': 'sundai005107D',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': env.db(),
 }
 
 # Password validation

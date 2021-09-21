@@ -10,4 +10,6 @@ urlpatterns = [
     path('upload', views.upload, name='upload'),
     path('timeline', views.Timeline.as_view(), name='timeline'),
     path('scrape_rc', views.scrape_rc, name='scrape_rc'),
+    path('toppage', views.Toppage.as_view(), name='toppage'),
+
 ]
