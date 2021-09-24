@@ -57,9 +57,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Horecast.wsgi.application'
 
-# DATABASES = {
-#     'default': env.db(),
-# }
+DATABASES = {
+    'default': env.db(),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
