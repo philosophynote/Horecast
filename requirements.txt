@@ -33,3 +33,5 @@ lxml
 html5lib
 lightgbm
 pangres
+fastparquet
+django-environ
