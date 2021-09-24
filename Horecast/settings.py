@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ALLOWED_HOSTS = []
 
 # AWS
-# env = environ.Env()
+env = environ.Env()
 # env.read_env(os.path.join(BASE_DIR, '.env'))
 # SECRET_KEY = env('SECRET_KEY')
 # DEBUG = env('DEBUG')
@@ -57,9 +57,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Horecast.wsgi.application'
 
-DATABASES = {
-    'default': env.db(),
-}
+# DATABASES = {
+#     'default': env.db(),
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
