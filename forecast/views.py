@@ -12,8 +12,8 @@ from .func import calc_predict, select_sql_r, select_sql_h, making_predtable, in
 from .race_card import ShutubaTable as st
 # from .dashboard import SthreeController
 from django.conf import settings
-import fastparquet
-import s3fs,fsspec
+# import fastparquet
+# import s3fs,fsspec
 
 @csrf_exempt
 def scrape_rc(request):
