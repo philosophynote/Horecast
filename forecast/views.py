@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt 
 from .models import Horse,Race,Predict
@@ -10,6 +10,10 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from .func import calc_predict, select_sql_r, select_sql_h, making_predtable, insert_predtable,search_sql,insert_race_card
 from .race_card import ShutubaTable as st
+from .dashboard import SthreeController
+from django.conf import settings
+import fastparquet
+import s3fs,fsspec
 
 @csrf_exempt
 def scrape_rc(request):
@@ -31,6 +35,15 @@ def scrape_rc(request):
     else:
         messages.error(request, 'UPLOADに失敗しました')
 
+def Table(request):
+    sc = SthreeController(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY,settings.AWS_S3_REGION_NAME,settings.AWS_STORAGE_BUCKET_NAME)
+    df = sc.read_s3file()
+    # array = [io.TextIOWrapper(io.BytesIO(s3obj['Body'].read())) for s3obj in s3objs]
+    # print(s3objs)
+    
+    head = df.tail()
+    df_ex = head.to_html()
+    return HttpResponse(df_ex)
 
 
 class Index(TemplateView):
@@ -66,7 +79,7 @@ def upload(request):
         if upload.is_valid():
             df = pd.read_csv(io.StringIO(
                 request.FILES['testfile'].read().decode('utf-8')), delimiter=',')
-            filename = bz2.BZ2File('forecast/HorecastModel_1.bz2', 'rb')
+            filename = bz2.BZ2File('forecast/HorecastModel.bz2', 'rb')
             lgb_clf = pickle.load(filename)
             pred, proba = calc_predict(lgb_clf,df)
             race_df = select_sql_r(df,"race")
