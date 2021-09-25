@@ -10,7 +10,7 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from .func import calc_predict, select_sql_r, select_sql_h, making_predtable, insert_predtable,search_sql,insert_race_card
 from .race_card import ShutubaTable as st
-from .dashboard import SthreeController
+# from .dashboard import SthreeController
 from django.conf import settings
 import fastparquet
 import s3fs,fsspec
