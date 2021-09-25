@@ -3,11 +3,11 @@ import time
 from urllib.request import urlopen
 from forecast.func import umaren,sanrenpuku,insert_result
 
-race_id_list_nst = ['2021060406{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_cst = ['2021070506{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_st = race_id_list_nst  + race_id_list_cst 
+race_id_list_nsn = ['2021060407{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_csn = ['2021070507{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_sn = race_id_list_nsn  + race_id_list_csn 
 
-insert_result(race_id_list_st)
+insert_result(race_id_list_sn)
 print("結果をDBに格納しました")
 
 return_tables = {}
