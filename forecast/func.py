@@ -69,6 +69,7 @@ def insert_predtable(pred_table):
     insert["id"] = insert['race_id'].str.cat(insert['horse_number'].astype(str).str.zfill(2))
     insert.reset_index(drop=True,inplace=True)
     insert.set_index('id',inplace=True)
+    insert.index[insert.index.duplicated(keep=False)]
     upsert(engine=engine,
           df=insert,
           schema="public",
