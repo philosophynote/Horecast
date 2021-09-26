@@ -11,7 +11,7 @@ insert_result(race_id_list_sn)
 print("結果をDBに格納しました")
 
 return_tables = {}
-for race_id in race_id_list_st:
+for race_id in race_id_list_sn:
     try:
         url = "https://race.netkeiba.com/race/result.html?race_id=" + race_id
         #普通にスクレイピングすると複勝やワイドなどが区切られないで繋がってしまう。
