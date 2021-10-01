@@ -3,15 +3,15 @@ import time
 from urllib.request import urlopen
 from forecast.func import umaren,sanrenpuku,insert_result
 
-race_id_list_nsn = ['2021060407{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_csn = ['2021070507{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_sn = race_id_list_nsn  + race_id_list_csn 
+race_id_list_a = ['2021060408{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_b = ['2021070508{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list = race_id_list_a  + race_id_list_b 
 
-insert_result(race_id_list_sn)
+insert_result(race_id_list)
 print("結果をDBに格納しました")
 
 return_tables = {}
-for race_id in race_id_list_sn:
+for race_id in race_id_list:
     try:
         url = "https://race.netkeiba.com/race/result.html?race_id=" + race_id
         #普通にスクレイピングすると複勝やワイドなどが区切られないで繋がってしまう。
