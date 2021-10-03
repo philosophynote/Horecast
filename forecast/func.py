@@ -1,7 +1,7 @@
 from django.db import connection
 import pandas as pd
 from sqlalchemy import create_engine
-from .return_calc import  bet_umaren,bet_sanrenpuku
+from .return_calc import  bet_umaren,bet_sanrenpuku,bet_umatan,bet_sanrentan
 from django.conf import settings
 import psycopg2
 import time
@@ -76,6 +76,9 @@ def insert_predtable(pred_table):
           table_name="predict",
           if_row_exists='update') 
 
+def read_table(race_id,table_name):
+    return pd.read_sql(f"SELECT * FROM {table_name} WHERE race_id = '{race_id}'", con=engine)
+
 def search_sql(race_date, race_park, race_number):
     # conditions = {
     #     "race_date": race_date,
@@ -95,14 +98,25 @@ def search_sql(race_date, race_park, race_number):
     race_df["race_date"] = pd.to_datetime(race_df["race_date"])
     race_df = race_df.query('race_date == @race_date and race_park == @race_park and race_number == @race_number')
     race_id = race_df["race_id"].iloc[-1]
-    horse_df = pd.read_sql(f"SELECT * FROM horse WHERE race_id = '{race_id}'", con=engine)
-    pred_table = pd.read_sql(f"SELECT * FROM predict WHERE race_id = '{race_id}'", con=engine)
+    horse_df = read_table(race_id,'horse')
+    pred_table = read_table(race_id,"predict")
+    result = read_table(race_id,"result")
+    umaren = read_table(race_id,"umaren")
+    umatan = read_table(race_id,"umatan")
+    sanrenpuku = read_table(race_id,"sanrenpuku")
+    sanrentan = read_table(race_id,"sanrentan")
+    # horse_df = pd.read_sql(f"SELECT * FROM horse WHERE race_id = '{race_id}'", con=engine)
+    # pred_table = pd.read_sql(f"SELECT * FROM predict WHERE race_id = '{race_id}'", con=engine)
 
-    result = pd.read_sql(f"SELECT * FROM result WHERE race_id = '{race_id}'", con=engine)
+    # result = pd.read_sql(f"SELECT * FROM result WHERE race_id = '{race_id}'", con=engine)
 
-    umaren =  pd.read_sql(f"SELECT * FROM umaren WHERE race_id = '{race_id}'",con=engine)
+    # umaren =  pd.read_sql(f"SELECT * FROM umaren WHERE race_id = '{race_id}'",con=engine)
 
-    sanrenpuku = pd.read_sql(f"SELECT * FROM sanrenpuku WHERE race_id = '{race_id}'",con=engine)
+    # umatan =  pd.read_sql(f"SELECT * FROM umatan WHERE race_id = '{race_id}'",con=engine)
+
+    # sanrenpuku = pd.read_sql(f"SELECT * FROM sanrenpuku WHERE race_id = '{race_id}'",con=engine)
+
+    # sanrentan = pd.read_sql(f"SELECT * FROM sanrentan WHERE race_id = '{race_id}'",con=engine)
 
    
     df = race_df.merge(horse_df,left_on="race_id",right_on="race_id",how="inner")
@@ -112,7 +126,11 @@ def search_sql(race_date, race_park, race_number):
     df = df.merge(result, left_on=["race_id", "horse_number"], right_on=["race_id", "horse_number"], how="left")
     df_lat = df[["rank","horse_number","horse_name","sex_age","jockey_name","jockey_weight","favorite","odds"]]
     df_lat["rank"] = pd.to_numeric(df_lat["rank"] ,errors="coerce")
+    df_lat["favorite"] = pd.to_numeric(df_lat["favorite"] ,errors="coerce")
+    df_lat["odds"] = pd.to_numeric(df_lat["odds"] ,errors="coerce")
     df_lat["rank"].fillna("*",inplace=True)
+    df_lat["favorite"].fillna("*",inplace=True)
+    df_lat["odds"].fillna("*",inplace=True)
 
     df_umaren = umaren.merge(pred_table,how="inner",left_on=["race_id"],right_on=["race_id"])
     race_id_list = df_umaren["race_id"].unique()
@@ -120,17 +138,39 @@ def search_sql(race_date, race_park, race_number):
     umaren_dict = dict(zip(race_id_list,umaren_money))
     umaren_df = pd.DataFrame(list(umaren_dict.items()),columns=['race_id', 'umaren'])
 
+    df_umatan = umatan.merge(pred_table,how="inner",left_on=["race_id"],right_on=["race_id"])
+    race_id_list = df_umatan["race_id"].unique()
+    umatan_money = [bet_umatan(df_umatan,race_id) for race_id in race_id_list]
+    umatan_dict = dict(zip(race_id_list,umatan_money))
+    umatan_df = pd.DataFrame(list(umatan_dict.items()),columns=['race_id', 'umatan'])
+
     df_sanrenpuku = sanrenpuku.merge(pred_table,how="inner",left_on=["race_id"],right_on=["race_id"])
     race_id_list = df_sanrenpuku["race_id"].unique()
     sanrenpuku_money = [bet_sanrenpuku(df_sanrenpuku,race_id) for race_id in race_id_list]
     sanrenpuku_dict = dict(zip(race_id_list,sanrenpuku_money))
     sanrenpuku_df = pd.DataFrame(list(sanrenpuku_dict.items()),columns=['race_id', 'sanrenpuku'])
 
+    df_sanrentan = sanrentan.merge(pred_table,how="inner",left_on=["race_id"],right_on=["race_id"])
+    race_id_list = df_sanrentan["race_id"].unique()
+    sanrentan_money = [bet_sanrentan(df_sanrentan,race_id) for race_id in race_id_list]
+    sanrentan_dict = dict(zip(race_id_list,sanrentan_money))
+    sanrentan_df = pd.DataFrame(list(sanrentan_dict.items()),columns=['race_id', 'sanrentan'])
+
     df_re = race_df.merge(umaren_df,how="left",right_on="race_id",left_on="race_id")
     df_re = df_re.merge(sanrenpuku_df,how="left",right_on="race_id",left_on="race_id")
+    df_re = df_re.merge(umatan_df,how="left",right_on="race_id",left_on="race_id")
+    df_re = df_re.merge(sanrentan_df,how="left",right_on="race_id",left_on="race_id")
     
-    df_re = df_re[["race_number","umaren","sanrenpuku"]]
-    return df_pre,df_lat,df_re
+    df_re = df_re[["race_number","umaren","umatan","sanrenpuku","sanrentan"]]
+    df_re["umaren"] = pd.to_numeric(df_re["umaren"] ,errors="coerce")
+    df_re["umatan"] = pd.to_numeric(df_re["umatan"] ,errors="coerce")
+    df_re["sanrenpuku"] = pd.to_numeric(df_re["sanrenpuku"] ,errors="coerce")
+    df_re["sanrentan"] = pd.to_numeric(df_re["sanrentan"] ,errors="coerce")
+    df_re["umaren"].fillna("*",inplace=True)
+    df_re["umatan"].fillna("*",inplace=True)
+    df_re["sanrenpuku"].fillna("*",inplace=True)
+    df_re["sanrentan"].fillna("*",inplace=True)
+    return race_id,df_pre,df_lat,df_re
 
 def insert_race_card(df):
     race_df = df[["race_id","race_park","race_name","race_number","date","race_turn","course_len","weather","race_type","race_condition","n_horses"]]
@@ -158,6 +198,7 @@ def insert_result(race_id_list):
     data = pd.DataFrame()
     for race_id in race_id_list:
         try:
+            print(race_id)
             url = "https://race.netkeiba.com/race/result.html?race_id=" + race_id
             df = pd.read_html(url)[0]
             df["race_id"] = [race_id] * len(df)
@@ -209,6 +250,27 @@ def umaren(df):
           table_name="umaren",
           if_row_exists='update')
 
+def umatan(df):
+    umaren = df[df[0]=='馬単'][[1,2]]
+    wins = umaren[1].str.split(expand=True)
+    wins = umaren[1].str.split(expand=True)[[0,1]].add_prefix('win_')
+    return_ = umaren[2].rename('return') 
+    return_ = return_.str.replace('円','')
+    return_ = return_.str.replace(',','')
+    df = pd.concat([wins, return_], axis=1) 
+    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2'})
+    df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+    df.dropna(subset=["win_1"], inplace=True)
+    df.index.name = "race_id"
+    df["win_1"] = df["win_1"].astype(int)
+    df["win_2"] = df["win_2"].astype(int)
+    df["return"] = df["return"].astype(int)
+    upsert(engine=engine,
+          df=df,
+          schema="public",
+          table_name="umatan",
+          if_row_exists='update')
+
 def sanrenpuku(df):
     renpuku = df[df[0]=='3連複'][[1,2]]
     wins = renpuku[1].str.split(expand=True)[[0,1,2]].add_prefix('win_')
@@ -229,3 +291,25 @@ def sanrenpuku(df):
           schema="public",
           table_name="sanrenpuku",
           if_row_exists='update')
+
+def sanrentan(df):
+    renpuku = df[df[0]=='3連単'][[1,2]]
+    wins = renpuku[1].str.split(expand=True)[[0,1,2]].add_prefix('win_')
+    return_ = renpuku[2].rename('return')
+    return_ = return_.str.replace('円','')
+    return_ = return_.str.replace(',','')
+    df = pd.concat([wins, return_], axis=1)
+    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2','win_2':'win_3'})
+    df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+    df.dropna(subset=["win_1"], inplace=True)
+    df.index.name = "race_id"
+    df["win_1"] = df["win_1"].astype(int)
+    df["win_2"] = df["win_2"].astype(int)
+    df["win_3"] = df["win_3"].astype(int)
+    df["return"] = df["return"].astype(int)
+    upsert(engine=engine,
+          df=df,
+          schema="public",
+          table_name="sanrentan",
+          if_row_exists='update')
+
