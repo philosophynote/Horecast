@@ -301,7 +301,7 @@ class AfterComment(models.Model):
     race = models.ForeignKey('Race', models.DO_NOTHING, db_column='race', blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
-    comment = models.ForeignKey('BeforeComment', models.DO_NOTHING, db_column='comment', blank=True, null=True)
+    comment = models.ForeignKey('BeforeComment', models.CASCADE, db_column='comment', blank=True, null=True)
 
     class Meta:
         managed = False
