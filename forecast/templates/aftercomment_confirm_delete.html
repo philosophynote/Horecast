@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <br>
+        <h2 class="text-center">コメント削除</h2>
+        <br>
+        <div class="alert alert-danger text-center" role="alert">
+            <form method="post">
+                {% csrf_token %}
+                <p>以下の内容を本当に削除しますか？</p>
+                <input type="submit" class="btn btn-danger" value="削除する">
+            </form>
+        </div>
+        <br>
+        <div class="text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="fs-5 fw-bold">終了後コメント</p>
+                        <p>{{ object.after_comment}}</p>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="fs-5 fw-bold">次走以降の注目馬</p>
+                        <p>{{ object.attention_horse}}</p>
+                        <p class="fs-5 fw-bold">注目理由</p>
+                        <p>{{ object.attention_reason}}</p>
+                    </div>
+                </div>
+            <br>
+            <br>
+        </div>
+
+    </div>
+{% endblock %}

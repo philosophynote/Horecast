@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">コメントを投稿(更新)してください</h1>
+        <br>
+        <br>
+        <form action="" method="post" enctype="multipart/form">
+            {% csrf_token %}
+            <div class="text-center">
+                    <p>{{form.race}}</p>
+                    <fieldset>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="fs-5 fw-bold">終了後コメント</p>
+                                <p>{{ form.after_comment}}</p>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="fs-5 fw-bold">次走以降の注目馬</p>
+                                <p>{{ form.attention_horse}}</p>
+                                <p class="fs-5 fw-bold">注目理由</p>
+                                <p>{{ form.attention_reason}}</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                <br>
+                <br>
+                <button type="submit" class="btn fs-5" style="background-color: #79d1d5;">保存</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        //a = document.getElementById("race_result").value
+        //console.log(a) 
+        $(document).ready(function(event){
+            //event.preventDefault()
+            console.log(document.getElementById("race_result").value)
+            let data = new FormData();
+            data.append("race_id", document.getElementById("race_result").value)
+            console.log(data)
+            axios.defaults.xsrfCookieName = 'csrftoken'
+            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"    
+            console.log(data.get('race_id'));
+            axios.post('{% url "forecast:judgecomment" %}', data)
+            .then(function (response){
+                res = response.data;
+                console.log(res)
+                let rank_list  = res["rank_list"];
+                if (rank_list.every(x => x == '*')){
+                    $('#afterrace').prop('disabled',true);
+                }else{
+                    $('#afterrace').prop('disabled',false);
+                    $('#beforerace').prop('disabled',true);
+                }
+
+
+            })
+            .catch(errors => console.log(errors))
+        })
+
+        
+    </script>
+{% endblock %}

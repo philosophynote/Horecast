@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+        <div class="container" >
+            <h2 class="text-center">Horecastのページ</h2>
+            <br>
+            <section class="text-center">
+                <h4 class="mb-5"><strong>Horecastの機能</strong></h4>
+
+                <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <div class="card">
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="img-fluid" />
+                        <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">レース予想</h5>
+                        <p class="card-text">
+                        開催する競馬場の全12レースを予想、軸馬と紐馬３頭を表示
+                        （一部レースは予想の結果、購入を推奨していない場合がございます。）
+                        </p>
+                        <a href="#!" class="btn btn-primary">レース予想を見に行く</a>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <img src="https://mdbootstrap.com/img/new/standard/nature/023.jpg" class="img-fluid" />
+                        <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">ダッシュボード</h5>
+                        <p class="card-text">
+                        過去10年分のレース・競走馬についてデータを図表で確認することができます。
+                        </p>
+                        <a href="#!" class="btn btn-primary">ダッシュボードを見に行く</a>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <img src="https://mdbootstrap.com/img/new/standard/nature/111.jpg" class="img-fluid" />
+                        <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">予想掲示板</h5>
+                        <p class="card-text">
+                        ユーザ同士で予想を共有することができます。
+                        予想の根拠やレース後のコメントも閲覧できます。
+                        </p>
+                        <a href="#!" class="btn btn-primary">予想掲示板を見に行く</a>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+            <h4 class="mb-5 text-center"><strong>Horecastの機能</strong></h4>
+            <div class="row">
+                <div class="col-lg-7 mx-auto">
+                    
+                    <!-- Timeline -->
+                    <ul class="timeline">
+                        <li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+                            <div class="timeline-arrow"></div>
+                            <h2 class="h5 mb-0">Title of section 1</h2><span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>21 March, 2019</span>
+                            <p class="text-small mt-2 font-weight-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+                        </li>
+                        <li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+                            <div class="timeline-arrow"></div>
+                            <h2 class="h5 mb-0">Title of section 2</h2><span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>5 April, 2019</span>
+                            <p class="text-small mt-2 font-weight-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper.</p>
+                            <p class="text-small mt-2 font-weight-light">Libero expedita explicabo eius fugiat quia aspernatur autem laudantium error architecto recusandae natus sapiente sit nam eaque, consectetur porro molestiae ipsam! Deleniti.</p>
+                        </li>
+                        <li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+                            <div class="timeline-arrow"></div>
+                            <h2 class="h5 mb-0">Title of section 3</h2><span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>18 August, 2019</span>
+                            <p class="text-small mt-2 font-weight-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+                        </li>
+                        <li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+                            <div class="timeline-arrow"></div>
+                            <h2 class="h5 mb-0">Title of section 4</h2><span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>10 October, 2019</span>
+                            <p class="text-small mt-2 font-weight-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+                            <p class="text-small mt-2 font-weight-light">Voluptatibus temporibus esse illum eum aspernatur, fugiat suscipit natus! Eum corporis illum nihil officiis tempore. Excepturi illo natus libero sit doloremque, laborum molestias rerum pariatur quam ipsam necessitatibus incidunt, explicabo.</p>
+                        </li>
+                    </ul><!-- End -->
+
+                </div>
+            </div>
+
+
+{% endblock %}

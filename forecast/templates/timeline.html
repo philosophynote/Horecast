@@ -1,126 +1,93 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% load boost %}
+
 {% block content %}
-<main class="mt-5">
     <div class="container">
-        <div class="row">
-            <div class="timeline timeline-five px-3 px-sm-0">
-            <!-- Item 1 -->
-            <div class="row">
-                <!-- timeline item 1 center image & middle line -->
-                <div class="col-auto text-center flex-column d-none d-sm-flex">
-                    <div class="d-flex h-50">
-                        <div class="col">&nbsp;</div>
-                        <div class="col">&nbsp;</div>
-                    </div>
-                    <!-- <span class="m-3 avatar-separator">
-                        <img class="img-fluid rounded-circle" src="" alt="John Portrait">
-                    </span> -->
-                    <div class="d-flex h-50">
-                        <div class="col middle-line">&nbsp;</div>
-                        <div class="col">&nbsp;</div>
-                    </div>
-                </div>
-                <!-- Timeline item 1 content-->
-                <div class="col-12 col-lg-12 col-xl-11 my-4">
-                    <div class="card border-gray-300 text-primary p-4">
-                        <div class="card-body">
-                            <div class="post-meta mb-3">
-                                <a class="text-primary" href="#"><span class="far fa-thumbs-up me-1"></span>345</a>
-                            </div>
-                            <h2 class="h5 card-title text-primary">Time Schedule 1</h2>
-                            <p>Stay organized, reduce stress, and accomplish personal and business goals with a daily schedule template. It’s a simple yet effective time-management tool for any daily activity, whether you’re managing a busy work schedule, academic assignments or family chores. </p>
-                            <button class="btn btn-sm btn-primary" type="button" data-bs-target="#t1_details" data-bs-toggle="collapse">Show Details <span class="fas fa-angle-down toggle-arrow ms-1"></span></button>
-                            <div class="collapse" id="t1_details">
-                                <div class="p-2 mt-3 text-monospace">
-                                    <div>08:30 - 09:00 Breakfast in Town</div>
-                                    <div>09:00 - 10:30 Attend a team meeting</div>
-                                    <div>10:30 - 10:45 Research on new technologies and tools</div>
-                                    <div>10:45 - 12:00 It’s a good idea to review the day’s work</div>
-                                </div>
-                            </div>
+        <h1 class="text-center">レース予想一覧</h1>
+        <br>
+        <br>
+        <div class="row ">
+                <div class="col-3 sticky" style="top: 200px;">
+                    <div class="card ml-3"  >
+                        <div class="card-header">
+                            <h3 class="text-center">予想を投稿しよう</h3> 
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <!-- Button trigger modal -->
+                            <a href="{% url 'forecast:choice_race' %}" type="button" class="btn fs-5" style="background-color: #79d1d5;">
+                                予想を投稿する
+                            </a>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- Item 2 -->
-            <div class="row">
-                <!-- timeline item 2 center image & middle line -->
-                <div class="col-auto text-center flex-column d-none d-sm-flex">
-                    <div class="d-flex h-50">
-                        <div class="col middle-line">&nbsp;</div>
-                        <div class="col">&nbsp;</div>
-                    </div>
-                    <!-- <span class="m-3 avatar-separator">
-                        <img class="img-fluid rounded-circle" src="" alt="Bonnie Portrait">
-                    </span> -->
-                    <div class="d-flex h-50">
-                        <div class="col middle-line">&nbsp;</div>
-                        <div class="col">&nbsp;</div>
-                    </div>
-                </div>
-                <!-- Timeline item 2 content -->
-                <div class="col-12 col-lg-12 col-xl-11 my-4">
-                    <div class="card border-gray-300 p-4">
+                    <br>
+                    <!-- <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center">予想を検索しよう</h3> 
+                        </div>
                         <div class="card-body">
-                            <div class="post-meta mb-3">
-                                <a class="text-secondary" href="#"><span class="far fa-thumbs-up me-1"></span>515</a>
-                            </div>
-                            <h2 class="h5 card-title">Time Schedule 2</h2>
-                            <p>Stay organized, reduce stress, and accomplish personal and business goals with a daily schedule template. It’s a simple yet effective time-management tool for any daily activity, whether you’re managing a busy work schedule, academic assignments or family chores. </p>
-                            <button class="btn btn-sm btn-primary" type="button" data-bs-target="#t2_details" data-bs-toggle="collapse">Show Details <span class="fas fa-angle-down toggle-arrow ms-1"></span></button>
-                            <div class="collapse" id="t2_details">
-                                <div class="p-2 mt-3 text-monospace">
-                                    <div>08:30 - 09:00 Breakfast in Town</div>
-                                    <div>09:00 - 10:30 Attend a team meeting</div>
-                                    <div>10:30 - 10:45 Research on new technologies and tools</div>
-                                    <div>10:45 - 12:00 It’s a good idea to review the day’s work</div>
+                            <form action="{% url 'forecast:search' %}" method="POST" id="search">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <table>
+                                {{ form.as_p }}
+                                </table>
+                                <br>
+                                <div class="text-center">
+                                    <button id="show" type="submit" class="btn fs-6" style="background-color: #79d1d5;">検索</button>
                                 </div>
+                            </form>                  
+                        </div>
+                        <div class="card-footer">
+                            <div>
+                                <label class="form-label" for="form1">フリーワード検索</label>
+                                <input type="text" id="form1" class="form-control" />
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-            </div>
-            <!-- Timeline Item 3 -->
-            <div class="row">
-                <!-- timeline item 3 center image & middle line -->
-                <div class="col-auto text-center flex-column d-none d-sm-flex">
-                    <div class="d-flex h-50">
-                        <div class="col middle-line">&nbsp;</div>
-                        <div class="col">&nbsp;</div>
-                    </div>
-                    <!-- <span class="m-3 avatar-separator">
-                        <img class="img-fluid rounded-circle" src="" alt="Jax Portrait">
-                    </span> -->
-                    <div class="d-flex h-50">
-                        <div class="col middle-line">&nbsp;</div>
-                        <div class="col">&nbsp;</div>
-                    </div>
-                </div>
-                <!-- Timeline item 3 content -->
-                <div class="col-12 col-lg-12 col-xl-11 my-4">
-                    <div class="card border-gray-300 p-4">
+                
+                <div class="col-9">
+                    {% for race,forecast in race_list|zip:forecast_list %}
+                    <div class="card text-center">
+                        <h2 class="card-header">{{race}}</h2>
                         <div class="card-body">
-                            <div class="post-meta mb-3">
-                                <a href="#"><span class="far fa-thumbs-up me-1"></span>115</a>
-                            </div>
-                            <h2 class="h5 card-title">Time Schedule 3</h2>
-                            <p>Stay organized, reduce stress, and accomplish personal and business goals with a daily schedule template. It’s a simple yet effective time-management tool for any daily activity, whether you’re managing a busy work schedule, academic assignments or family chores. </p>
-                            <button class="btn btn-sm btn-primary" type="button" data-bs-target="#t3_details" data-bs-toggle="collapse">Show Details <span class="fas fa-angle-down toggle-arrow ms-1"></span></button>
-                            <div class="collapse" id="t3_details">
-                                <div class="p-2 mt-3 text-monospace">
-                                    <div>08:30 - 09:00 Breakfast in Town</div>
-                                    <div>09:00 - 10:30 Attend a team meeting</div>
-                                    <div>10:30 - 10:45 Research on new technologies and tools</div>
-                                    <div>10:45 - 12:00 It’s a good idea to review the day’s work</div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul class="card-text list-unstyled" >
+                                        <li class="fw-bold">軸馬：{{forecast.favorite_horse}}</li>
+                                        <li class="fw-bold">紐馬１：{{forecast.longshot_horse_1}}</li>
+                                        <li class="fw-bold">紐馬２：{{forecast.longshot_horse_2}}</li>
+                                        <li class="fw-bold">紐馬３：{{forecast.longshot_horse_3}}</li>
+                                    </ul>
+                                    <p class="fs-5 fw-bold">予想理由</p>
+                                    <p>{{forecast.forecast_reason}}</p>
                                 </div>
                             </div>
+                            <hr>
                         </div>
+                        <div class="card-footer d-flex align-items-center justify-content-evenly">
+                            <div>
+                                <p class="fs-3">羽田啓介</p>
+                                <p class="fs-5">一番最後の発表なんで顔を出しに来ました</p>
+                            </div>
+                        </div>    
+                        <div class="d-flex align-items-center justify-content-evenly">
+                            <a href="{% url 'forecast:detail_beforecomment' forecast.pk %}" class="btn fs-5"
+                                style="background-color: #79d1d5;">詳細</a>
+                        </div>
+                        <br>
                     </div>
+                    <br>
+                    <br>
+                    {% endfor %}
                 </div>
-            </div>
-            </div>
+                
+                
+
+                
         </div>
-    </div>    
-</main>
+    </div>
 {% endblock %}

@@ -5,11 +5,23 @@ app_name = 'forecast'
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
+    path('concept', views.Concept.as_view(), name='concept'),
+    path('race', views.Racelist.as_view(), name='race'),
     path('manage', views.manage, name='manage'),
     path('search', views.search, name='search'),
     path('upload', views.upload, name='upload'),
+    path('judgecomment', views.judgecomment, name='judgecomment'),
     path('timeline', views.Timeline.as_view(), name='timeline'),
+    path('choice_race', views.ChoiceRace.as_view(), name='choice_race'),
+    path('create_beforecomment/<str:race_id>', views.CreateBeforeComment.as_view(), name='create_beforecomment'),
+    path('detail_beforecomment/<int:pk>/', views.DetailBeforeComment.as_view(), name='detail_beforecomment'),
+    path('update_beforecomment/<int:pk>/', views.UpdateBeforeComment.as_view(), name='update_beforecomment'),
+    path('delete_beforecomment/<int:pk>/', views.DeleteBeforeComment.as_view(), name='delete_beforecomment'),
+    path('create_aftercomment/<int:pk>', views.CreateAfterComment.as_view(), name='create_aftercomment'),
+    # path('update_aftercomment/<int:pk>/', views.UpdateAfterComment.as_view(), name='update_aftercomment'),
+    path('delete_aftercomment/<int:pk>/', views.DeleteAfterComment.as_view(), name='delete_aftercomment'),
     path('scrape_rc', views.scrape_rc, name='scrape_rc'),
-    path('toppage', views.Toppage.as_view(), name='toppage'),
-
+    path('index_pre', views.Toppage.as_view(), name='index_pre'),
+    path('dashboard', views.Table, name='dashboard'),
+    path('race_detail/<str:race_id>/', views.RaceDetail.as_view(), name='race_detail'),
 ]

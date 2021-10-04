@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">予想詳細</h1>
+        <br>
+        <br>
+        <form action="" method="post" enctype="multipart/form">
+            {% csrf_token %}
+            <div class="text-center">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="text-center fs-2">{{ race.race_date|date:"M" }}{{ race.race_date|date:"d" }}日({{ race.race_date|date:"D" }})&nbsp;&nbsp;{{race.race_park}}{{race.race_number}}R&nbsp;{{race.race_name}}</p>
+                    </div>
+                    <div class="card-body">
+                        {% csrf_token %}
+                        {% comment %} <p>{{object.race}}</p> {% endcomment %}
+                        
+                        <div class="card-text list-unstyled fs-5" >
+                            <p class="fw-bold">軸馬</p>
+                            <p>{{ object.favorite_horse}}</p>
+
+                            <p class="fw-bold">紐馬１</p>
+                            <p>{{ object.longshot_horse_1}}</p>
+
+                            <p class="fw-bold">紐馬２</p>
+                            <p>{{ object.longshot_horse_2}}</p>
+                            <p class="fw-bold">紐馬３</p>
+                            <p>{{ object.longshot_horse_3}}</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="fs-5 fw-bold">予想コメント</p>
+                        <p>{{ object.forecast_reason}}</p>
+                    </div>
+                </div>
+                <br>
+                <br>
+                {% for comment in comment_list %}
+                <div class="card">
+                    <div class="card-body">
+                        <p class="fs-5 fw-bold">レース後コメント</p>
+                        <p>{{ comment.after_comment}}</p>
+                        <p class="fs-5 fw-bold">注目馬</p>
+                        <p>{{ comment.attention_horse}}</p>
+                        <p class="fs-5 fw-bold">注目理由</p>
+                        <p>{{ comment.attention_reason}}</p>
+                        {% comment %} <a href="{% url 'forecast:update_aftercomment' comment.pk %}" class="btn fs-5"
+                            style="background-color: #79d1d5;">変更</a> {% endcomment %}
+                        <a href="{% url 'forecast:delete_aftercomment' comment.pk %}" class="btn fs-5 btn-danger">削除</a>          
+                    </div>
+                </div>
+                {% endfor %}
+                <br>
+                <br>
+                <a href="{% url 'forecast:update_beforecomment' object.pk %}" class="btn fs-5"
+                    style="background-color: #79d1d5;">更新</a>
+                <a href="{% url 'forecast:create_aftercomment' object.pk %}" class="btn fs-5">コメントを投稿する</a>                         
+                <a href="{% url 'forecast:delete_beforecomment' object.pk %}" class="btn fs-5 btn-danger">削除</a>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        //a = document.getElementById("race_result").value
+        //console.log(a) 
+        $(document).ready(function(event){
+            //event.preventDefault()
+            console.log(document.getElementById("race_result").value)
+            let data = new FormData();
+            data.append("race_id", document.getElementById("race_result").value)
+            console.log(data)
+            axios.defaults.xsrfCookieName = 'csrftoken'
+            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"    
+            console.log(data.get('race_id'));
+            axios.post('{% url "forecast:judgecomment" %}', data)
+            .then(function (response){
+                res = response.data;
+                console.log(res)
+                let rank_list  = res["rank_list"];
+                if (rank_list.every(x => x == '*')){
+                    $('#afterrace').prop('disabled',true);
+                }else{
+                    $('#afterrace').prop('disabled',false);
+                    $('#beforerace').prop('disabled',true);
+                }
+
+
+            })
+            .catch(errors => console.log(errors))
+        })
+
+        
+    </script>
+{% endblock %}

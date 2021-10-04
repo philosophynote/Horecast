@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+import datetime
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -115,7 +117,6 @@ class DjangoSession(models.Model):
 
 
 class Horse(models.Model):
-    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     horse_id = models.TextField(blank=True, null=True)
     frame_number = models.BigIntegerField(blank=True, null=True)
@@ -124,19 +125,23 @@ class Horse(models.Model):
     sex_age = models.TextField(blank=True, null=True)
     jockey_name = models.TextField(blank=True, null=True)
     jockey_weight = models.FloatField(blank=True, null=True)
+    id = models.CharField(primary_key=True, max_length=14)
 
     class Meta:
         managed = False
         db_table = 'horse'
 
+    def __str__(self):
+            return str(self.horse_number)+'.'+self.horse_name
+
 
 class Predict(models.Model):
-    index = models.BigIntegerField(primary_key=True)
     race = models.ForeignKey('Race', models.DO_NOTHING, blank=True, null=True)
     horse_number = models.BigIntegerField(blank=True, null=True)
     pred = models.BigIntegerField(blank=True, null=True)
     center = models.BigIntegerField(blank=True, null=True)
     bet = models.BigIntegerField(blank=True, null=True)
+    id = models.CharField(primary_key=True, max_length=14)
 
     class Meta:
         managed = False
@@ -196,13 +201,25 @@ class Race(models.Model):
         managed = False
         db_table = 'race'
 
+    def __str__(self):
+        return self.race_id
+
+    def response_race_date(self):
+        return self.race_date
+    
+    def response_race_data(self):
+        return self.race_park+self.race_number+"R　"+self.race_name
+
+        
+
+
 class Result(models.Model):
-    index = models.BigIntegerField(primary_key=True)
     race_id = models.TextField(blank=True, null=True)
     rank = models.TextField(blank=True, null=True)
     horse_number = models.TextField(blank=True, null=True)
     favorite = models.TextField(blank=True, null=True)
     odds = models.TextField(blank=True, null=True)
+    id = models.CharField(primary_key=True, max_length=14)
 
     class Meta:
         managed = False
@@ -210,8 +227,7 @@ class Result(models.Model):
 
 
 class Sanrenpuku(models.Model):
-    index = models.BigIntegerField(primary_key=True)
-    race_id = models.TextField(blank=True, null=True)
+    race_id = models.TextField(primary_key=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
     win_3 = models.BigIntegerField(blank=True, null=True)
@@ -223,8 +239,7 @@ class Sanrenpuku(models.Model):
 
 
 class Sanrentan(models.Model):
-    index = models.BigIntegerField(primary_key=True)
-    race_id = models.TextField(blank=True, null=True)
+    race_id = models.TextField(primary_key=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
     win_3 = models.BigIntegerField(blank=True, null=True)
@@ -236,8 +251,7 @@ class Sanrentan(models.Model):
 
 
 class Umaren(models.Model):
-    index = models.BigIntegerField(primary_key=True)
-    race_id = models.TextField(blank=True, null=True)
+    race_id = models.TextField(primary_key=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
     return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
@@ -248,8 +262,7 @@ class Umaren(models.Model):
 
 
 class Umatan(models.Model):
-    index = models.BigIntegerField(primary_key=True)
-    race_id = models.TextField(blank=True, null=True)
+    race_id = models.TextField(primary_key=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
     return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
@@ -257,3 +270,42 @@ class Umatan(models.Model):
     class Meta:
         managed = False
         db_table = 'umatan'
+
+class BeforeComment(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    favorite_horse = models.CharField('軸馬',max_length=50, blank=True, null=True)
+    longshot_horse_1 = models.CharField('紐馬１',max_length=50, blank=True, null=True)
+    longshot_horse_2 = models.CharField('紐馬２',max_length=50, blank=True, null=True)
+    longshot_horse_3 = models.CharField('紐馬３',max_length=50, blank=True, null=True)
+    forecast_reason = models.TextField('予想理由', blank=True, null=True)
+    race = models.ForeignKey('Race', models.DO_NOTHING, db_column='race', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'before_comment'
+
+    def __str__(self):
+        return str(self.id)
+    
+    def race_data(self):
+        return self.race
+
+
+class AfterComment(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    after_comment = models.TextField('レース後感想',  blank=True, null=True)
+    attention_horse = models.CharField('注目馬',max_length=50, blank=True, null=True)
+    attention_reason = models.TextField('注目理由', blank=True, null=True)
+    race = models.ForeignKey('Race', models.DO_NOTHING, db_column='race', blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    comment = models.ForeignKey('BeforeComment', models.DO_NOTHING, db_column='comment', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'after_comment'
+
+    def __str__(self):
+        return str(self.id)

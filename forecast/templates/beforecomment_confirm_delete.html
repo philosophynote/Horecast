@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <br>
+        <h2 class="text-center">予想削除</h2>
+        <br>
+        <div class="alert alert-danger text-center" role="alert">
+            <form method="post">
+                {% csrf_token %}
+                <p>以下の内容を本当に削除しますか？</p>
+                <input type="submit" class="btn btn-danger" value="削除する">
+            </form>
+        </div>
+        <br>
+        <div class="text-center">
+            <div class="card">
+                <div class="card-body">
+                    {% csrf_token %}
+                    <ul class="card-text list-unstyled fs-5 fw-bold" >
+                        <br>
+                        <p>軸馬</p>
+                        <li class="fw-bold">{{ object.favorite_horse}}</li>
+                        <p>紐馬１</p>
+                        <li class="fw-bold">{{ object.longshot_horse_1}}</li>
+                        <p>紐馬２</p>
+                        <li class="fw-bold">{{ object.longshot_horse_2}}</li>
+                        <p>紐馬３</p>
+                        <li class="fw-bold">{{ object.longshot_horse_3}}</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <p class="fs-5 fw-bold">予想コメント</p>
+                    <p>{{ object.forecast_reason}}</p>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+
+    </div>
+{% endblock %}

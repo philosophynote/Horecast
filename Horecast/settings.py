@@ -11,9 +11,7 @@ ALLOWED_HOSTS = []
 
 # AWS
 env = environ.Env()
-# env.read_env(os.path.join(BASE_DIR, '.env'))
-# SECRET_KEY = env('SECRET_KEY')
-# DEBUG = env('DEBUG')
+
 
 
 INSTALLED_APPS = [
@@ -24,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'forecast.apps.ForecastConfig',
+    'django_boost',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +48,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'forecast.context_processors.searchform',
+                'forecast.context_processors.race_search',
+                'forecast.context_processors.date',
             ],
         },
     },

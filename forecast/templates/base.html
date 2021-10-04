@@ -23,62 +23,93 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 </head>
 <body>
-  <!--Main Navigation-->
-  <header>
-    <!-- Sidebar -->
-    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-      <div class="position-sticky">
-        <div class="d-flex align-items-center justify-content-center">
-            <img src="{% static 'img/logo.png' %}" style="width:150px;" alt="" loading="lazy" />
+    <header class="mb-5">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top mb-5 " style="background-color: #EEEEEE">
+        <div class="container-fluid">
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarExample01"
+                aria-controls="navbarExample01"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarExample01" >
+                <div>
+                    <img src="{% static 'img/logo_only.jpeg' %}" style="width:5rem; height:5rem; " alt="ロゴ" loading="lazy" />
+
+                </div> 
+                <div class = "mx-4" style="width: 22rem">
+                    <span class="mb-2 mb-lg-0 fs-3" >競馬予想AI×SNS<br>Horecast</span>
+                </div>
+                <ul class="navbar-nav me-auto  mb-2 mb-lg-0 fs-4">
+                    <li class="nav-item active">
+                        <a class="nav-link" aria-current="page" href="{% url 'forecast:index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'forecast:concept' %}">コンセプト</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'forecast:race' %}">レース予想</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="notyet">ダッシュボード</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'forecast:timeline' %}">タイムライン</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-flex flex-row me-auto  mb-lg-0 fs-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">髙橋　直樹</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">ログアウト</a>
+                    </li>                    
+                </ul>
+            </div>
         </div>
-        <div class="list-group list-group-flush mx-3">
-          <br>
-          <a href="" type="button" class="btn btn-rounded text-start  d-flex align-items-center justify-content-center fs-6 newcard" style="width: 200px;">予想入力</a>
-          <br>
-          <ul class="sidenav-menu">
-            <li class="sidenav-item">
-                <a class="sidenav-link" href="">
-                    <i class="fas fa-home me-3"></i><span>Home</span></a>
-            </li>
-            <li class="sidenav-item">
-                <a class="sidenav-link" href="">
-                    <i class="far fa-sticky-note me-3"></i><span>ダッシュボード</span></a>
-            </li>
-            <li class="sidenav-item">
-                <a class="sidenav-link" href="">
-                    <i class="far fa-sticky-note me-3"></i><span>タイムライン</span></a>
-            </li>
-            <li class="sidenav-item">
-                <a class="sidenav-link" href="/admin" target="_blank">
-                    <i class="far fa-file fa-fw me-3"></i><span>管理画面</span></a>
-            </li>
-          </ul>
-          <form action="{% url 'forecast:search' %}" method="POST" id="search">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <table>
-              {{ form.as_p }}
-            </table>
-            <br>
-            <button id="show" type="submit" class="btn btn-primary">検索</button>
-          </form>
-        </div>
-      </div>
     </nav>
-    <!-- Sidebar -->
-  </header>
+    <!-- Navbar -->
+    </header>
+    <div style="background-color: #FAF8FF;">
+        <br>
+        <br>
+        <br>
+        <br>
+    {% if messages %}
+    <br>
+    {% for message in messages %}
+
+    <div class="alert alert-{{ message.tags }}" role="alert">
+    {{ message }}
+    </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    {% endfor %}
+    {% endif %}
   {% block content %}
 
   {% endblock %}
-
+    </div>
   <!-- MDB -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'js/datatable.min.js' %}" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-  
+  <script>
+    $("#notyet").on("click", function () {
+        alert("こちらの機能は現在未実装です");
+    })
+  </script>
 </body>
 </html>

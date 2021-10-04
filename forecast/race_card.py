@@ -43,6 +43,8 @@ class ShutubaTable(DataProcessor):
                         int(re.findall(r"\d+", text)[0])] * len(df)
                 if text in ["右", "左"]:
                     df["race_turn"] = [text] * len(df)
+                if text in ["右", "左"]:
+                    df["race_turn"] = [text] * len(df)
                 if text in ["曇", "晴", "雨", "小雨", "小雪", "雪"]:
                     df["weather"] = [text] * len(df)
                 if text in ["良", "稍重", "重"]:
@@ -58,6 +60,7 @@ class ShutubaTable(DataProcessor):
                     df["race_type"] = ["ダ"] * len(df)
                 if "障" in text:
                     df["race_type"] = ["障害"] * len(df)
+                    df["race_turn"] = ["障"] * len(df)
                 if text in ["札幌", "函館", "福島", "中山", "東京", "新潟", "中京", "京都", "阪神", "小倉"]:
                     df["race_park"] = [text] * len(df)
             texts_2 = soup.find("div", attrs={"class": "RaceData02"}).text
