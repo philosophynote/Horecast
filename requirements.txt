@@ -35,3 +35,4 @@ lightgbm
 pangres
 fastparquet
 django-environ
+django_boost
