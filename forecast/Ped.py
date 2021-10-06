@@ -2,11 +2,9 @@
 import pandas as pd
 
 #スクレイピング用
-from tqdm.notebook import tqdm
 import time
 
-#ラベル変換用
-from sklearn.preprocessing import LabelEncoder
+
 
 class Peds:
 
@@ -37,7 +35,7 @@ class Peds:
         """
 
         peds_dict = {}
-        for horse_id in tqdm(horse_id_list):
+        for horse_id in horse_id_list:
             try:
                 url = "https://db.netkeiba.com/horse/ped/" + horse_id
                 df = pd.read_html(url)[0]
@@ -65,9 +63,4 @@ class Peds:
 
         return peds_df
 
-    # 血統データをラベルエンコーディングした後、pandasのcategory型に変換
-    def encode(self):
-        df = self.peds.copy()
-        for column in df.columns:
-            df[column] = LabelEncoder().fit_transform(df[column].fillna('Na'))
-        self.peds_e = df.astype('category')
+

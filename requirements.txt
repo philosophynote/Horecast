@@ -36,3 +36,7 @@ pangres
 fastparquet
 django-environ
 django_boost
+django_plotly_dash
+dash
+dash-bootstrap-components
+plotly
