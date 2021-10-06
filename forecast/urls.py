@@ -1,5 +1,6 @@
 from django.urls import path,include
 from . import views
+from . import dashboard
 
 app_name = 'forecast'
 
@@ -22,6 +23,6 @@ urlpatterns = [
     path('delete_aftercomment/<int:pk>/', views.DeleteAfterComment.as_view(), name='delete_aftercomment'),
     path('scrape_rc', views.scrape_rc, name='scrape_rc'),
     path('index_pre', views.Toppage.as_view(), name='index_pre'),
-    path('dashboard', views.Table, name='dashboard'),
+    path('dashboard', views.Dashboard, name='dashboard'),
     path('race_detail/<str:race_id>/', views.RaceDetail.as_view(), name='race_detail'),
 ]

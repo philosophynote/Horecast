@@ -69,3 +69,9 @@ class AfterCommentForm(forms.ModelForm):
         self.fields['race'].initial = race_id
         self.fields['attention_horse'].queryset = Horse.objects.filter(race_id=race_id)
         self.fields['race'].widget = forms.HiddenInput()
+
+class SearchForm(forms.Form):
+    freeword = forms.CharField(min_length = 1,max_length=30, label ='',required=False)
+
+    def __init__(self, *args,**kwargs):
+        super().__init__(*args,**kwargs)

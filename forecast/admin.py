@@ -9,8 +9,6 @@ class HorseAdmin(admin.ModelAdmin):
     list_display_links = ("race_id", )
     ordering = ("race_id","horse_number",)
 
-
-
 @admin.register(Race)
 class RaceAdmin(admin.ModelAdmin):
     list_display = ('race_id','race_date','race_park','race_number','race_name',)
@@ -25,6 +23,8 @@ class PredictAdmin(admin.ModelAdmin):
 class ResultAdmin(admin.ModelAdmin):
     list_display = ('race_id','rank','horse_number','favorite','odds',)
     list_display_links = ('race_id',)
+
+
 
 
 

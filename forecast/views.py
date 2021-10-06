@@ -3,7 +3,7 @@ from django.views.generic import TemplateView,DetailView,CreateView,UpdateView,D
 from django.views.decorators.csrf import csrf_exempt 
 from .models import Horse,Race,Predict,Result,BeforeComment,AfterComment
 from django.http import JsonResponse, HttpResponseRedirect
-from .forms import RaceSearchForm,UploadForm,BeforeCommentForm,AfterCommentForm
+from .forms import RaceSearchForm,UploadForm,BeforeCommentForm,AfterCommentForm,SearchForm
 import json,io,bz2,pickle
 import pandas as pd
 from django.urls import reverse_lazy,reverse
@@ -104,12 +104,16 @@ class Timeline(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
-        race_id_list = [race.race for race in context["forecast_list"]]
-        race_data_list = [race.response_race_data for race in race_id_list]
-    
-        # print(Race.objects.filter(race_id__in = race_id_list).all())
-        context['race_list'] = race_data_list
+        queryset = BeforeComment.objects.all().order_by('-created_at')
+        race_list=[comment.race for comment in queryset]
 
+        # race_id_list = [race.race for race in context["forecast_list"]]
+        # print(race_id_list)
+        race_data_list = [race.response_race_data for race in race_list]
+    
+
+        context['race_list'] = race_data_list
+        print(context)
         return context
     
     def get_queryset(self):
@@ -170,7 +174,7 @@ class DetailBeforeComment(DetailView):
     def get_context_data(self, *args ,**kwargs):
         detail_data = BeforeComment.objects.get(id=self.kwargs['pk'])
         race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.race)
-        race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y/%m/%d")
+        race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y-%m-%d")
         comment_data = AfterComment.objects.filter(comment=self.kwargs['pk']).all()
 
         # race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.)
@@ -330,6 +334,8 @@ def scrape_rc(request):
     else:
         messages.error(request, 'UPLOADに失敗しました')
 
+def Dashboard(request):
+    return render(request, 'dashboard.html')
 
 #現在使用していない
 def Table(request):
@@ -379,6 +385,20 @@ def judgecomment(request):
         # race_date = detail_data.race_date
         # race_park = detail_data.race_park
         # race_number = detail_data.race_number 
+
+def search_forecast(request):
+    if request.method == 'POST':
+        searchform = SearchForm(request.POST) 
+
+        if searchform.is_valid():
+           #claened_data(is_validした結果のデータ)
+           freeword = searchform.cleaned_data['freeword'] 
+           search_list = BeforeComment.objects.filter(Q(title__icontains = freeword) |Q(content__icontains = freeword))
+        
+        params = {
+            'search_list':search_list,
+        }
+        return render(request, 'forecast/search.html',params)
 
 #バグ確認
 from django.views.decorators.csrf import requires_csrf_token

@@ -23,30 +23,24 @@
                         </div>
                     </div>
                     <br>
-                    <!-- <div class="card">
+                    <div class="card">
                         <div class="card-header">
                             <h3 class="text-center">予想を検索しよう</h3> 
                         </div>
                         <div class="card-body">
                             <form action="{% url 'forecast:search' %}" method="POST" id="search">
                                 {% csrf_token %}
-                                {{ form.non_field_errors }}
-                                <table>
-                                {{ form.as_p }}
-                                </table>
+
+                                <label class="form-label" for="form1">フリーワード検索</label>
+                                <input type="text" id="form1" class="form-control" />
+
                                 <br>
                                 <div class="text-center">
                                     <button id="show" type="submit" class="btn fs-6" style="background-color: #79d1d5;">検索</button>
                                 </div>
                             </form>                  
                         </div>
-                        <div class="card-footer">
-                            <div>
-                                <label class="form-label" for="form1">フリーワード検索</label>
-                                <input type="text" id="form1" class="form-control" />
-                            </div>
-                        </div>
-                    </div> -->
+                    </div>
                 </div>
                 
                 <div class="col-9">

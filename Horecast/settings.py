@@ -11,7 +11,9 @@ ALLOWED_HOSTS = []
 
 # AWS
 env = environ.Env()
-
+# env.read_env(os.path.join(BASE_DIR, '.env'))
+# SECRET_KEY = env('SECRET_KEY')
+# DEBUG = env('DEBUG')
 
 
 INSTALLED_APPS = [
@@ -23,6 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'forecast.apps.ForecastConfig',
     'django_boost',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels',
+    'channels_redis',
+    'bootstrap4', 
+    'dpd_static_support',
 ]
 
 MIDDLEWARE = [
@@ -33,6 +40,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = 'Horecast.urls'
@@ -103,6 +113,40 @@ STATIC_URL = 'forecast/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Dash用
+
+ASGI_APPLICATION = 'Horecast.routing.application'  # djangomapのところにはプロジェクト名が入ります。
+
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts':[('127.0.0.1', 6379),],
+        }
+    }
+}
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder'
+]
+
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+    'dpd_components',
+    'dpd_static_support',
+    'dash_bootstrap_components',
+]
+
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+#Heroku Deploy用
 
 DATABASES['default'] = dj_database_url.config()
 
