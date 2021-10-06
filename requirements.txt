@@ -40,3 +40,8 @@ django_plotly_dash
 dash
 dash-bootstrap-components
 plotly
+channels 
+daphne 
+redis 
+django-redis 
+channels-redis
