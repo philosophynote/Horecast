@@ -12,7 +12,7 @@ class Peds:
 
 
     def __init__(self, peds):
-        self.peds = peds[["peds_0", "peds_4"]]
+        self.peds = peds[["horse_id","peds_0", "peds_4"]]
         self.peds_e = pd.DataFrame()
 
     @classmethod

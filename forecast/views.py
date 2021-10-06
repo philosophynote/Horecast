@@ -174,7 +174,7 @@ class DetailBeforeComment(DetailView):
     def get_context_data(self, *args ,**kwargs):
         detail_data = BeforeComment.objects.get(id=self.kwargs['pk'])
         race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.race)
-        race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y-%m-%d")
+        race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y/%m/%d")
         comment_data = AfterComment.objects.filter(comment=self.kwargs['pk']).all()
 
         # race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.)

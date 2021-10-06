@@ -14,8 +14,9 @@ from .Ped import Peds
 import dash_bootstrap_components as dbc
 import json
 import numpy as np
+from .s3 import SthreeController as SC
 from django.conf import settings
-import pickle
+
 #Dash
 
 
@@ -24,12 +25,13 @@ app = DjangoDash('horecast', add_bootstrap_links=True)
 
 
 #Data
-with open('forecast/static/data/race_results_all.pickle',"rb") as r:
-    race_results = pickle.load(r)
-with open('forecast/static/data/peds_all.pickle',"rb") as p:
-    peds = pickle.load(p)
-
-
+# with open('forecast/static/data/race_results_all.pickle',"rb") as r:
+#     race_results = pickle.load(r)
+# with open('forecast/static/data/peds_all.pickle',"rb") as p:
+#     peds = pickle.load(p)
+sc = SC(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY,settings.AWS_S3_REGION_NAME,settings.AWS_STORAGE_BUCKET_NAME)
+race_results = sc.read_result()
+peds = sc.read_peds()
 
 r = Results(race_results)
 p = Peds(peds)
@@ -41,7 +43,7 @@ df = r.data
 df["着順"] = pd.to_numeric(df["着順"], errors="coerce")
 df.dropna(subset=["着順"], inplace=True)
 df["着順"] = df["着順"].astype(int)
-merge_peds = df.merge(p.peds,how="left",left_on="horse_id",right_index=True)
+merge_peds = df.merge(p.peds,how="left",left_on="horse_id",right_on="horse_id")
 merge_peds["種牡馬"] = merge_peds["peds_0"].str.split(expand=True)[0]
 
 available_race_park= merge_peds["race_park"].unique()
@@ -235,15 +237,12 @@ def express_title(n_clicks,race_park,race_type,course_len):
 def update_figure(n_clicks,race_park,race_type,course_len):
 
 #Data
-    with open('forecast/static/data/race_results_all.pickle',"rb") as r:
-        race_results = pickle.load(r)
-    with open('forecast/static/data/peds_all.pickle',"rb") as p:
-        peds = pickle.load(p)
-
-
+    race_results = sc.read_result()
+    peds = sc.read_peds()
 
     r = Results(race_results)
     p = Peds(peds)
+
 
 
 
@@ -258,16 +257,21 @@ def update_figure(n_clicks,race_park,race_type,course_len):
     df["着順"] = pd.to_numeric(df["着順"], errors="coerce")
     df.dropna(subset=["着順"], inplace=True)
     df["着順"] = df["着順"].astype(int)
-    merge_peds = df.merge(p.peds,how="left",left_on="horse_id",right_index=True)
+    merge_peds = df.merge(p.peds,how="left",left_on="horse_id",right_on="horse_id")
     merge_peds["種牡馬"] = merge_peds["peds_0"].str.split(expand=True)[0]
     
 
-    
+
     # df = merge_peds[(merge_peds["race_park"]==race_park & merge_peds["race_type"]==race_type) & merge_peds["course_len"]==course_len]
     df_race_park = merge_peds.query("race_park==@race_park")
+
     df_race_type = df_race_park.query("race_type==@race_type")
-    course_len = int(course_len)
+
+    # course_len = int(course_len)
     df = df_race_type.query("course_len==@course_len")
+    print("course_len")
+    print(course_len)
+    print(df.head())
     df_1 = df['着順']
     df_2 = df['枠番']
     df_3 = df['騎手']
