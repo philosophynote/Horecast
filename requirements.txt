@@ -45,3 +45,4 @@ daphne
 redis 
 django-redis 
 channels-redis
+bootstrap4
