@@ -8,11 +8,9 @@ import pandas as pd
 import requests
 import re
 import time
-from tqdm.notebook import tqdm
 from bs4 import BeautifulSoup
 
-# ラベル変換用
-from sklearn.preprocessing import LabelEncoder
+
 
 
 class Results(DataProcessor):
@@ -30,7 +28,7 @@ class Results(DataProcessor):
 
         # race_idをkeyにしてDataFrame型を格納
         race_results = {}
-        for race_id in tqdm(race_id_list):
+        for race_id in race_id_list:
             try:
                 url = "https://db.netkeiba.com/race/" + race_id
                 # メインとなるテーブルデータを取得
@@ -167,8 +165,3 @@ class Results(DataProcessor):
 
         self.data_p = df
 
-    def process_categorical(self):
-        # fitメゾット()内の値を番号にラベルに変換
-        self.le_jockey = LabelEncoder().fit(self.data_pe["jockey_id"])
-        self.le_trainer = LabelEncoder().fit(self.data_pe["trainer_id"])
-        super().process_categorical(self.le_jockey, self.le_trainer, self.data_pe)
