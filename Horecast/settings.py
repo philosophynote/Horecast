@@ -25,11 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'forecast.apps.ForecastConfig',
     'django_boost',
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    'channels',
-    'channels_redis',
-    'bootstrap4', 
-    'dpd_static_support',
+    # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    # 'channels',
+    # 'channels_redis',
+    # 'bootstrap4', 
+    # 'dpd_static_support',
 ]
 
 MIDDLEWARE = [
@@ -41,8 +41,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_plotly_dash.middleware.BaseMiddleware',
-    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
+    # 'django_plotly_dash.middleware.BaseMiddleware',
+    # 'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = 'Horecast.urls'
@@ -122,35 +122,35 @@ LOGIN_REDIRECT_URL = 'forecast:index'
 
 # Dash用
 
-ASGI_APPLICATION = 'Horecast.routing.application'  # djangomapのところにはプロジェクト名が入ります。
+# ASGI_APPLICATION = 'Horecast.routing.application'  # djangomapのところにはプロジェクト名が入ります。
 
-CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts':[('127.0.0.1', 6379),],
-        }
-    }
-}
+# CHANNEL_LAYERS = {
+#     'default':{
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts':[('127.0.0.1', 6379),],
+#         }
+#     }
+# }
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django_plotly_dash.finders.DashAssetFinder',
-    'django_plotly_dash.finders.DashComponentFinder'
-]
+# STATICFILES_FINDERS = [
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'django_plotly_dash.finders.DashAssetFinder',
+#     'django_plotly_dash.finders.DashComponentFinder'
+# ]
 
-PLOTLY_COMPONENTS = [
-    'dash_core_components',
-    'dash_html_components',
-    'dash_renderer',
-    'dpd_components',
-    'dpd_static_support',
-    'dash_bootstrap_components',
-]
+# PLOTLY_COMPONENTS = [
+#     'dash_core_components',
+#     'dash_html_components',
+#     'dash_renderer',
+#     'dpd_components',
+#     'dpd_static_support',
+#     'dash_bootstrap_components',
+# ]
 
 
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+# X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 #Heroku Deploy用
 
