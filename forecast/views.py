@@ -111,8 +111,8 @@ class RaceDetail(LoginRequiredMixin,DetailView):
         return context
 
 #dashboard
-def Dashboard(request):
-    return render(request, 'app/dashboard.html')
+# def Dashboard(request):
+#     return render(request, 'app/dashboard.html')
 
 #timeline
 class Timeline(ListView):
