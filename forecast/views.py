@@ -345,7 +345,7 @@ class SignUp(CreateView):
 
     def form_valid(self,form):
         user = form.save()
-        login(self.request.user)
+        login(self.request,user)
         self.object = user
         messages.info(self.request,'ユーザ登録をしました。')
         return HttpResponseRedirect(self.get_success_url())
