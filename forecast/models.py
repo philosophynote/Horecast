@@ -128,7 +128,6 @@ class Horse(models.Model):
     id = models.CharField(primary_key=True, max_length=14)
 
     class Meta:
-        managed = False
         db_table = 'horse'
 
     def __str__(self):
@@ -144,7 +143,6 @@ class Predict(models.Model):
     id = models.CharField(primary_key=True, max_length=14)
 
     class Meta:
-        managed = False
         db_table = 'predict'
 
 
@@ -198,7 +196,6 @@ class Race(models.Model):
     n_horses = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'race'
 
     def __str__(self):
@@ -222,7 +219,6 @@ class Result(models.Model):
     id = models.CharField(primary_key=True, max_length=14)
 
     class Meta:
-        managed = False
         db_table = 'result'
 
 
@@ -234,7 +230,6 @@ class Sanrenpuku(models.Model):
     return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
 
     class Meta:
-        managed = False
         db_table = 'sanrenpuku'
 
 
@@ -246,7 +241,6 @@ class Sanrentan(models.Model):
     return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
 
     class Meta:
-        managed = False
         db_table = 'sanrentan'
 
 
@@ -257,7 +251,6 @@ class Umaren(models.Model):
     return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
 
     class Meta:
-        managed = False
         db_table = 'umaren'
 
 
@@ -268,7 +261,6 @@ class Umatan(models.Model):
     return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
 
     class Meta:
-        managed = False
         db_table = 'umatan'
 
 class BeforeComment(models.Model):
@@ -284,7 +276,6 @@ class BeforeComment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        managed = False
         db_table = 'before_comment'
 
     def __str__(self):
@@ -305,7 +296,6 @@ class AfterComment(models.Model):
     comment = models.ForeignKey('BeforeComment', models.CASCADE, db_column='comment', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'after_comment'
 
     def __str__(self):
