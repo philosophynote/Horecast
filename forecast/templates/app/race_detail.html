@@ -1,25 +1,37 @@
-{% extends 'base.html' %}
+{% extends 'app/base.html' %}
 
 {% load static %}
 
 {% block content %}
+    <br>
     <div class="container">
         <div class="row"> 
             <div class="col-3">
                 <div class="card">
-                    <form action="{% url 'forecast:search' %}" method="POST" id="search">
-                        {% csrf_token %}
-                        {{ form.non_field_errors }}
-                        
-                        {{ result.as_p}}
-                        
-                        <br>
-                        <div class="text-center">
-                            <button id="show" type="submit" class="btn fs-6" style="background-color: #79d1d5;">検索</button>
-                        </div>
-                    </form>
+                    <div class="card-header text-center " style="background-color:#00acb5; color:#EFFBFF;">
+                        <p style="margin: 0; ">他のレースの予想を見る</p>
+                    </div>
+                    <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
+                        <form action="{% url 'forecast:search' %}" method="POST" id="search">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <p>
+                            {{ result.as_p}}
+                            </p>
+                            <br>
+                            <div class="text-center">
+                                <button id="show" type="submit" class="btn fs-6" style="color:#3E484C; background-color:#EFFBFF;">検索</button>
+                            </div>
+                            
+                        </form>
+                    </div>
                 </div> 
+                <br>
+                <div class="card">
+                    <a href="javascript:void(0);" onclick="window.history.back();" class="btn fs-6 btn-dark">レース一覧に戻る</a>
+                </div>
             </div>
+
             <div class="col-9">
                 <div class= "card bg-dark text-white" style="width: 60rem; height: 15rem;" id="race_information">
                     <img src="{% static 'img/background.jpg' %}" style="width: 60rem; height: 15rem; opacity: 0.5; filter: grayscale(100%);" class="card-img" alt="..." />
@@ -64,39 +76,39 @@
                 <ul class="nav nav-tabs nav-fill mb-3 " id="resultTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a
-                        class="nav-link active"
-                        id="ex1-tab-1"
+                        class="nav-link active fs-3"
+                        id="tab-1"
                         data-mdb-toggle="tab"
                         href="#ex1-tabs-1"
                         role="tab"
                         aria-controls="ex1-tabs-1"
                         aria-selected="true"
-                        >出馬表</a
-                        >
+                        style="color:#EFFBFF;"
+                        >出馬表</a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a
-                        class="nav-link"
-                        id="ex1-tab-2"
+                        class="nav-link fs-3"
+                        id="tab-2"
                         data-mdb-toggle="tab"
                         href="#ex1-tabs-2"
                         role="tab"
                         aria-controls="ex1-tabs-2"
                         aria-selected="false"
                         disabled
-                        >結果</a
-                        >
+                        style="color:#EFFBFF;"
+                        >結果</a>
                     </li>
                 </ul>
                 <!-- Tabs navs -->
-
+                <br>
                 <!-- Tabs content -->
                 <div class="tab-content" id="ex1-content">
                     <div class="tab-pane fade show active" id="ex1-tabs-1" role="tabpanel" aria-labelledby="ex1-tab-1">
                         <div id="race_card">
                             <div class="card">
-                                <div class="card-header fs-1" style="background-color: #79d1d5;">出馬表</div>
-                                <div class="card-body">
+                                <div class="card-header fs-1" style="background-color:#00acb5; color:#EFFBFF;">出馬表</div>
+                                <div class="card-body" style="background-color:#36474f;">
                                     <div id="showData"></div>
                                 </div>
                             </div>
@@ -104,8 +116,8 @@
                             <br>
                             <br>
                             <div class="card">
-                                <div class="card-header fs-1" style="background-color: #79d1d5;">軸馬＆紐馬</div>
-                                    <div class="card-body">
+                                <div class="card-header fs-1" style="background-color:#00acb5; color:#EFFBFF;">軸馬＆紐馬</div>
+                                    <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
                                         <div id="showBet"></div>
                                         <br>
                                         <div id="showHorse">
@@ -123,30 +135,31 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
-                        <div class="row" id="result_card">
-                            <div class="card">
-                                <div class="card-header fs-1" style="background-color: #79d1d5;">レース結果</div>
-                                <div class="card-body">
+                        <div id="result_card">
+                            <div class="card" style="padding: 0;">
+                                <div class="card-header fs-1" style="background-color:#00acb5; color:#EFFBFF;">レース結果</div>
+                                <div class="card-body" style="background-color:#36474f;">
                                     <div id="showResult"></div>
                                 </div>
                             </div>
                             <br>
                             <br>
                             <br>
-                            <div class="card">
+                            <div class="card" style="padding: 0;">
                                 <div class="card-header fs-1" style="background-color:#79d1d5;">軸馬＆紐馬　結果</div>
-                                <div class="card-body">
-                                    <div id="showBet"></div>
-                                    <br>
-                                    <div id="showMoney">
-                                    <div id="CenterHorse_r" class="fs-4"></div>
-                                    <br>
-                                    <div id="BetHorse_1_r" class="fs-4"></div>
-                                    <div id="BetHorse_2_r" class="fs-4"></div>
-                                    <div id="BetHorse_3_r" class="fs-4"></div>
-                                    <br>
-                                    <br>
-                                    <div id="result"></div>
+                                    <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
+                                        <div id="showBet"></div>
+                                        <br>
+                                        <div id="showMoney">
+                                        <div id="CenterHorse_r" class="fs-4"></div>
+                                        <br>
+                                        <div id="BetHorse_1_r" class="fs-4"></div>
+                                        <div id="BetHorse_2_r" class="fs-4"></div>
+                                        <div id="BetHorse_3_r" class="fs-4"></div>
+                                        <br>
+                                        <br>
+                                        <div id="result"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -156,14 +169,17 @@
                 <!-- Tabs content -->
             </div>
         </div>
+    <br>
+    <br>
     </div>
-    
+   
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script>
+    //タブ関係
     const triggerTabList = [].slice.call(document.querySelectorAll('#resultTab a'));
         triggerTabList.forEach((triggerEl) => {
         const tabTrigger = new mdb.Tab(triggerEl);
@@ -173,6 +189,28 @@
             tabTrigger.show();
         });
     });
+    let race_card = document.getElementById('tab-1')
+    let race_result = document.getElementById('tab-2')
+    
+    //console.log(race_result);
+    console.log($("#tab-1").hasClass("active"));
+    console.log($("#tab-2").hasClass("active"));
+    if ($("#tab-1").hasClass("active")) {
+        race_card.style.backgroundColor = '#00acb5';
+        race_result.style.backgroundColor = '#253237';
+    } else  {
+        race_card.style.backgroundColor = '#253237';
+        race_result.style.backgroundColor = '#00acb5';
+    }
+    //if ($("#tab-2").hasClass("active")) {
+    //    race_result.style.backgroundColor = '#00acb5';
+    //    race_card.style.backgroundColor = '#253237';
+    //} else if (!$("#tab-2").hasClass("active")) {
+    //    race_result.style.backgroundColor = '#253237';
+    //    race_card.style.backgroundColor = '#00acb5';
+    //}
+
+
   </script>
   <script>
     {% autoescape off %}
@@ -245,6 +283,7 @@
     }
     let table = document.createElement("table");
     table.className = 'table table-striped';
+    table.style.backgroundColor = "#EFFBFF"
     let tr = table.insertRow(-1); 
     
     for (let i = 0; i < col.length; i++) {
@@ -292,8 +331,8 @@
         $("#BetHorse_2").text(`【相手２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}`);
         $("#BetHorse_3").text(`【相手３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}`);
     
-        const recommend_table=`<table class="table" id="recommend_table_id">
-                                <thead style="background-color:#79d1d5;">
+        const recommend_table=`<table class="table table-striped" style="background-color: #EFFBFF;"  id="recommend_table_id">
+                                <thead >
                                 <tr>
                                     <th class="fs-5">券種</th>
                                     <th class="fs-5">軸</th>
@@ -326,6 +365,7 @@
     }
     let result = document.createElement("table");
     result.className = 'table table-striped';
+    result.style.backgroundColor = "#EFFBFF"
     let tr_r = result.insertRow(-1);
 
     for (let i = 0; i < col_r.length; i++) {
@@ -356,16 +396,16 @@
     divContainer_Result.innerHTML = "";
     divContainer_Result.appendChild(result);
     if (pred.every(x => x == 1)) {
-        $('#showMoney').hide();
+        $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
     } else {
-        $('#showMoney').show();
+        //$('#showMoney').show();
         $("#CenterHorse_r").text(`【軸馬】${race_list[center_number][1]["horse_number"]}:${race_list[center_number][1]["horse_name"]}(${result_list[center_number][1]["favorite"]}人気)  ${result_list[center_number][1]["rank"]}着`);
         $("#BetHorse_1_r").text(`【紐馬１頭目】${race_list[bet_numbers[0]][1]["horse_number"]}:${race_list[bet_numbers[0]][1]["horse_name"]}(${result_list[bet_numbers[0]][1]["favorite"]}人気)  ${result_list[bet_numbers[0]][1]["rank"]}着`);
         $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}(${result_list[bet_numbers[1]][1]["favorite"]}人気)  ${result_list[bet_numbers[1]][1]["rank"]}着`);
         $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}(${result_list[bet_numbers[2]][1]["favorite"]}人気)  ${result_list[bet_numbers[2]][1]["rank"]}着`);
 
-        const recommend_table = `<table class="table" id="result_table_id">
-                                <thead style="background-color:#79d1d5;">
+        const recommend_table = `<table class="table" id="result_table_id" style="background-color: #EFFBFF;>
+                                <thead>
                                 <tr>
                                     <th class="fs-5">券種</th>
                                     <th class="fs-5">軸</th>
@@ -468,6 +508,7 @@
         }
         let table = document.createElement("table");
         table.className = 'table table-striped';
+        table.style.backgroundColor = "#EFFBFF";
         let tr = table.insertRow(-1); 
         
         for (let i = 0; i < col.length; i++) {
@@ -515,8 +556,8 @@
             $("#BetHorse_2").text(`【相手２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}`);
             $("#BetHorse_3").text(`【相手３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}`);
         
-            const recommend_table=`<table class="table" id="recommend_table_id">
-                                    <thead style="background-color:#79d1d5;">
+            const recommend_table=`<table class="table" id="recommend_table_id" style="background-color:#79d1d5;">
+                                    <thead >
                                     <tr>
                                         <th class="fs-5">券種</th>
                                         <th class="fs-5">軸</th>
@@ -549,6 +590,7 @@
         }
         let result = document.createElement("table");
         result.className = 'table table-striped';
+        table.style.backgroundColor = "#EFFBFF";
         let tr_r = result.insertRow(-1);
 
         for (let i = 0; i < col_r.length; i++) {
@@ -587,8 +629,8 @@
             $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}(${result_list[bet_numbers[1]][1]["favorite"]}人気)  ${result_list[bet_numbers[1]][1]["rank"]}着`);
             $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}(${result_list[bet_numbers[2]][1]["favorite"]}人気)  ${result_list[bet_numbers[2]][1]["rank"]}着`);
 
-            const recommend_table = `<table class="table" id="result_table_id">
-                                    <thead style="background-color:#79d1d5;">
+            const recommend_table = `<table class="table" id="result_table_id" style="background-color: #EFFBFF;">
+                                    <thead >
                                     <tr>
                                         <th class="fs-5">券種</th>
                                         <th class="fs-5">軸</th>

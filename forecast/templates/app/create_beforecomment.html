@@ -1,23 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'app/base.html' %}
 
 {% load static %}
 
 {% block content %}
     <div class="container">
-        <h1 class="text-center">予想を投稿してください</h1>
+        <h1 class="text-center" style="color:#EFFBFF;">予想を投稿してください</h1>
         <br>
         <br>
         <form action="" method="post" enctype="multipart/form">
             {% csrf_token %}
             <div class="text-center">
                 <fieldset id="beforerace">
-                    <div class="card">
+                    <div class="card" style="background-color: #EFFBFF; color:#3E484C;">
                         <div class="card-body">
                             {% csrf_token %}
                             <p>{{form.race}}</p>
                             
                             <ul class="card-text list-unstyled fs-5 fw-bold" >
-                                <br>
                                 <p>軸馬</p>
                                 <li class="fw-bold">{{ form.favorite_horse}}</li>
                                 <p>紐馬１</p>
@@ -32,7 +31,7 @@
                     <br>
                     <br>
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="background-color: #EFFBFF; color:#3E484C;">
                             <p class="fs-5 fw-bold">予想コメント</p>
                             <p>{{ form.forecast_reason}}</p>
                         </div>
@@ -40,7 +39,12 @@
                 </fieldset>
                 <br>
                 <br>
-                <button type="submit" class="btn fs-5" style="background-color: #79d1d5;">保存</button>
+                <div class="d-flex align-items-center justify-content-evenly">
+                    <button type="submit" class="btn fs-5" style="color:#3E484C; background-color:#EFFBFF;">投稿</button>
+                    <a href="javascript:void(0);" onclick="window.history.back();" class="btn fs-5 btn-dark">戻る</a>
+                </div>
+                <br>
+                <br>
             </div>
         </form>
 

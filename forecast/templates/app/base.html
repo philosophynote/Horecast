@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Horecast</title>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+  <link rel="icon" type="image/png" href={% static "img/favicon.png" %}/>
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <!--axios-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!--cookie-->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/mdb.rtl.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+    <header class="mb-5">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top mb-5" style="background-color: #EFFBFF; color:#3E484C;">
+            <div class="container-fluid">
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarExample01"
+                    aria-controls="navbarExample01"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarExample01" >
+                    <div>
+                        <img src="{% static 'img/logo_transparent.png' %}" style="width:5rem; height:5rem; " alt="ロゴ" loading="lazy" />
+                    </div> 
+                    <div class = "mx-4" style="width: 14rem">
+                        <span class="mb-2 mb-lg-0 fs-3" >競馬予想AI×SNS<br>Horecast</span>
+                    </div>
+                    <ul class="navbar-nav me-auto  mb-3 mb-lg-0 fs-4">
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color:#3E484C;" aria-current="page" href="{% url 'forecast:index' %}">Home</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:concept' %}">コンセプト</a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:race' %}">AI予想</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="dashboard" class="nav-link" style="color:#3E484C;" href="">ダッシュボード</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:timeline' %}">予想共有</a>
+                        </li>
+                        {% comment %} <li class="nav-item">
+                            {% if request.user.is_authenticated %}
+                                <a href="" class="nav-link" style="color:#3E484C;">{{ request.user }}</a>
+                            {% else %}
+                                <a href="{% url 'forecast:signup' %}" class="nav-link" style="color:#3E484C;">ユーザー登録</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'forecast:logout' %}" class="nav-link" style="color:#3E484C;">ログアウト</a>
+                            {% else %}
+                                <a href="{% url 'forecast:login' %}" class="nav-link" style="color:#3E484C;">ログイン</a>
+                            {% endif %}
+                        </li> {% endcomment %}
+                    </ul>
+                    <div>
+                        {% if request.user.is_authenticated %}
+                            <p class="fs-4 mx-4 pt-3" style="color:#3E484C;">{{ request.user }}</p>
+                        {% else %}
+                            <a href="{% url 'forecast:signup' %}" class="fs-4 mx-4 pt-3" style="color:#3E484C;">ユーザー登録</a>
+                        {% endif %}
+                    </div> 
+                    <div class = "mx-4">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'forecast:logout' %}" class="fs-4" style="color:#3E484C;">ログアウト</a>
+                        {% else %}
+                            <a href="{% url 'forecast:login' %}" class="fs-4"  style="color:#3E484C;">ログイン</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar -->
+    </header>
+    <div style="background-color: #253237;">
+        <br>
+        <br>
+        <br>
+        <br>
+    {% if messages %}
+    <br>
+    {% for message in messages %}
+
+    <div class="alert alert-{{ message.tags }}" role="alert">
+    {{ message }}
+    </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    {% endfor %}
+    {% endif %}
+  {% block content %}
+
+  {% endblock %}
+    </div>
+    <footer class="text-center text-lg-start" >
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: #EFFBFF;">
+            Horecast©2021 :
+            <a class="text-dark" href="https://horecast.herokuapp.com">https://.herokuapp.com/</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+  <!-- MDB -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  <script>
+    $("#dashboard").on('click',function(){
+        alert("この機能は実装準備中です");
+    });
+  </script>
+</body>
+</html>

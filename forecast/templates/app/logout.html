@@ -1,0 +1,41 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <br>
+                <br>
+                <h2 class="text-center" style="color:#EFFBFF;">ログアウトしました</h2>
+                <br>
+                <br>
+                <h2 class="text-center" style="color:#EFFBFF;">５秒後にトップページに移動します</h2>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+    <script>
+        setTimeout(function(){
+            window.location.href = "{% url 'forecast:index' %}"
+        }, 5*1000);
+    </script>
+{% endblock %}

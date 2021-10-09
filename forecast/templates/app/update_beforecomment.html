@@ -1,0 +1,112 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">予想を投稿してください</h1>
+        <br>
+        <br>
+        <form action="" method="post" enctype="multipart/form">
+            {% csrf_token %}
+            <div class="text-center">
+                    <fieldset id="beforerace">
+                        <div class="card">
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <p>{{form.race}}</p>
+                                
+                                <ul class="card-text list-unstyled fs-5 fw-bold" >
+                                    <br>
+                                    <p>軸馬</p>
+                                    <li class="fw-bold">{{ form.favorite_horse}}</li>
+                                    <p>紐馬１</p>
+                                    <li class="fw-bold">{{ form.longshot_horse_1}}</li>
+                                    <p>紐馬２</p>
+                                    <li class="fw-bold">{{ form.longshot_horse_2}}</li>
+                                    <p>紐馬３</p>
+                                    <li class="fw-bold">{{ form.longshot_horse_3}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="fs-5 fw-bold">予想コメント</p>
+                                <p>{{ form.forecast_reason}}</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br>
+                    <br>
+                    <fieldset id="afterrace">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="fs-5 fw-bold">終了後コメント</p>
+                                <p>{{ form.forecast_thought}}</p>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="card-text list-unstyled fs-5 fw-bold" >
+                                    <br>
+                                    <p>次走以降の注目馬１</p>
+                                    <li class="fw-bold disabled">{{ form.attention_horse_1}}</li>
+                                    <br>
+                                    <p>次走以降の注目馬２</p>
+                                    <li class="fw-bold">{{ form.attention_horse_2}}</li>
+                                    <br>
+                                    <p>次走以降の注目馬３</p>
+                                    <li class="fw-bold">{{ form.attention_horse_3}}</li>
+                                    <br>
+                                </ul>
+                            </div>
+                        </div>
+                    </fieldset>
+                <br>
+                <br>
+                <button type="submit" class="btn fs-5" style="background-color: #79d1d5;">保存</button>
+                <a href="javascript:void(0);" onclick="window.history.back();" class="btn fs-5 btn-dark">戻る</a>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        //a = document.getElementById("race_result").value
+        //console.log(a) 
+        $(document).ready(function(event){
+            //event.preventDefault()
+            console.log(document.getElementById("race_result").value)
+            let data = new FormData();
+            data.append("race_id", document.getElementById("race_result").value)
+            console.log(data)
+            axios.defaults.xsrfCookieName = 'csrftoken'
+            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"    
+            console.log(data.get('race_id'));
+            axios.post('{% url "forecast:judgecomment" %}', data)
+            .then(function (response){
+                res = response.data;
+                console.log(res)
+                let rank_list  = res["rank_list"];
+                if (rank_list.every(x => x == '*')){
+                    $('#afterrace').prop('disabled',true);
+                }else{
+                    $('#afterrace').prop('disabled',false);
+                    $('#beforerace').prop('disabled',true);
+                }
+
+
+            })
+            .catch(errors => console.log(errors))
+        })
+
+        
+    </script>
+{% endblock %}

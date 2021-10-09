@@ -1,21 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'app/base.html' %}
 
 {% load static %}
 
 {% block content %}
     <div class="container">
-        <h1 class="text-center">予想詳細</h1>
+        <h1 class="text-center" style="color:#EFFBFF;">予想詳細</h1>
         <br>
         <br>
-        <form action="" method="post" enctype="multipart/form">
-            {% csrf_token %}
-            <div class="text-center">
-                <div class="card">
-                    <div class="card-header">
-                        <p class="text-center fs-2">{{ race.race_date|date:"M" }}{{ race.race_date|date:"d" }}日({{ race.race_date|date:"D" }})&nbsp;&nbsp;{{race.race_park}}{{race.race_number}}R&nbsp;{{race.race_name}}</p>
-                    </div>
+        <div class="card text-center" style="background-color:#36474f;">
+            <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
+                <p class="text-center fs-2">{{ race.race_date|date:"M" }}{{ race.race_date|date:"d" }}日({{ race.race_date|date:"D" }})&nbsp;&nbsp;{{race.race_park}}{{race.race_number}}R&nbsp;{{race.race_name}}</p>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-evenly">
+                    <p class="fs-3" style="color:#EFFBFF;">{{object.author}}さんの予想</p>
+                </div>  
+                <div class="card" style="background-color: #EFFBFF; color:#3E484C;">
+
                     <div class="card-body">
-                        {% csrf_token %}
                         {% comment %} <p>{{object.race}}</p> {% endcomment %}
                         
                         <div class="card-text list-unstyled fs-5" >
@@ -29,21 +31,18 @@
                             <p>{{ object.longshot_horse_2}}</p>
                             <p class="fw-bold">紐馬３</p>
                             <p>{{ object.longshot_horse_3}}</p>
+                            <br>
+                            <p class="fw-bold">予想理由</p>
+                            <p>{{ object.forecast_reason}}</p>
                         </div>
+
                     </div>
-                </div>
-                <br>
-                <br>
-                <div class="card">
-                    <div class="card-body">
-                        <p class="fs-5 fw-bold">予想コメント</p>
-                        <p>{{ object.forecast_reason}}</p>
-                    </div>
+
                 </div>
                 <br>
                 <br>
                 {% for comment in comment_list %}
-                <div class="card">
+                <div class="card text-center" style="background-color: #EFFBFF; color:#3E484C;">
                     <div class="card-body">
                         <p class="fs-5 fw-bold">レース後コメント</p>
                         <p>{{ comment.after_comment}}</p>
@@ -53,21 +52,28 @@
                         <p>{{ comment.attention_reason}}</p>
                         {% comment %} <a href="{% url 'forecast:update_aftercomment' comment.pk %}" class="btn fs-5"
                             style="background-color: #79d1d5;">変更</a> {% endcomment %}
+                        {% if object.author == request.user %}
                         <a href="{% url 'forecast:delete_aftercomment' comment.pk %}" class="btn fs-5 btn-danger">削除</a>          
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
-                <br>
-                <br>
-                <a href="{% url 'forecast:update_beforecomment' object.pk %}" class="btn fs-5"
-                    style="background-color: #79d1d5;">更新</a>
-                <a href="{% url 'forecast:create_aftercomment' object.pk %}" class="btn fs-5">コメントを投稿する</a>                         
-                <a href="{% url 'forecast:delete_beforecomment' object.pk %}" class="btn fs-5 btn-danger">削除</a>
             </div>
-        </form>
-
+        </div>
+        <br>
+        <br>
+        <div class="d-flex align-items-center justify-content-evenly">
+            {% if object.author == request.user %}
+            <a href="{% url 'forecast:update_beforecomment' object.pk %}" class="btn fs-5"
+                style="color:#3E484C; background-color:#EFFBFF;">予想を更新する</a>
+            <a href="{% url 'forecast:create_aftercomment' object.pk %}" class="btn fs-5" style="background-color:#00acb5; color:#EFFBFF;">レース回顧を投稿する</a>                         
+            <a href="{% url 'forecast:delete_beforecomment' object.pk %}" class="btn fs-5 btn-danger">削除</a>
+            {% endif %}
+            <a href="javascript:void(0);" onclick="window.history.back();" class="btn fs-5 btn-dark">戻る</a>
+        </div>
     </div>
-
+    <br>
+    <br>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 

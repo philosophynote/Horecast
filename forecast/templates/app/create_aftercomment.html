@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'app/base.html' %}
 
 {% load static %}
 
 {% block content %}
     <div class="container">
-        <h1 class="text-center">コメントを投稿(更新)してください</h1>
+        <h1 class="text-center" style="color:#EFFBFF;">レース回顧を入力してください</h1>
         <br>
         <br>
         <form action="" method="post" enctype="multipart/form">
@@ -12,7 +12,7 @@
             <div class="text-center">
                     <p>{{form.race}}</p>
                     <fieldset>
-                        <div class="card">
+                        <div class="card" style="background-color: #EFFBFF; color:#3E484C;">
                             <div class="card-body">
                                 <p class="fs-5 fw-bold">終了後コメント</p>
                                 <p>{{ form.after_comment}}</p>
@@ -20,7 +20,7 @@
                         </div>
                         <br>
                         <br>
-                        <div class="card">
+                        <div class="card" style="background-color: #EFFBFF; color:#3E484C;">
                             <div class="card-body">
                                 <p class="fs-5 fw-bold">次走以降の注目馬</p>
                                 <p>{{ form.attention_horse}}</p>
@@ -31,7 +31,12 @@
                     </fieldset>
                 <br>
                 <br>
-                <button type="submit" class="btn fs-5" style="background-color: #79d1d5;">保存</button>
+                <div class="d-flex align-items-center justify-content-evenly">
+                    <button type="submit" class="btn fs-5" style="color:#3E484C; background-color:#EFFBFF;">投稿</button>
+                    <a href="javascript:void(0);" onclick="window.history.back();" class="btn fs-5 btn-dark">戻る</a>
+                </div>
+                <br>
+                <br>
             </div>
         </form>
 

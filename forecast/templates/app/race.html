@@ -1,20 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'app/base.html' %}
 
 {% load static %}
 
 {% block content %}
 
     <div class="container">
-        <h1 class="text-center">{{ RACE_DATE|date:"M" }}{{ RACE_DATE|date:"d" }}日({{ RACE_DATE|date:"D" }})のレース一覧</h1>
+        <h1 class="text-center" style="color:#EFFBFF;">{{ RACE_DATE|date:"M" }}{{ RACE_DATE|date:"d" }}日({{ RACE_DATE|date:"D" }})のレース一覧</h1>
         <br>
         <br>
         <div class="row">
             {% if race_list|length == 24 %}
                 <div class="col-lg-6 col-md-6">
-                    <h2 class="text-center">{{ race_park_held|first }}</h2>
+                    <h2 class="text-center" style="color:#EFFBFF;">{{ race_park_held|first }}</h2>
                     <hr>
                     {% for race in race_list|slice:":12" %}
-                    <div class="card bg-dark text-white">
+                    <div class="card bg-dark" style="color:#EFFBFF;">
                         <img
                             src="{% static 'img/straight_horse.jpg' %}"
                             class="card-img"
@@ -30,7 +30,7 @@
                                     </p>
                                 </div>
                                 <div class="col-6">
-                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="text-white fs-3">予想を見る</a>
+                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="fs-3" style="color:#EFFBFF;">予想を見る</a>
                                 </div>
                             </div>
                         </div>
@@ -39,10 +39,10 @@
                     {% endfor %}
                 </div>
                 <div class="col-lg-6 col-md-6">
-                <h2 class="text-center">{{ race_park_held|last }}</h2>
+                <h2 class="text-center" style="color:#EFFBFF;">{{ race_park_held|last }}</h2>
                 <hr>
                      {% for race in race_list|slice:"12:" %}
-                    <div class="card bg-dark text-white">
+                    <div class="card bg-dark" style="color:#EFFBFF;">
                         <img
                             src="{% static 'img/face_horse.jpg' %}"
                             class="card-img"
@@ -59,7 +59,7 @@
                                     </p>
                                 </div>
                                 <div class="col-6">
-                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="text-white fs-3">予想を見る</a>
+                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="fs-3"  style="color:#EFFBFF;">予想を見る</a>
                                 </div>
                             </div>
                         </div>
@@ -69,10 +69,10 @@
                 </div>
             {% else %}
                 <div class="col-lg-4 col-md-4">
-                <h2 class="text-center">{{ race_park_held|first }}</h2>
+                <h2 class="text-center" style="color:#EFFBFF;">{{ race_park_held.0 }}</h2>
                 <hr>
                     {% for race in race_list|slice:":12" %}
-                    <div class="card bg-dark text-white">
+                    <div class="card bg-dark" style="color:#EFFBFF;">
                         <img
                             src="{% static 'img/straight_horse.jpg' %}"
                             class="card-img"
@@ -80,28 +80,29 @@
                             style="height: 7.5rem; opacity: 0.5; filter: grayscale(100%);"
                         />
                         <div class="card-img-overlay">
-                            <h3 class="card-title">{{ race.race_number }}R&nbsp;{{ race.race_name }}</h3>
+                            <h3 class="card-title" style="color:#EFFBFF;">{{ race.race_number }}R&nbsp;{{ race.race_name }}</h3>
                             <div class="row">
                                 <div class="col-6">
-                                    <p class="card-text fs-5">
+                                    <p class="card-text fs-5" style="color:#EFFBFF;">
                                     {{ race.race_type }}{{ race.course_len }}m({{ race.race_turn }})&nbsp;{{ race.n_horses }}頭
                                     </p>
                                 </div>
                                 <div class="col-6">
-                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="text-white fs-3">予想を見る</a>
+                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="fs-3" style="color:#EFFBFF;">予想を見る</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
                     {% endfor %}
                 </div>
 
                 
                 <div class="col-lg-4 col-md-4">
-                <h2 class="text-center">{{ race_park_held|slice:"1:2" }}</h2>
+                <h2 class="text-center" style="color:#EFFBFF;">{{ race_park_held.1 }}</h2>
                 <hr>
                 {% for race in race_list|slice:"12:24" %}
-                    <div class="card bg-dark text-white">
+                    <div class="card bg-dark" style="color:#EFFBFF;">
                         <img
                             src="{% static 'img/face_horse.jpg' %}"
                             class="card-img"
@@ -117,19 +118,20 @@
                                     </p>
                                 </div>
                                 <div class="col-6">
-                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="text-white fs-3">予想を見る</a>
+                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="fs-3" style="color:#EFFBFF;">予想を見る</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
                 {% endfor %}
                 </div>
 
                 <div class="col-lg-4 col-md-4">
-                <h2 class="text-center">{{ race_park_held|last }}</h2>
+                <h2 class="text-center" style="color:#EFFBFF;">{{ race_park_held.2 }}</h2>
                 <hr>
-                {% for race in race_list|slice:"12:24" %}
-                    <div class="card bg-dark text-white">
+                {% for race in race_list|slice:"24:" %}
+                    <div class="card bg-dark" style="color:#EFFBFF;">
                         <img
                             src="{% static 'img/horse-racing.jpg' %}"
                             class="card-img"
@@ -145,11 +147,12 @@
                                     </p>
                                 </div>
                                 <div class="col-6">
-                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="text-white fs-3">予想を見る</a>
+                                    <a  href="{% url 'forecast:race_detail' race.race_id %}" class="fs-3" style="color:#EFFBFF;">予想を見る</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
                 {% endfor %}
                 </div>
 
@@ -158,5 +161,6 @@
             {% endif %}
         </div>
     </div>
-
+    <br>
+    <br>            
 {% endblock %}

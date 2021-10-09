@@ -1,26 +1,42 @@
-from django.shortcuts import render,HttpResponse,resolve_url,get_object_or_404,redirect
+#View
 from django.views.generic import TemplateView,DetailView,CreateView,UpdateView,DeleteView,ListView
+from django.shortcuts import render,HttpResponse,resolve_url,get_object_or_404,redirect
 from django.views.decorators.csrf import csrf_exempt 
-from .models import Horse,Race,Predict,Result,BeforeComment,AfterComment
 from django.http import JsonResponse, HttpResponseRedirect
-from .forms import RaceSearchForm,UploadForm,BeforeCommentForm,AfterCommentForm,SearchForm
-import json,io,bz2,pickle
-import pandas as pd
 from django.urls import reverse_lazy,reverse
 from django.contrib import messages
+from django.core.paginator import Paginator
+
+#login
+from django.contrib.auth.views import LoginView,LogoutView
+from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+
+#model
+from .models import Horse,Race,Predict,Result,BeforeComment,AfterComment
+
+#form
+from .forms import RaceSearchForm,UploadForm,BeforeCommentForm,AfterCommentForm,SearchForm,LoginForm,SignUpForm
+from django.db.models import Q
+
+#settings
+from django.conf import settings
+#モジュール
 from .func import calc_predict, select_sql_r, select_sql_h, making_predtable, insert_predtable,search_sql,insert_race_card
 from .race_card import ShutubaTable as st
+
+#その他ライブラリ
+import json,io,bz2,pickle,datetime
+import pandas as pd
+from collections import OrderedDict
+
 # from .dashboard import SthreeController
-from django.conf import settings
-import datetime
-import dateutil.relativedelta as rdelta
 # import fastparquet
 # import s3fs,fsspec
-from django.db.models import Count, Max, Min, Avg
 
 #index
 class Index(TemplateView):
-    template_name = 'index.html'
+    template_name = 'app/index.html'
 
     #標準搭載されている関数
     def get_context_data(self,*args ,**kwargs):
@@ -35,13 +51,14 @@ class Index(TemplateView):
         }
         return context
 
+#concept
 class Concept(TemplateView):
-    template_name = 'concept.html'
+    template_name = 'app/concept.html'
 
 
 #race
 class Racelist(TemplateView):
-    template_name = 'race.html'
+    template_name = 'app/race.html'
     model = Race
 
     def get_context_data(self,*args ,**kwargs):
@@ -52,18 +69,21 @@ class Racelist(TemplateView):
         # race_list=[race.race_id for race in race_list_last]
 
         race_park_held=[race.race_park for race in race_list_last]
-        race_park_held = list(set(race_park_held))
 
 
+        race_park_held =list(OrderedDict.fromkeys(race_park_held).keys())
+        print("race_park_held")
+        print(race_park_held)
         context = {
             "race_park_held":race_park_held,
             "race_list":race_list_last,
         }
+
         return context
 
 #race_detail
-class RaceDetail(DetailView):
-    template_name = 'race_detail.html' 
+class RaceDetail(LoginRequiredMixin,DetailView):
+    template_name = 'app/race_detail.html' 
 
     model = Race
     slug_field = 'race_id'
@@ -91,36 +111,37 @@ class RaceDetail(DetailView):
         return context
 
 #dashboard
-
+def Dashboard(request):
+    return render(request, 'app/dashboard.html')
 
 #timeline
 class Timeline(ListView):
-    template_name = 'timeline.html'
+    template_name = 'app/timeline.html'
     context_object_name = 'forecast_list'
     # queryset = Comment.objects.all().order_by('-created_at')
 
-    pagenate_by = 5
+    paginate_by = 5
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
 
-        queryset = BeforeComment.objects.all().order_by('-created_at')
-        race_list=[comment.race for comment in queryset]
+    #     queryset = BeforeComment.objects.all().order_by('-created_at')
+    #     race_list=[comment.race for comment in queryset]
 
-        # race_id_list = [race.race for race in context["forecast_list"]]
-        # print(race_id_list)
-        race_data_list = [race.response_race_data for race in race_list]
+    #     # race_id_list = [race.race for race in context["forecast_list"]]
+    #     # print(race_id_list)
+    #     race_data_list = [race.response_race_data for race in race_list]
     
 
-        context['race_list'] = race_data_list
-        print(context)
-        return context
+    #     context['race_list'] = race_data_list
+    #     print(context)
+    #     return context
     
     def get_queryset(self):
         return BeforeComment.objects.all().order_by('-created_at')
 
-class ChoiceRace(TemplateView):
-    template_name = 'choice_race.html'
+class ChoiceRace(LoginRequiredMixin,TemplateView):
+    template_name = 'app/choice_race.html'
 
     def get_context_data(self,*args ,**kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,11 +160,21 @@ class ChoiceRace(TemplateView):
         }
         return context
 
+class OnlyMyPostMinin(UserPassesTestMixin):
+    raise_exception = True
+    def test_func(self):
+        beforecomment = BeforeComment.objects.get(id = self.kwargs['pk'])
+        return beforecomment.author==self.request.user
 
-class CreateBeforeComment(CreateView):
+
+class CreateBeforeComment(LoginRequiredMixin,CreateView):
     form_class = BeforeCommentForm
-    template_name = 'create_beforecomment.html'
+    template_name = 'app/create_beforecomment.html'
     model = BeforeComment
+
+    def form_valid(self, form):
+        form.instance.author_id = self.request.user.id
+        return super(CreateBeforeComment,self).form_valid(form)
 
 
     def get_success_url(self):
@@ -166,17 +197,16 @@ class CreateBeforeComment(CreateView):
     # #     kwargs["longshot_horse_3"] = None
     #     return kwargs
 
-class DetailBeforeComment(DetailView):
-    template_name = 'detail_beforecomment.html' 
+class DetailBeforeComment(LoginRequiredMixin,DetailView):
+    template_name = 'app/detail_beforecomment.html' 
 
     model = BeforeComment
 
     def get_context_data(self, *args ,**kwargs):
         detail_data = BeforeComment.objects.get(id=self.kwargs['pk'])
         race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.race)
-        race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y/%m/%d")
+        race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y-%m-%d")
         comment_data = AfterComment.objects.filter(comment=self.kwargs['pk']).all()
-
         # race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.)
         # race_data["race_date"] = race_data["race_date"].strftime('')
         params = {
@@ -186,10 +216,10 @@ class DetailBeforeComment(DetailView):
         }
         return params
 
-class UpdateBeforeComment(UpdateView):
+class UpdateBeforeComment(OnlyMyPostMinin,UpdateView):
     model = BeforeComment
     form_class = BeforeCommentForm
-    template_name = 'create_beforecomment.html'
+    template_name = 'app/create_beforecomment.html'
 
     def get_success_url(self):
         messages.success(self.request,"予想を更新しました")
@@ -203,17 +233,17 @@ class UpdateBeforeComment(UpdateView):
         kwargs["race_id"] = target_comment.race.race_id
         return kwargs
 
-class DeleteBeforeComment(DeleteView):
-    template_name = 'beforecomment_confirm_delete.html' 
+class DeleteBeforeComment(OnlyMyPostMinin,DeleteView):
+    template_name = 'app/beforecomment_confirm_delete.html' 
     model = BeforeComment
 
     def get_success_url(self):
         messages.info(self.request,"予想を削除しました。")
         return resolve_url('forecast:timeline')
 
-class CreateAfterComment(CreateView):
+class CreateAfterComment(OnlyMyPostMinin,CreateView):
     form_class = AfterCommentForm
-    template_name = 'create_aftercomment.html'
+    template_name = 'app/create_aftercomment.html'
     model = AfterComment
 
     def form_valid(self, form):
@@ -224,7 +254,7 @@ class CreateAfterComment(CreateView):
         after = form.save(commit=False)
         after.comment = before
         after.save()
-        messages.success(self.request,"コメントを投稿しました。")
+        messages.success(self.request,"レース回顧を投稿しました。")
         return redirect('forecast:detail_beforecomment', pk=before_pk)
  
 
@@ -276,8 +306,8 @@ class CreateAfterComment(CreateView):
 #         kwargs['race_id'] = target_comment.race_id
 #         return kwargs
 
-class DeleteAfterComment(DeleteView):
-    template_name = 'aftercomment_confirm_delete.html' 
+class DeleteAfterComment(OnlyMyPostMinin,DeleteView):
+    template_name = 'app/aftercomment_confirm_delete.html' 
     model = AfterComment
 
 
@@ -285,11 +315,45 @@ class DeleteAfterComment(DeleteView):
         messages.info(self.request,"コメントを削除しました。")
         return resolve_url('forecast:timeline')
 
+def search_forecast(request):
+    if request.method == 'POST':
+        searchform = SearchForm(request.POST) 
+
+        if searchform.is_valid():
+           #claened_data(is_validした結果のデータ)
+           freeword = searchform.cleaned_data['freeword'] 
+           search_list = BeforeComment.objects.filter(Q(race__race_name__icontains = freeword) | Q(favorite_horse__icontains = freeword) |Q(longshot_horse_1__icontains = freeword) |Q(longshot_horse_2__icontains = freeword) |Q(longshot_horse_3__icontains = freeword)).all().order_by('-updated_at')
+           params = {
+                'search_list':search_list,
+           }
+        return render(request, 'app/forecast_search.html',params)
+
+#login
+class Login(LoginView):
+    form_class= LoginForm
+    template_name = 'app/login.html'
+
+#logout
+class Logout(LogoutView):
+    template_name = 'app/logout.html'
+
+#signup
+class SignUp(CreateView):
+    form_class= SignUpForm
+    template_name = 'app/signup.html'
+    success_url = reverse_lazy('forecast:index')
+
+    def form_valid(self,form):
+        user = form.save()
+        login(self.request.user)
+        self.object = user
+        messages.info(self.request,'ユーザ登録をしました。')
+        return HttpResponseRedirect(self.get_success_url())
 
 #manage
 def manage(request):
     testfile = UploadForm()
-    return render(request, "manage.html", {'form': testfile})
+    return render(request, "app/manage.html", {'form': testfile})
 
 def upload(request):
     if request.method == 'POST':
@@ -329,13 +393,12 @@ def scrape_rc(request):
         rc.data.reset_index(inplace=True)
         rc.data.rename(columns={"index":"race_id"},inplace=True)
         insert_race_card(rc.data)
-        messages.success(request, 'UPLOADに成功しました')
+        messages.success(request, 'スクレイピングに成功しました')
         return HttpResponseRedirect(reverse('forecast:manage'))
     else:
-        messages.error(request, 'UPLOADに失敗しました')
+        messages.error(request, 'スクレイピングに失敗しました')
 
-def Dashboard(request):
-    return render(request, 'dashboard.html')
+
 
 #現在使用していない
 def Table(request):
@@ -348,8 +411,7 @@ def Table(request):
     df_ex = head.to_html()
     return HttpResponse(df_ex)
 
-class Toppage(TemplateView):
-    template_name = 'index_pre.html'
+
 
 @csrf_exempt
 def search(request):
@@ -386,19 +448,7 @@ def judgecomment(request):
         # race_park = detail_data.race_park
         # race_number = detail_data.race_number 
 
-def search_forecast(request):
-    if request.method == 'POST':
-        searchform = SearchForm(request.POST) 
 
-        if searchform.is_valid():
-           #claened_data(is_validした結果のデータ)
-           freeword = searchform.cleaned_data['freeword'] 
-           search_list = BeforeComment.objects.filter(Q(title__icontains = freeword) |Q(content__icontains = freeword))
-        
-        params = {
-            'search_list':search_list,
-        }
-        return render(request, 'forecast/search.html',params)
 
 #バグ確認
 from django.views.decorators.csrf import requires_csrf_token

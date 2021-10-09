@@ -22,7 +22,10 @@ urlpatterns = [
     # path('update_aftercomment/<int:pk>/', views.UpdateAfterComment.as_view(), name='update_aftercomment'),
     path('delete_aftercomment/<int:pk>/', views.DeleteAfterComment.as_view(), name='delete_aftercomment'),
     path('scrape_rc', views.scrape_rc, name='scrape_rc'),
-    path('index_pre', views.Toppage.as_view(), name='index_pre'),
     path('dashboard', views.Dashboard, name='dashboard'),
     path('race_detail/<str:race_id>/', views.RaceDetail.as_view(), name='race_detail'),
+    path('login', views.Login.as_view(), name='login'),
+    path('logout', views.Logout.as_view(), name='logout'),
+    path('signup', views.SignUp.as_view(), name='signup'),
+    path('forecast_search', views.search_forecast, name='forecast_search'),
 ]

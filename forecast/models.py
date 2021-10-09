@@ -273,6 +273,7 @@ class Umatan(models.Model):
 
 class BeforeComment(models.Model):
     id = models.BigAutoField(primary_key=True)
+    author = models.ForeignKey(User,on_delete=models.PROTECT,blank=True,db_column='author',)
     favorite_horse = models.CharField('軸馬',max_length=50, blank=True, null=True)
     longshot_horse_1 = models.CharField('紐馬１',max_length=50, blank=True, null=True)
     longshot_horse_2 = models.CharField('紐馬２',max_length=50, blank=True, null=True)

@@ -60,6 +60,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'forecast.context_processors.race_search',
                 'forecast.context_processors.date',
+                'forecast.context_processors.forecast_card',
             ],
         },
     },
@@ -113,6 +114,11 @@ STATIC_URL = 'forecast/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#ログイン機能の追加
+LOGIN_URL = 'forecast:login'
+LOGIN_REDIRECT_URL = 'forecast:index'
+
 
 # Dash用
 

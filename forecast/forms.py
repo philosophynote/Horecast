@@ -1,5 +1,7 @@
 from django import forms
 from .models import Race,Horse,BeforeComment,AfterComment
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.contrib.auth.models import User
 
 
 class RaceSearchForm(forms.ModelForm):
@@ -7,7 +9,7 @@ class RaceSearchForm(forms.ModelForm):
         model = Race
         fields = ('race_date', 'race_park', 'race_number')
 
-    race_date = forms.ModelChoiceField(Race.objects.distinct().values_list("race_date",flat=True).order_by('race_date'),required=True)
+    race_date = forms.ModelChoiceField(Race.objects.distinct().values_list("race_date",flat=True).order_by('race_date'),required=True,label='レース開催日')
     # race_date = forms.DateField(label='日付', widget=forms.DateInput(attrs={"type": "date"}),input_formats=['%Y-%m-%d'],required=True)
     race_park = forms.ChoiceField(
         label='競馬場', choices=Race.RACE_PARK_CHOICES, required=True)
@@ -75,3 +77,19 @@ class SearchForm(forms.Form):
 
     def __init__(self, *args,**kwargs):
         super().__init__(*args,**kwargs)
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args,**kwargs):
+        super().__init__(*args,**kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+class SignUpForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username','email','password1','password2')
+    def __init__(self, *args,**kwargs):
+        super().__init__(*args,**kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
