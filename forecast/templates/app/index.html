@@ -120,11 +120,11 @@
 
             <hr class="my-5" />
 
-            <h2 class="text-center" style="color:#EFFBFF;">{{ RACE_DATE|date:"M" }}{{ RACE_DATE|date:"d" }}日({{ RACE_DATE|date:"D" }})の投稿された予想</h2>
+            <h2 class="text-center" style="color:#EFFBFF;">投稿された最新の予想</h2>
             <br>
             <br>
             <div class="card text-center" style="background-color:#36474f;">
-                <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{FORECAST.race.race_park}}{{FORECAST.race.race_number}}R&nbsp;&nbsp;{{FORECAST.race.race_name}}</h2>
+                <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{ forecast_date|date:"M" }}{{ forecast_date|date:"d" }}日({{ forecast_date|date:"D" }})&nbsp;&nbsp;&nbsp;&nbsp;{{FORECAST.race.race_park}}{{FORECAST.race.race_number}}R&nbsp;&nbsp;{{FORECAST.race.race_name}}</h2>
                 <div class="card-body">
                     <div class="card-footer d-flex align-items-center justify-content-evenly" style="color:#EFFBFF;">
                         <p class="fs-3">{{FORECAST.author}}さんの予想</p>

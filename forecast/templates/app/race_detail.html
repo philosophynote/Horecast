@@ -22,7 +22,6 @@
                             <div class="text-center">
                                 <button id="show" type="submit" class="btn fs-6" style="color:#3E484C; background-color:#EFFBFF;">検索</button>
                             </div>
-                            
                         </form>
                     </div>
                 </div> 
@@ -83,7 +82,7 @@
                         role="tab"
                         aria-controls="ex1-tabs-1"
                         aria-selected="true"
-                        style="color:#EFFBFF;"
+                        style="background-color:#00acb5; color:#EFFBFF;"
                         >出馬表</a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -96,7 +95,7 @@
                         aria-controls="ex1-tabs-2"
                         aria-selected="false"
                         disabled
-                        style="color:#EFFBFF;"
+                        style="background-color:#253237;color:#EFFBFF;"
                         >結果</a>
                     </li>
                 </ul>
@@ -183,25 +182,25 @@
     const triggerTabList = [].slice.call(document.querySelectorAll('#resultTab a'));
         triggerTabList.forEach((triggerEl) => {
         const tabTrigger = new mdb.Tab(triggerEl);
-
+        let race_card = document.getElementById('tab-1')
+        let race_result = document.getElementById('tab-2')
         triggerEl.addEventListener('click', (event) => {
+            if ($("#tab-1").hasClass("active")) {
+                race_card.style.backgroundColor = '#00acb5';
+                race_result.style.backgroundColor = '#253237';
+            } else  {
+                race_card.style.backgroundColor = '#253237';
+                race_result.style.backgroundColor = '#00acb5';
+            }
             event.preventDefault();
             tabTrigger.show();
         });
     });
-    let race_card = document.getElementById('tab-1')
-    let race_result = document.getElementById('tab-2')
+
     
     //console.log(race_result);
-    console.log($("#tab-1").hasClass("active"));
-    console.log($("#tab-2").hasClass("active"));
-    if ($("#tab-1").hasClass("active")) {
-        race_card.style.backgroundColor = '#00acb5';
-        race_result.style.backgroundColor = '#253237';
-    } else  {
-        race_card.style.backgroundColor = '#253237';
-        race_result.style.backgroundColor = '#00acb5';
-    }
+
+
     //if ($("#tab-2").hasClass("active")) {
     //    race_result.style.backgroundColor = '#00acb5';
     //    race_card.style.backgroundColor = '#253237';
@@ -404,7 +403,7 @@
         $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}(${result_list[bet_numbers[1]][1]["favorite"]}人気)  ${result_list[bet_numbers[1]][1]["rank"]}着`);
         $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}(${result_list[bet_numbers[2]][1]["favorite"]}人気)  ${result_list[bet_numbers[2]][1]["rank"]}着`);
 
-        const recommend_table = `<table class="table" id="result_table_id" style="background-color: #EFFBFF;>
+        const recommend_table = `<table class="table table-striped" id="result_table_id" style="background-color: #EFFBFF;">
                                 <thead>
                                 <tr>
                                     <th class="fs-5">券種</th>
@@ -556,7 +555,7 @@
             $("#BetHorse_2").text(`【相手２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}`);
             $("#BetHorse_3").text(`【相手３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}`);
         
-            const recommend_table=`<table class="table" id="recommend_table_id" style="background-color:#79d1d5;">
+            const recommend_table=`<table class="table table-striped" id="recommend_table_id" style="background-color:#EFFBFF;">
                                     <thead >
                                     <tr>
                                         <th class="fs-5">券種</th>
@@ -590,7 +589,7 @@
         }
         let result = document.createElement("table");
         result.className = 'table table-striped';
-        table.style.backgroundColor = "#EFFBFF";
+        result.style.backgroundColor = "#EFFBFF";
         let tr_r = result.insertRow(-1);
 
         for (let i = 0; i < col_r.length; i++) {
@@ -621,7 +620,7 @@
         divContainer_Result.innerHTML = "";
         divContainer_Result.appendChild(result);
         if (pred.every(x => x == 1)) {
-            $('#showMoney').hide();
+            ('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
         } else {
             $('#showMoney').show();
             $("#CenterHorse_r").text(`【軸馬】${race_list[center_number][1]["horse_number"]}:${race_list[center_number][1]["horse_name"]}(${result_list[center_number][1]["favorite"]}人気)  ${result_list[center_number][1]["rank"]}着`);
@@ -629,7 +628,7 @@
             $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]][1]["horse_number"]}:${race_list[bet_numbers[1]][1]["horse_name"]}(${result_list[bet_numbers[1]][1]["favorite"]}人気)  ${result_list[bet_numbers[1]][1]["rank"]}着`);
             $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]][1]["horse_number"]}:${race_list[bet_numbers[2]][1]["horse_name"]}(${result_list[bet_numbers[2]][1]["favorite"]}人気)  ${result_list[bet_numbers[2]][1]["rank"]}着`);
 
-            const recommend_table = `<table class="table" id="result_table_id" style="background-color: #EFFBFF;">
+            const recommend_table = `<table class="table table-striped" id="result_table_id" style="background-color: #EFFBFF;">
                                     <thead >
                                     <tr>
                                         <th class="fs-5">券種</th>
@@ -652,7 +651,9 @@
             $("#result_table_id").find("#result_table").append(sanrentan);
             }
         })
-            .catch(errors => console.log(errors)) // 6
+        .catch(errors){
+            console.log(errors);
+        } // 6
     })
     </script>
 {% endblock %}  
