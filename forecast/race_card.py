@@ -61,6 +61,8 @@ class ShutubaTable(DataProcessor):
                 if "障" in text:
                     df["race_type"] = ["障害"] * len(df)
                     df["race_turn"] = ["障"] * len(df)
+                if "直" in text:
+                    df["race_turn"] = ["直"] * len(df)
                 if text in ["札幌", "函館", "福島", "中山", "東京", "新潟", "中京", "京都", "阪神", "小倉"]:
                     df["race_park"] = [text] * len(df)
             texts_2 = soup.find("div", attrs={"class": "RaceData02"}).text
