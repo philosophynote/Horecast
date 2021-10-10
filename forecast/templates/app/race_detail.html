@@ -651,9 +651,9 @@
             $("#result_table_id").find("#result_table").append(sanrentan);
             }
         })
-        .catch(errors){
-            console.log(errors);
-        } // 6
+        .catch(
+            alert("該当するレースは存在しません")
+        ) // 6
     })
     </script>
 {% endblock %}  
