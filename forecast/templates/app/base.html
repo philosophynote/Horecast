@@ -58,7 +58,7 @@
                             <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:race' %}">AI予想</a>
                         </li>
                         <li class="nav-item">
-                            <a id="dashboard" class="nav-link" style="color:#3E484C;" href="">ダッシュボード</a>
+                            <a id="dashboard" class="nav-link" style="color:#3E484C;" href="{% url 'forecast:dashboard' %}">ダッシュボード</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:timeline' %}">予想共有</a>
@@ -135,10 +135,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-  <script>
-    $("#dashboard").on('click',function(){
-        alert("この機能は実装準備中です");
-    });
-  </script>
+
+
 </body>
 </html>
