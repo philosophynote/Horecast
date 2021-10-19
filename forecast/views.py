@@ -72,8 +72,8 @@ class Racelist(TemplateView):
 
 
         race_park_held =list(OrderedDict.fromkeys(race_park_held).keys())
-        print("race_park_held")
-        print(race_park_held)
+        print("race_list")
+        print(race_list_last)
         context = {
             "race_park_held":race_park_held,
             "race_list":race_list_last,
@@ -142,6 +142,7 @@ class Timeline(ListView):
 
 class ChoiceRace(LoginRequiredMixin,TemplateView):
     template_name = 'app/choice_race.html'
+    model = Race
 
     def get_context_data(self,*args ,**kwargs):
         context = super().get_context_data(**kwargs)
@@ -149,10 +150,8 @@ class ChoiceRace(LoginRequiredMixin,TemplateView):
         race_date_last = race_list.response_race_date()
         race_list_last= Race.objects.filter(race_date = race_date_last).all()
         # race_list=[race.race_id for race in race_list_last]
-
         race_park_held=[race.race_park for race in race_list_last]
-        race_park_held = list(set(race_park_held))
-
+        race_park_held=list(OrderedDict.fromkeys(race_park_held).keys())
 
         context = {
             "race_park_held":race_park_held,
