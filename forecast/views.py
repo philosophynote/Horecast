@@ -246,8 +246,6 @@ class CreateAfterComment(OnlyMyPostMinin,CreateView):
     model = AfterComment
 
     def form_valid(self, form):
-        print(self.kwargs)
-        print("self.kwargs")
         before_pk = self.kwargs['pk']
         before = get_object_or_404(BeforeComment, pk=before_pk)
         after = form.save(commit=False)
@@ -259,9 +257,6 @@ class CreateAfterComment(OnlyMyPostMinin,CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(CreateAfterComment,self).get_form_kwargs()
-        print("kwargs")
-        print(kwargs)
-
         comment_id = self.request.path.split('/')[-1] #service_idはパラメータ
         target_comment = BeforeComment.objects.get(pk=comment_id)
         
