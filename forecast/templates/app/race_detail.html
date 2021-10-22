@@ -397,7 +397,9 @@
     if (pred.every(x => x == 1)) {
         $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
     } else {
-        //$('#showMoney').show();
+        console.log("バグ修正")
+        console.log(race_list)
+        console.log(result_list)
         $("#CenterHorse_r").text(`【軸馬】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}(${result_list[center_number]["favorite"]}人気)  ${result_list[center_number]["rank"]}着`);
         $("#BetHorse_1_r").text(`【紐馬１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}(${result_list[bet_numbers[0]]["favorite"]}人気)  ${result_list[bet_numbers[0]]["rank"]}着`);
         $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]]["horse_number"]}:${race_list[bet_numbers[1]]["horse_name"]}(${result_list[bet_numbers[1]]["favorite"]}人気)  ${result_list[bet_numbers[1]]["rank"]}着`);
