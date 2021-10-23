@@ -119,7 +119,7 @@
                                     <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
                                         <div id="showBet"></div>
                                         <br>
-                                        <div id="showHorse">
+                                        <div id="showHorse"></div>
                                         <div id="CenterHorse" class="fs-4"></div>
                                         <br>
                                         <div id="BetHorse_1" class="fs-4"></div>
@@ -258,8 +258,8 @@
         delete race_list[i]["center"];
         delete race_list[i]["bet"];
     }     
-    //race_listの中身を変更しないとソートができない
-
+    
+    //JSONだと順番を保証できないため、馬番の昇順で並び替える
     race_list.sort((a, b) => {
         if (a.horse_number < b.horse_number){ 
             return -1;
@@ -269,40 +269,40 @@
         }
         return 0;
     });     
-              
-    let col = [];
-    let th_col_h = ["馬番","馬名","性齢", "騎手名", "斤量"];
-    for (let i = 0; i < race_list.length; i++) {
-        for (let key in race_list[i]) {
-            
-            if (col.indexOf(key) === -1){
-            col.push(key);
-            }
-        }
-    }
+
+    //テーブル作成
+    let RaceCardCol = Object.keys(race_list[0]); //JSONから抽出するカラム名の配列
+    let RaceCardTableHeader = ["馬番","馬名","性齢", "騎手名", "斤量"]; //テーブルの列名の配列
+
+
     let table = document.createElement("table");
     table.className = 'table table-striped';
     table.style.backgroundColor = "#EFFBFF"
-    let tr = table.insertRow(-1); 
+    //let tr = table.insertRow(-1); //insertRow(-1)で最後の行に挿入する
+    let RaceCardRow = table.insertRow(-1);
     
-    for (let i = 0; i < col.length; i++) {
-        var th = document.createElement("th");      // TABLE HEADER.
-        th.innerHTML = th_col_h[i];
-        tr.appendChild(th);
+    for (let i = 0; i < RaceCardCol.length; i++) {
+        var RaceCardHeadRow = document.createElement("th");      // TABLE HEADER.
+        RaceCardHeadRow.innerHTML = RaceCardTableHeader[i];
+        RaceCardRow.appendChild(RaceCardHeadRow);
     }
     for (var i = 0; i < race_list.length; i++) {
-        tr = table.insertRow(-1);
-        for (var j = 0; j < col.length; j++) {
-            var tabCell = tr.insertCell(-1);
-            tabCell.innerHTML = race_list[i][col[j]];
+        RaceCardRow = table.insertRow(-1);
+        for (var j = 0; j < RaceCardCol.length; j++) {
+            var RaceCardCell = RaceCardRow.insertCell(-1);
+            RaceCardCell.innerHTML = race_list[i][RaceCardCol[j]];
         }
     }
+    //テーブル作成ここまで
+
+    //出馬表をhtmlに表示させる
+    let RaceCardTable = document.getElementById("showData");
+    RaceCardTable.innerHTML = "";
+    RaceCardTable.appendChild(table);
     
-    let divContainer_Data = document.getElementById("showData");
-    divContainer_Data.innerHTML = "";
-    divContainer_Data.appendChild(table);
-    
-    let center_number = center.indexOf(1)
+
+    //予想表示、centerは軸馬か否かの判定（0or1）
+    let center_number = center.indexOf(1) //軸馬のindexを取得
     let bet_numbers = [];
     var idx = bet.indexOf(1);
     while (idx != -1) {
@@ -318,64 +318,58 @@
     }else{
         message.innerHTML = "このレースの軸及び相手は次の通りです";
     } 
-    let divContainer_Bet = document.getElementById("showBet");
-    divContainer_Bet.innerHTML = "";
-    divContainer_Bet.appendChild(message);
+    let JudgeBetMessage = document.getElementById("showBet");
+    JudgeBetMessage.innerHTML = "";
+    JudgeBetMessage.appendChild(message);
     if (pred.every(x => x == 1)) {
         $('#showHorse').hide();
     } else {
         $('#showHorse').show();
-        $("#CenterHorse").text(`【軸】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}`);
-        $("#BetHorse_1").text(`【相手１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}`);
-        $("#BetHorse_2").text(`【相手２頭目】${race_list[bet_numbers[1]]["horse_number"]}:${race_list[bet_numbers[1]]["horse_name"]}`);
-        $("#BetHorse_3").text(`【相手３頭目】${race_list[bet_numbers[2]]["horse_number"]}:${race_list[bet_numbers[2]]["horse_name"]}`);
+    $("#CenterHorse").text(`【軸】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}`);
+    $("#BetHorse_1").text(`【相手１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}`);
+    $("#BetHorse_2").text(`【相手２頭目】${race_list[bet_numbers[1]]["horse_number"]}:${race_list[bet_numbers[1]]["horse_name"]}`);
+    $("#BetHorse_3").text(`【相手３頭目】${race_list[bet_numbers[2]]["horse_number"]}:${race_list[bet_numbers[2]]["horse_name"]}`);
     
-        const recommend_table=`<table class="table table-striped" style="background-color: #EFFBFF;"  id="recommend_table_id">
-                                <thead >
-                                <tr>
-                                    <th class="fs-5">券種</th>
-                                    <th class="fs-5">軸</th>
-                                    <th class="fs-5">相手</th>
-                                    <th class="fs-5">結果</th>
-                                </tr>
-                                </thead>
-                                <tbody id="recommend_table"><?=$view?>
-                                </tbody>
-                                </table>` 
-        const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
-        const umatan = `<tr><td class="fs-5">馬単(ながしマルチ)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
-        const sanrenpuku = `<tr><td class="fs-5">三連複(ながし)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
-        const sanrentan = `<tr><td class="fs-5">三連単(ながしマルチ)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
-        $("#recommend").html(recommend_table)
-        $("#recommend_table_id").find("#recommend_table").append(umaren);
-        $("#recommend_table_id").find("#recommend_table").append(umatan);
-        $("#recommend_table_id").find("#recommend_table").append(sanrenpuku);
-        $("#recommend_table_id").find("#recommend_table").append(sanrentan);
+    const recommend_table=`<table class="table table-striped" style="background-color: #EFFBFF;"  id="recommend_table_id">
+                            <thead >
+                            <tr>
+                                <th class="fs-5">券種</th>
+                                <th class="fs-5">軸</th>
+                                <th class="fs-5">相手</th>
+                                <th class="fs-5">結果</th>
+                            </tr>
+                            </thead>
+                            <tbody id="recommend_table"><?=$view?>
+                            </tbody>
+                            </table>` 
+    const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
+    const umatan = `<tr><td class="fs-5">馬単(ながしマルチ)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
+    const sanrenpuku = `<tr><td class="fs-5">三連複(ながし)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
+    const sanrentan = `<tr><td class="fs-5">三連単(ながしマルチ)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5"></td>`;
+    $("#recommend").html(recommend_table)
+    $("#recommend_table_id").find("#recommend_table").append(umaren);
+    $("#recommend_table_id").find("#recommend_table").append(umatan);
+    $("#recommend_table_id").find("#recommend_table").append(sanrenpuku);
+    $("#recommend_table_id").find("#recommend_table").append(sanrentan);
     }
-    let col_r = [];
-    let th_col_hr = ["着順","馬番", "馬名", "性齢", "騎手名", "斤量", "人気", "オッズ"];
-    for (let i = 0; i < result_list.length; i++) {
-        for (let key in result_list[i]) {
 
-        if (col_r.indexOf(key) === -1) {
-            col_r.push(key);
-        }
-        }
-    }
+    //結果画面
+    let RaceResultCol =  Object.keys(result_list[0]);
+    let RaceResultHeader  = ["着順","馬番", "馬名", "性齢", "騎手名", "斤量", "人気", "オッズ"];
+
     let result = document.createElement("table");
     result.className = 'table table-striped';
     result.style.backgroundColor = "#EFFBFF"
-    let tr_r = result.insertRow(-1);
+    let RaceResultRow = result.insertRow(-1);
 
     for (let i = 0; i < col_r.length; i++) {
-        var th_r = document.createElement("th");      // TABLE HEADER.
-        th_r.innerHTML = th_col_hr[i];
-        tr_r.appendChild(th_r);
+        var RaceResultHeadRow = document.createElement("th");      // TABLE HEADER.
+        RaceResultHeadRow.innerHTML = RaceResultHeader[i];
+        RaceResultRow.appendChild(RaceResultHeadRow);
     }
-    console.log(race_list)
-    console.log(result_list)
-    Object.assign(race_list, result_list);
-    console.log(race_list)
+    var  RaceConcatlist= race_list.slice();
+    Object.assign(RaceConcatlist, result_list);
+    Object.assign(RaceConcatlist, return_list);
     const rank_list = []
     for (let i = 0; i < result_list.length; i++) {
         rank_list.push(result_list[i])
@@ -387,25 +381,24 @@
     });
     console.log(rank_list);
     for (var i = 0; i < rank_list.length; i++) {
-        tr_r = result.insertRow(-1);
-        for (var j = 0; j < col_r.length; j++) {
-        var tabCell_r = tr_r.insertCell(-1);
-        tabCell_r.innerHTML = rank_list[i][col_r[j]];
+        RaceResultRow = result.insertRow(-1);
+        for (var j = 0; j < RaceResultCol.length; j++) {
+            var RaceResultCell = RaceResultRow.insertCell(-1);
+            RaceResultCell.innerHTML = rank_list[i][RaceResultCol[j]];
         ;
         }
     }
     
-    let divContainer_Result = document.getElementById("showResult");
-    divContainer_Result.innerHTML = "";
-    divContainer_Result.appendChild(result);
+    let RaceResultTable = document.getElementById("showResult");
+    RaceResultTable.innerHTML = "";
+    RaceResultTable.appendChild(result);
     if (pred.every(x => x == 1)) {
         $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
     } else {
-        console.log("バグ修正")
-        $("#CenterHorse_r").text(`【軸馬】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}(${race_list[center_number]["favorite"]}人気)  ${race_list[center_number]["rank"]}着`);
-        $("#BetHorse_1_r").text(`【紐馬１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}(${race_list[bet_numbers[0]]["favorite"]}人気)  ${race_list[bet_numbers[0]]["rank"]}着`);
-        $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]]["horse_number"]}:${race_list[bet_numbers[1]]["horse_name"]}(${race_list[bet_numbers[1]]["favorite"]}人気)  ${race_list[bet_numbers[1]]["rank"]}着`);
-        $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]]["horse_number"]}:${race_list[bet_numbers[2]]["horse_name"]}(${race_list[bet_numbers[2]]["favorite"]}人気)  ${race_list[bet_numbers[2]]["rank"]}着`);
+        $("#CenterHorse_r").text(`【軸馬】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}(${RaceConcatlist[center_number]["favorite"]}人気)  ${RaceConcatlist[center_number]["rank"]}着`);
+        $("#BetHorse_1_r").text(`【紐馬１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}(${RaceConcatlist[bet_numbers[0]]["favorite"]}人気)  ${RaceConcatlist[bet_numbers[0]]["rank"]}着`);
+        $("#BetHorse_2_r").text(`【紐馬２頭目】${RaceConcatlist[bet_numbers[1]]["horse_number"]}:${RaceConcatlist[bet_numbers[1]]["horse_name"]}(${RaceConcatlist[bet_numbers[1]]["favorite"]}人気)  ${RaceConcatlist[bet_numbers[1]]["rank"]}着`);
+        $("#BetHorse_3_r").text(`【紐馬３頭目】${RaceConcatlist[bet_numbers[2]]["horse_number"]}:${RaceConcatlist[bet_numbers[2]]["horse_name"]}(${RaceConcatlist[bet_numbers[2]]["favorite"]}人気)  ${RaceConcatlist[bet_numbers[2]]["rank"]}着`);
 
         const recommend_table = `<table class="table table-striped" id="result_table_id" style="background-color: #EFFBFF;">
                                 <thead>
@@ -419,10 +412,10 @@
                                 <tbody id="result_table"><?=$view?>
                                 </tbody>
                                 </table>`
-        const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["umaren"]}円</td>`;
-        const umatan = `<tr><td class="fs-5">馬単(ながしマルチ)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["umatan"]}円</td>`;
-        const sanrenpuku = `<tr><td class="fs-5">三連複(ながし)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["sanrenpuku"]}円</td>`;
-        const sanrentan = `<tr><td class="fs-5">三連単(ながしマルチ)</td><td class="fs-5">${race_list[center_number]["horse_number"]}</td><td class="fs-5">${race_list[bet_numbers[0]]["horse_number"]},${race_list[bet_numbers[1]]["horse_number"]},${race_list[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["sanrentan"]}円</td>`;
+        const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[0]["umaren"]}円</td>`;
+        const umatan = `<tr><td class="fs-5">馬単(ながしマルチ)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[0]["umatan"]}円</td>`;
+        const sanrenpuku = `<tr><td class="fs-5">三連複(ながし)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[0]["sanrenpuku"]}円</td>`;
+        const sanrentan = `<tr><td class="fs-5">三連単(ながしマルチ)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[0]["sanrentan"]}円</td>`;
         $("#result").html(recommend_table)
         $("#result_table_id").find("#result_table").append(umaren);
         $("#result_table_id").find("#result_table").append(umatan);
