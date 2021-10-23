@@ -498,13 +498,11 @@
                 delete race_list[i][1]["center"];
                 delete race_list[i][1]["bet"];
             }
-            console.log(race_list)
             race_list.sort(function (a, b) {
                 if (a.horse_number < b.horse_number) return -1;
                 if (a.horse_number > b.horse_number) return 1;
                 return 0;
-            });     
-            console.log(race_list)           
+            });             
             let col = [];
             let th_col_h = ["馬番","馬名","性齢", "騎手名", "斤量"];
             for (let i = 0; i < race_list.length; i++) {
@@ -611,7 +609,8 @@
                 if (a.horse_number < b.horse_number) return -1;
                 if (a.horse_number > b.horse_number) return 1;
                 return 0;
-            });     
+            });    
+            console.log(result_list); 
             const rank_list = []
             for (let i = 0; i < result_list.length; i++) {
                 rank_list.push(result_list[i][1])
@@ -621,7 +620,7 @@
                 if (a.rank > b.rank) return 1;
                 return 0;
             });
-            console.log(rank_list);
+            
             for (var i = 0; i < rank_list.length; i++) {
                 tr_r = result.insertRow(-1);
                 for (var j = 0; j < col_r.length; j++) {
