@@ -269,7 +269,7 @@
         }
         return 0;
     });     
-    console.log(race_list)            
+              
     let col = [];
     let th_col_h = ["馬番","馬名","性齢", "騎手名", "斤量"];
     for (let i = 0; i < race_list.length; i++) {
@@ -372,6 +372,10 @@
         th_r.innerHTML = th_col_hr[i];
         tr_r.appendChild(th_r);
     }
+    console.log(race_list)
+    console.log(result_list)
+    Object.assign(race_list, result_list);
+    console.log(race_list)
     const rank_list = []
     for (let i = 0; i < result_list.length; i++) {
         rank_list.push(result_list[i])
@@ -398,13 +402,10 @@
         $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
     } else {
         console.log("バグ修正")
-        console.log(race_list)
-        console.log(result_list)
-        console.log(center_number)
-        $("#CenterHorse_r").text(`【軸馬】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}(${result_list[center_number]["favorite"]}人気)  ${result_list[center_number]["rank"]}着`);
-        $("#BetHorse_1_r").text(`【紐馬１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}(${result_list[bet_numbers[0]]["favorite"]}人気)  ${result_list[bet_numbers[0]]["rank"]}着`);
-        $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]]["horse_number"]}:${race_list[bet_numbers[1]]["horse_name"]}(${result_list[bet_numbers[1]]["favorite"]}人気)  ${result_list[bet_numbers[1]]["rank"]}着`);
-        $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]]["horse_number"]}:${race_list[bet_numbers[2]]["horse_name"]}(${result_list[bet_numbers[2]]["favorite"]}人気)  ${result_list[bet_numbers[2]]["rank"]}着`);
+        $("#CenterHorse_r").text(`【軸馬】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}(${race_list[center_number]["favorite"]}人気)  ${race_list[center_number]["rank"]}着`);
+        $("#BetHorse_1_r").text(`【紐馬１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}(${race_list[bet_numbers[0]]["favorite"]}人気)  ${race_list[bet_numbers[0]]["rank"]}着`);
+        $("#BetHorse_2_r").text(`【紐馬２頭目】${race_list[bet_numbers[1]]["horse_number"]}:${race_list[bet_numbers[1]]["horse_name"]}(${race_list[bet_numbers[1]]["favorite"]}人気)  ${race_list[bet_numbers[1]]["rank"]}着`);
+        $("#BetHorse_3_r").text(`【紐馬３頭目】${race_list[bet_numbers[2]]["horse_number"]}:${race_list[bet_numbers[2]]["horse_name"]}(${race_list[bet_numbers[2]]["favorite"]}人気)  ${race_list[bet_numbers[2]]["rank"]}着`);
 
         const recommend_table = `<table class="table table-striped" id="result_table_id" style="background-color: #EFFBFF;">
                                 <thead>
