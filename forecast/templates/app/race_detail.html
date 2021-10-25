@@ -494,17 +494,9 @@
                 delete race_list[i]["bet"];
             }
             //JSONだと順番を保証できないため、馬番の昇順で並び替える
-            race_list.sort(function (a, b) {
-                if (a.horse_number < b.horse_number) {
-                    return -1;
-                };
-                if (a.horse_number > b.horse_number) {
-                    return 1;
-                };
-                return 0;
-            });             
+         
             let RaceCardCol = Object.keys(race_list[0]);
-            let RaceCardTableHeader = = ["馬番","馬名","性齢", "騎手名", "斤量"];
+            let RaceCardTableHeader = ["馬番","馬名","性齢", "騎手名", "斤量"];
 
             let table = document.createElement("table");
             table.className = 'table table-striped';
@@ -642,7 +634,7 @@
                                             <th class="fs-5">結果</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="result_table"><?=$view?>
+                                        <tbody id="result_table">
                                         </tbody>
                                         </table>`
                 const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[0]["umaren"]}円</td>`;
