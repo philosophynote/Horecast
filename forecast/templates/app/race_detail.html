@@ -368,11 +368,7 @@
     var  RaceConcatlist= race_list.slice();
     Object.assign(RaceConcatlist, result_list);
 
-    //result_list.sort(function (a, b) {
-    //    if (a.horse_number < b.horse_number) return -1;
-    //    if (a.horse_number > b.horse_number) return 1;
-    //    return 0;
-    //}); 
+
     
     const rank_list = []
     for (let i = 0; i < result_list.length; i++) {
@@ -419,6 +415,11 @@
                                 </tbody>
                                 </table>`
         console.log(bet_numbers)
+        RaceConcatlist.sort(function (a, b) {
+            if (a.horse_number < b.horse_number) return -1;
+            if (a.horse_number > b.horse_number) return 1;
+            return 0;
+        }); 
         console.log(RaceConcatlist)
         const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["umaren"]}円</td>`;
         const umatan = `<tr><td class="fs-5">馬単(ながしマルチ)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["umatan"]}円</td>`;
