@@ -62,9 +62,10 @@ class Racelist(TemplateView):
         # race_list=[race.race_id for race in race_list_last]
 
         race_park_held=[race.race_park for race in race_list_last]
-
-
-        race_park_held =list(OrderedDict.fromkeys(race_park_held).keys())
+        race_park_held_set = set(race_park_held)
+        race_park_held =list(race_park_held_set)
+        # race_park_held =list(OrderedDict.fromkeys(race_park_held).keys())
+        print(race_park_held)
         print("race_list")
         print(race_list_last)
         context = {
