@@ -176,6 +176,7 @@ def insert_race_card(df):
     race_df = df[["race_id","race_park","race_name","race_number","date","race_turn","course_len","weather","race_type","race_condition","n_horses"]]
     horse_df = df[["race_id","horse_id",'枠', '馬番', '馬名', '性齢', '騎手', '斤量']]
     race_df.rename(columns={'date':'race_date'},inplace=True)
+    race_df["race_date"] = race_df["race_date"].str.replace('-','/')
     horse_df.rename(columns={'枠': 'frame_number', '馬番': 'horse_number', '馬名': 'horse_name', '性齢': "sex_age", '騎手': 'jockey_name', '斤量': 'jockey_weight'}, inplace=True)
     race_df.drop_duplicates(inplace=True)
     race_df=race_df.reset_index(drop=True)

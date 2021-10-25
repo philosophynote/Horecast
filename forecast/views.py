@@ -30,19 +30,12 @@ import json,io,bz2,pickle,datetime
 import pandas as pd
 from collections import OrderedDict
 
-# from .dashboard import SthreeController
-# import fastparquet
-# import s3fs,fsspec
-
 #index
 class Index(TemplateView):
     template_name = 'app/index.html'
 
-    #標準搭載されている関数
     def get_context_data(self,*args ,**kwargs):
-        #おまじない
         context = super().get_context_data(**kwargs)
-        #投稿された内容を作成日順に全てとってくる
         race_list = Race.objects.all().latest('race_date')
         race_date_last = race_list.response_race_date()
         race_list_last= Race.objects.filter(race_date = race_date_last).all()
@@ -105,10 +98,26 @@ class RaceDetail(LoginRequiredMixin,DetailView):
         data_lat = json.loads(json_records_lat)
         data_re = json.loads(json_records_re)
         context = {'data_pre': data_pre,'data_lat': data_lat,'data_re': data_re}
-        # params = {
-        #     'object':detail_data,
-        # }
         return context
+
+@csrf_exempt
+def search(request):
+    if request.method == "POST" and request.body :
+        race_date = request.POST.get("race_date")
+        race_park = request.POST.get("race_park")
+        race_number = request.POST.get("race_number")
+        race_id,df_pre,df_lat,df_re = search_sql(race_date, race_park, race_number)
+        json_records_pre = df_pre.to_json(orient ='records')
+        json_records_lat = df_lat.to_json(orient ='records')
+        json_records_re = df_re.to_json(orient ='records')
+        data_pre = []
+        data_lat = []
+        data_re = []
+        data_pre = json.loads(json_records_pre)
+        data_lat = json.loads(json_records_lat)
+        data_re = json.loads(json_records_re)
+        context = {'data_pre': data_pre,'data_lat': data_lat,'data_re': data_re}
+        return JsonResponse(context, safe=False)
 
 #dashboard
 def Dashboard(request):
@@ -118,24 +127,8 @@ def Dashboard(request):
 class Timeline(ListView):
     template_name = 'app/timeline.html'
     context_object_name = 'forecast_list'
-    # queryset = Comment.objects.all().order_by('-created_at')
 
     paginate_by = 5
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-
-    #     queryset = BeforeComment.objects.all().order_by('-created_at')
-    #     race_list=[comment.race for comment in queryset]
-
-    #     # race_id_list = [race.race for race in context["forecast_list"]]
-    #     # print(race_id_list)
-    #     race_data_list = [race.response_race_data for race in race_list]
-    
-
-    #     context['race_list'] = race_data_list
-    #     print(context)
-    #     return context
     
     def get_queryset(self):
         return BeforeComment.objects.all().order_by('-created_at')
@@ -184,21 +177,10 @@ class CreateBeforeComment(LoginRequiredMixin,CreateView):
         kwargs = super(CreateBeforeComment,self).get_form_kwargs()
         kwargs['race_id'] = self.request.path.split('/')[-1] #service_idはパラメータ
         return kwargs
-    
-    # def get_form_kwargs(self):
-    #     kwargs = super(CreateComment,self).get_form_kwargs()
-    # #     print(self.request.path.split('/'))
-    #     kwargs["race_id"] = self.request.path.split('/')[-1]
-    # #     kwargs["id"] = None
-    # #     kwargs["favorite_horse"] = None
-    # #     kwargs["longshot_horse_1"] = None
-    # #     kwargs["longshot_horse_2"] = None
-    # #     kwargs["longshot_horse_3"] = None
-    #     return kwargs
+
 
 class DetailBeforeComment(LoginRequiredMixin,DetailView):
     template_name = 'app/detail_beforecomment.html' 
-
     model = BeforeComment
 
     def get_context_data(self, *args ,**kwargs):
@@ -206,8 +188,6 @@ class DetailBeforeComment(LoginRequiredMixin,DetailView):
         race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.race)
         race_data["race_date"] = datetime.datetime.strptime(race_data["race_date"], "%Y/%m/%d")
         comment_data = AfterComment.objects.filter(comment=self.kwargs['pk']).all()
-        # race_data = Race.objects.values('race_id','race_date','race_park','race_number','race_name').get(race_id = detail_data.)
-        # race_data["race_date"] = race_data["race_date"].strftime('')
         params = {
             'object':detail_data,
             'race':race_data,
@@ -228,7 +208,6 @@ class UpdateBeforeComment(OnlyMyPostMinin,UpdateView):
         kwargs = super(UpdateBeforeComment,self).get_form_kwargs()
         comment = self.object
         target_comment = BeforeComment.objects.get(pk=comment.pk)
-        # kwargs.update({"race_id":target_comment.race.race_id,"favorite_horse":target_comment.favorite_horse,})
         kwargs["race_id"] = target_comment.race.race_id
         return kwargs
 
@@ -263,42 +242,6 @@ class CreateAfterComment(OnlyMyPostMinin,CreateView):
         kwargs['race_id'] = target_comment.race_id
         return kwargs
     
-    # def get_form_kwargs(self):
-    #     kwargs = super(CreateComment,self).get_form_kwargs()
-    # #     print(self.request.path.split('/'))
-    #     kwargs["race_id"] = self.request.path.split('/')[-1]
-    # #     kwargs["id"] = None
-    # #     kwargs["favorite_horse"] = None
-    # #     kwargs["longshot_horse_1"] = None
-    # #     kwargs["longshot_horse_2"] = None
-    # #     kwargs["longshot_horse_3"] = None
-    #     return kwargs
-
-# class UpdateAfterComment(UpdateView):
-#     model = AfterComment
-#     form_class = AfterCommentForm
-#     template_name = 'create_aftercomment.html'
-
-#     def form_valid(self, form):
-#         print(self.kwargs)
-#         print("self.kwargs")
-#         before_pk = self.kwargs['pk']
-#         after = get_object_or_404(BeforeComment, pk=before_pk)
-#         after = form.save(commit=False)
-#         after.comment = after
-#         after.save()
-#         target_comment = AfterComment.objects.get(comment=after.pk)
-#         messages.success(self.request,"コメントを更新しました。")
-#         return resolve_url('forecast:timeline')
- 
-#     def get_form_kwargs(self):
-#         kwargs = super(UpdateAfterComment,self).get_form_kwargs()
-
-#         comment_id = int(self.request.path.split('/')[-2]) #service_idはパラメータ
-#         target_comment = AfterComment.objects.get(pk=comment_id)
-        
-#         kwargs['race_id'] = target_comment.race_id
-#         return kwargs
 
 class DeleteAfterComment(OnlyMyPostMinin,DeleteView):
     template_name = 'app/aftercomment_confirm_delete.html' 
@@ -314,7 +257,6 @@ def search_forecast(request):
         searchform = SearchForm(request.POST) 
 
         if searchform.is_valid():
-           #claened_data(is_validした結果のデータ)
            freeword = searchform.cleaned_data['freeword'] 
            search_list = BeforeComment.objects.filter(Q(race__race_name__icontains = freeword) | Q(favorite_horse__icontains = freeword) |Q(longshot_horse_1__icontains = freeword) |Q(longshot_horse_2__icontains = freeword) |Q(longshot_horse_3__icontains = freeword)).all().order_by('-updated_at')
            params = {
@@ -407,24 +349,7 @@ def Table(request):
 
 
 
-@csrf_exempt
-def search(request):
-    if request.method == "POST" and request.body :
-        race_date = request.POST.get("race_date")
-        race_park = request.POST.get("race_park")
-        race_number = request.POST.get("race_number")
-        race_id,df_pre,df_lat,df_re = search_sql(race_date, race_park, race_number)
-        json_records_pre = df_pre.to_json(orient ='records')
-        json_records_lat = df_lat.to_json(orient ='records')
-        json_records_re = df_re.to_json(orient ='records')
-        data_pre = []
-        data_lat = []
-        data_re = []
-        data_pre = json.loads(json_records_pre)
-        data_lat = json.loads(json_records_lat)
-        data_re = json.loads(json_records_re)
-        context = {'data_pre': data_pre,'data_lat': data_lat,'data_re': data_re}
-        return JsonResponse(context, safe=False)
+
     # return JsonResponse(context, safe=False)
 
 def judgecomment(request):
