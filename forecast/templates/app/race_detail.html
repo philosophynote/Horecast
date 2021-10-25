@@ -368,11 +368,11 @@
     var  RaceConcatlist= race_list.slice();
     Object.assign(RaceConcatlist, result_list);
 
-    result_list.sort(function (a, b) {
-        if (a.horse_number < b.horse_number) return -1;
-        if (a.horse_number > b.horse_number) return 1;
-        return 0;
-    }); 
+    //result_list.sort(function (a, b) {
+    //    if (a.horse_number < b.horse_number) return -1;
+    //    if (a.horse_number > b.horse_number) return 1;
+    //    return 0;
+    //}); 
     
     const rank_list = []
     for (let i = 0; i < result_list.length; i++) {
