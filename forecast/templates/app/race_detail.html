@@ -293,8 +293,8 @@
     }
     //テーブル作成ここまで
     var  RaceConcatlist= race_list.slice();
-    Object.assign(RaceConcatlist, result_list);
-    Object.assign(RaceConcatlist, return_list);
+
+
     //出馬表をhtmlに表示させる
     let RaceCardTable = document.getElementById("showData");
     RaceCardTable.innerHTML = "";
@@ -324,7 +324,6 @@
     if (pred.every(x => x == 1)) {
         $('#showHorse').hide();
     } else {
-        console.log(RaceConcatlist)
         $('#showHorse').show();
         $("#CenterHorse").text(`【軸】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}`);
         $("#BetHorse_1").text(`【相手１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}`);
@@ -382,7 +381,7 @@
         if (a.rank > b.rank) return 1;
         return 0;
     });
-    console.log(rank_list);
+    
     for (var i = 0; i < rank_list.length; i++) {
         RaceResultRow = result.insertRow(-1);
         for (var j = 0; j < RaceResultCol.length; j++) {
@@ -395,7 +394,8 @@
     let RaceResultTable = document.getElementById("showResult");
     RaceResultTable.innerHTML = "";
     RaceResultTable.appendChild(result);
-    console.log(RaceConcatlist)
+    Object.assign(RaceConcatlist, result_list);
+    console.log(RaceConcatlist);
 
     if (pred.every(x => x == 1)) {
         $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
@@ -417,13 +417,13 @@
                                 <tbody id="result_table"><?=$view?>
                                 </tbody>
                                 </table>`
-        console.log(bet_numbers)
+   
         //RaceConcatlist.sort(function (a, b) {
         //    if (a.horse_number < b.horse_number) return -1;
         //    if (a.horse_number > b.horse_number) return 1;
         //    return 0;
         //}); 
-        console.log(RaceConcatlist)
+        console.log(return_list);
         const umaren = `<tr><td class="fs-5">馬連(ながし)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["umaren"]}円</td>`;
         const umatan = `<tr><td class="fs-5">馬単(ながしマルチ)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["umatan"]}円</td>`;
         const sanrenpuku = `<tr><td class="fs-5">三連複(ながし)</td><td class="fs-5">${RaceConcatlist[center_number]["horse_number"]}</td><td class="fs-5">${RaceConcatlist[bet_numbers[0]]["horse_number"]},${RaceConcatlist[bet_numbers[1]]["horse_number"]},${RaceConcatlist[bet_numbers[2]]["horse_number"]}</td><td class="fs-5">${return_list[0]["sanrenpuku"]}円</td>`;
