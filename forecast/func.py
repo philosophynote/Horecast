@@ -80,20 +80,6 @@ def read_table(race_id,table_name):
     return pd.read_sql(f"SELECT * FROM {table_name} WHERE race_id = '{race_id}'", con=engine)
 
 def search_sql(race_date, race_park, race_number):
-    # conditions = {
-    #     "race_date": race_date,
-    #     "race_park": race_park,
-    #     "race_number": race_number,
-    # }
-    # sql = f"""
-    #     SELECT race_id,race_park,race_name,race_number,race_date
-    #     FROM race
-    #     WHERE race_date ={conditions["race_date"]} 
-    #     AND race_park ={conditions["race_park"]}
-    #     AND race_number ={conditions["race_number"]}
-    # """
-    # query = 'race_date == {race_date} and race_park == {race_park} and race_number == {race_number}'.format(
-    #     **conditions)
     race_df = pd.read_sql("race", con=engine)
     race_df["race_date"] = pd.to_datetime(race_df["race_date"])
     race_df = race_df.query('race_date == @race_date and race_park == @race_park and race_number == @race_number')
@@ -105,18 +91,6 @@ def search_sql(race_date, race_park, race_number):
     umatan = read_table(race_id,"umatan")
     sanrenpuku = read_table(race_id,"sanrenpuku")
     sanrentan = read_table(race_id,"sanrentan")
-    # horse_df = pd.read_sql(f"SELECT * FROM horse WHERE race_id = '{race_id}'", con=engine)
-    # pred_table = pd.read_sql(f"SELECT * FROM predict WHERE race_id = '{race_id}'", con=engine)
-
-    # result = pd.read_sql(f"SELECT * FROM result WHERE race_id = '{race_id}'", con=engine)
-
-    # umaren =  pd.read_sql(f"SELECT * FROM umaren WHERE race_id = '{race_id}'",con=engine)
-
-    # umatan =  pd.read_sql(f"SELECT * FROM umatan WHERE race_id = '{race_id}'",con=engine)
-
-    # sanrenpuku = pd.read_sql(f"SELECT * FROM sanrenpuku WHERE race_id = '{race_id}'",con=engine)
-
-    # sanrentan = pd.read_sql(f"SELECT * FROM sanrentan WHERE race_id = '{race_id}'",con=engine)
 
    
     df = race_df.merge(horse_df,left_on="race_id",right_on="race_id",how="inner")
