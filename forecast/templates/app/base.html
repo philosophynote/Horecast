@@ -26,7 +26,7 @@
 <body>
     <header class="mb-5">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top mb-5" style="background-color: #EFFBFF; color:#3E484C;">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top mb-5" style="background-color: #2A8188; color:#F5F6FA;">
             <div class="container-fluid">
                 <button
                     class="navbar-toggler"
@@ -42,26 +42,26 @@
 
                 <div class="collapse navbar-collapse" id="navbarExample01" >
                     <div>
-                        <img src="{% static 'img/favicon.png' %}" style="width:5rem; height:5rem;" alt="ロゴ" loading="lazy" />
+                        <img src="{% static 'img/favicon_green.png' %}" style="width:5rem; height:5rem;" alt="ロゴ" loading="lazy" />
                     </div> 
                     <div class = "mx-4" style="width: 14rem">
                         <span class="mb-2 mb-lg-0 fs-3" >競馬予想AI×SNS<br>Horecast</span>
                     </div>
                     <ul class="navbar-nav me-auto  mb-3 mb-lg-0 fs-4">
                         <li class="nav-item active">
-                            <a class="nav-link" style="color:#3E484C;" aria-current="page" href="{% url 'forecast:index' %}">Home</a>
+                            <a class="nav-link" style="color:#F5F6FA;" aria-current="page" href="{% url 'forecast:index' %}">Home</a>
                         </li>
                         <!-- <li class="nav-item">
                             <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:concept' %}">コンセプト</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:race' %}">AI予想</a>
+                            <a class="nav-link" style="color:#F5F6FA;" href="{% url 'forecast:race' %}">AI予想</a>
                         </li>
                         <li class="nav-item">
-                            <a id="dashboard" class="nav-link" style="color:#3E484C;" href="{% url 'forecast:dashboard' %}">ダッシュボード</a>
+                            <a id="dashboard" class="nav-link" style="color:#F5F6FA;" href="{% url 'forecast:dashboard' %}">ダッシュボード</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color:#3E484C;" href="{% url 'forecast:timeline' %}">予想共有</a>
+                            <a class="nav-link" style="color:#F5F6FA;" href="{% url 'forecast:timeline' %}">予想共有</a>
                         </li>
                         {% comment %} <li class="nav-item">
                             {% if request.user.is_authenticated %}
@@ -80,16 +80,16 @@
                     </ul>
                     <div>
                         {% if request.user.is_authenticated %}
-                            <p class="fs-4 mx-4 pt-3" style="color:#3E484C;">{{ request.user }}</p>
+                            <p class="fs-4 mx-4 pt-3" style="color:#F5F6FA;">{{ request.user }}</p>
                         {% else %}
-                            <a href="{% url 'forecast:signup' %}" class="fs-4 mx-4 pt-3" style="color:#3E484C;">ユーザー登録</a>
+                            <a href="{% url 'forecast:signup' %}" class="fs-4 mx-4 pt-3" style="color:#F5F6FA;">ユーザー登録</a>
                         {% endif %}
                     </div> 
                     <div class = "mx-4">
                         {% if request.user.is_authenticated %}
-                            <a href="{% url 'forecast:logout' %}" class="fs-4" style="color:#3E484C;">ログアウト</a>
+                            <a href="{% url 'forecast:logout' %}" class="fs-4" style="color:#F5F6FA;">ログアウト</a>
                         {% else %}
-                            <a href="{% url 'forecast:login' %}" class="fs-4"  style="color:#3E484C;">ログイン</a>
+                            <a href="{% url 'forecast:login' %}" class="fs-4"  style="color:#F5F6FA;">ログイン</a>
                         {% endif %}
                     </div>
 
