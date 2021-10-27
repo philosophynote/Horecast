@@ -205,43 +205,86 @@ def insert_result(race_id_list):
           if_row_exists='update')
 
 def umaren(df):
+    new_df = pd.DataFrame(columns=['win_1','win_2','win_3','win_4','return_1','return_2'])
     umaren = df[df[0]=='馬連'][[1,2]]
-    wins = umaren[1].str.split(expand=True)
-    wins = umaren[1].str.split(expand=True)[[0,1]].add_prefix('win_')
-    return_ = umaren[2].rename('return') 
-    return_ = return_.str.replace('円','')
-    return_ = return_.str.replace(',','')
-    df = pd.concat([wins, return_], axis=1) 
-    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2'})
-    df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
-    df.dropna(subset=["win_1"], inplace=True)
-    df.index.name = "race_id"
-    df["win_1"] = df["win_1"].astype(int)
-    df["win_2"] = df["win_2"].astype(int)
-    df["return"] = df["return"].astype(int)
+    if 3 in umaren.columns :
+        new_df[['win_1','win_2','win_3','win_4']] = umaren[1].str.split(expand=True)[[0,1,2,3]]
+        new_df[['return_1','return_2']] = umaren[2].str.split('br',expand=True)[[0,1]]
+
+        new_df['return_1'] = new_df['return_1'].str.replace('円','')
+        new_df['return_1'] = new_df['return_1'].str.replace(',','')
+        new_df['return_2'] = new_df['return_2'].str.replace('円','')
+        new_df['return_2'] = new_df['return_2'].str.replace(',','')
+        new_df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+        new_df.dropna(subset=["win_1"], inplace=True)
+        new_df.index.name = "race_id"
+        new_df.fillna(0,inplace=True)
+        new_df["win_1"] = new_df["win_1"].astype(int)
+        new_df["win_2"] = new_df["win_2"].astype(int)
+        new_df["win_3"] = new_df["win_3"].astype(int)
+        new_df["win_4"] = new_df["win_4"].astype(int)
+        new_df["return_1"] = new_df["return_1"].astype(int)
+        new_df["return_2"] = new_df["return_2"].astype(int)
+    else:
+        umaren = df[df[0]=='馬連'][[1,2]]
+        wins = umaren[1].str.split(expand=True)
+        wins = umaren[1].str.split(expand=True)[[0,1]].add_prefix('win_')
+        return_1 = umaren[2].rename('return_1') 
+        return_1 = return_1.str.replace('円','')
+        return_1 = return_1.str.replace(',','')
+        new_df = pd.concat([wins, return_1], axis=1) 
+        new_df =  new_df.rename(columns = {'win_0':'win_1','win_1':'win_2'})
+        new_df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+        new_df.dropna(subset=["win_1"], inplace=True)
+        new_df.index.name = "race_id"
+        new_df["win_1"] = new_df["win_1"].astype(int)
+        new_df["win_2"] = new_df["win_2"].astype(int)
+        new_df["return_1"] = new_df["return_1"].astype(int)
     upsert(engine=engine,
-          df=df,
+          df=new_df,
           schema="public",
           table_name="umaren",
           if_row_exists='update')
 
 def umatan(df):
-    umaren = df[df[0]=='馬単'][[1,2]]
-    wins = umaren[1].str.split(expand=True)
-    wins = umaren[1].str.split(expand=True)[[0,1]].add_prefix('win_')
-    return_ = umaren[2].rename('return') 
-    return_ = return_.str.replace('円','')
-    return_ = return_.str.replace(',','')
-    df = pd.concat([wins, return_], axis=1) 
-    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2'})
-    df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
-    df.dropna(subset=["win_1"], inplace=True)
-    df.index.name = "race_id"
-    df["win_1"] = df["win_1"].astype(int)
-    df["win_2"] = df["win_2"].astype(int)
-    df["return"] = df["return"].astype(int)
+    new_df = pd.DataFrame(columns=['win_1','win_2','win_3','win_4','return_1','return_2'])
+    umatan = df[df[0]=='馬単'][[1,2]]
+    print(umatan)
+    if 3 in umatan.columns :
+        new_df[['win_1','win_2','win_3','win_4']] = umatan[1].str.split(expand=True)[[0,1,2,3]]
+        new_df[['return_1','return_2']] = umatan[2].str.split('br',expand=True)[[0,1]]
+
+        new_df['return_1'] = new_df['return_1'].str.replace('円','')
+        new_df['return_1'] = new_df['return_1'].str.replace(',','')
+        new_df['return_2'] = new_df['return_2'].str.replace('円','')
+        new_df['return_2'] = new_df['return_2'].str.replace(',','')
+        new_df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+        new_df.dropna(subset=["win_1"], inplace=True)
+        new_df.index.name = "race_id"
+        new_df.fillna(0,inplace=True)
+        new_df["win_1"] = new_df["win_1"].astype(int)
+        new_df["win_2"] = new_df["win_2"].astype(int)
+        new_df["win_3"] = new_df["win_3"].astype(int)
+        new_df["win_4"] = new_df["win_4"].astype(int)
+        new_df["return_1"] = new_df["return_1"].astype(int)
+        new_df["return_2"] = new_df["return_2"].astype(int)
+    else:
+        umatan = df[df[0]=='馬単'][[1,2]]
+        wins = umatan[1].str.split(expand=True)
+        wins = umatan[1].str.split(expand=True)[[0,1]].add_prefix('win_')
+        return_1 = umatan[2].rename('return_1') 
+        return_1 = return_1.str.replace('円','')
+        return_1 = return_1.str.replace(',','')
+        new_df = pd.concat([wins, return_1], axis=1) 
+        new_df =  new_df.rename(columns = {'win_0':'win_1','win_1':'win_2'})
+        new_df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+        new_df.dropna(subset=["win_1"], inplace=True)
+        new_df.index.name = "race_id"
+        new_df["win_1"] = new_df["win_1"].astype(int)
+        new_df["win_2"] = new_df["win_2"].astype(int)
+        new_df["return_1"] = new_df["return_1"].astype(int)    
     upsert(engine=engine,
-          df=df,
+          df=new_df,
           schema="public",
           table_name="umatan",
           if_row_exists='update')
@@ -268,22 +311,45 @@ def sanrenpuku(df):
           if_row_exists='update')
 
 def sanrentan(df):
-    renpuku = df[df[0]=='3連単'][[1,2]]
-    wins = renpuku[1].str.split(expand=True)[[0,1,2]].add_prefix('win_')
-    return_ = renpuku[2].rename('return')
-    return_ = return_.str.replace('円','')
-    return_ = return_.str.replace(',','')
-    df = pd.concat([wins, return_], axis=1)
-    df =  df.rename(columns = {'win_0':'win_1','win_1':'win_2','win_2':'win_3'})
-    df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
-    df.dropna(subset=["win_1"], inplace=True)
-    df.index.name = "race_id"
-    df["win_1"] = df["win_1"].astype(int)
-    df["win_2"] = df["win_2"].astype(int)
-    df["win_3"] = df["win_3"].astype(int)
-    df["return"] = df["return"].astype(int)
+    new_df = pd.DataFrame(columns=['win_1','win_2','win_3','win_4','win_5','win_6','return_1','return_2'])
+    rentan = df[df[0]=='3連単'][[1,2]]
+    if 4 in rentan.columns :
+        new_df[['win_1','win_2','win_3','win_4','win_5','win_6']] = rentan[1].str.split(expand=True)[[0,1,2,3,4,5]]
+        new_df[['return_1','return_2']] = rentan[2].str.split('br',expand=True)[[0,1]]
+
+        new_df['return_1'] = new_df['return_1'].str.replace('円','')
+        new_df['return_1'] = new_df['return_1'].str.replace(',','')
+        new_df['return_2'] = new_df['return_2'].str.replace('円','')
+        new_df['return_2'] = new_df['return_2'].str.replace(',','')
+        new_df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+        new_df.dropna(subset=["win_1"], inplace=True)
+        new_df.index.name = "race_id"
+        new_df.fillna(0,inplace=True)
+        new_df["win_1"] = new_df["win_1"].astype(int)
+        new_df["win_2"] = new_df["win_2"].astype(int)
+        new_df["win_3"] = new_df["win_3"].astype(int)
+        new_df["win_4"] = new_df["win_4"].astype(int)
+        new_df["win_5"] = new_df["win_5"].astype(int)
+        new_df["win_6"] = new_df["win_6"].astype(int)
+        new_df["return_1"] = new_df["return_1"].astype(int)
+        new_df["return_2"] = new_df["return_2"].astype(int)
+    else:
+        renpuku = df[df[0]=='3連単'][[1,2]]
+        wins = renpuku[1].str.split(expand=True)[[0,1,2]].add_prefix('win_')
+        return_1 = renpuku[2].rename('return_1')
+        return_1 = return_1.str.replace('円','')
+        return_1 = return_1.str.replace(',','')
+        new_df = pd.concat([wins, return_1], axis=1)
+        new_df =  new_df.rename(columns = {'win_0':'win_1','win_1':'win_2','win_2':'win_3'})
+        new_df.apply(lambda x: pd.to_numeric(x.str.replace(',',''), errors='coerce'))
+        new_df.dropna(subset=["win_1"], inplace=True)
+        new_df.index.name = "race_id"
+        new_df["win_1"] = new_df["win_1"].astype(int)
+        new_df["win_2"] = new_df["win_2"].astype(int)
+        new_df["win_3"] = new_df["win_3"].astype(int)
+        new_df["return_1"] = new_df["return_1"].astype(int)     
     upsert(engine=engine,
-          df=df,
+          df=new_df,
           schema="public",
           table_name="sanrentan",
           if_row_exists='update')
