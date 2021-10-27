@@ -238,8 +238,12 @@ class Sanrentan(models.Model):
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
     win_3 = models.BigIntegerField(blank=True, null=True)
-    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
-
+    return_1 = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    win_4 = models.BigIntegerField(blank=True, null=True)
+    win_5 = models.BigIntegerField(blank=True, null=True)
+    win_6 = models.BigIntegerField(blank=True, null=True)
+    return_2 = models.BigIntegerField(blank=True, null=True)
+    
     class Meta:
         db_table = 'sanrentan'
 
@@ -248,7 +252,10 @@ class Umaren(models.Model):
     race_id = models.TextField(primary_key=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
-    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    return_1 = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    win_3 = models.BigIntegerField(blank=True, null=True)
+    win_4 = models.BigIntegerField(blank=True, null=True)
+    return_2 = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
         db_table = 'umaren'
@@ -258,8 +265,10 @@ class Umatan(models.Model):
     race_id = models.TextField(primary_key=True)
     win_1 = models.BigIntegerField(blank=True, null=True)
     win_2 = models.BigIntegerField(blank=True, null=True)
-    return_field = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
-
+    return_1 = models.BigIntegerField(db_column='return', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    win_3 = models.BigIntegerField(blank=True, null=True)
+    win_4 = models.BigIntegerField(blank=True, null=True)
+    return_2 = models.BigIntegerField(blank=True, null=True)
     class Meta:
         db_table = 'umatan'
 
