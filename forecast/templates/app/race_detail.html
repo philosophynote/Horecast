@@ -622,7 +622,8 @@
                 RaceResultTable.innerHTML = "";
                 RaceResultTable.appendChild(result);
                 if (pred.every(x => x == 1)) {
-                    $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
+                    console.log("aa")
+                    //$('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
                 } else {
                     $('#showMoney').show();
                     $("#CenterHorse_r").text(`【軸馬】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}(${RaceConcatlist[center_number]["favorite"]}人気)  ${RaceConcatlist[center_number]["rank"]}着`);
