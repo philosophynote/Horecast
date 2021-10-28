@@ -11,7 +11,9 @@ ALLOWED_HOSTS = []
 
 # AWS
 env = environ.Env()
-# 
+env.read_env(os.path.join(BASE_DIR, '.env'))
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
 
 
 INSTALLED_APPS = [
@@ -58,7 +60,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'forecast.context_processors.race_search',
                 'forecast.context_processors.date',
-                'forecast.context_processors.forecast_card',
+                # 'forecast.context_processors.forecast_card',
             ],
         },
     },
