@@ -14,19 +14,8 @@
   z-index: 1;
 }
 
-.sidebar{
-  position: fixed;
-  top: 15rem;
-  bottom: 0;
-  left: 12rem;
-}
-
-.main{
-  position: relative;
-  /* top: 2.7rem; */
-  bottom: 0;
-  left: 27rem;
-  /* height: 30%; */
-  overflow: scroll;
+.sidebar_fixed {
+  position: sticky;
+  top: 60px;
 }
 

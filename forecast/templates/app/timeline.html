@@ -3,13 +3,15 @@
 {% load static %}
 
 {% load boost %}
-
+    
 {% block content %}
+    
     <div class="container">
+        <h1 class="text-center" style="color:#EFFBFF;">レース予想一覧</h1> 
+        <br>
+        <br>
         <div class="row">
-            <div class="col-3 sidebar" style="padding: 0;">
-                <h1 class="text-center" style="color:#EFFBFF;">レース予想一覧</h1>
-                <br>
+            <div class="col-md-2" style="padding: 0; position:fixed; height:100%; overflow-y:auto;">
                 <div class="card ml-3" style="background-color:#36474f;">
                     <div class="card-header " style="background-color:#00acb5; color:#EFFBFF;">
                         <h3 class="text-center">予想を投稿しよう</h3> 
@@ -41,8 +43,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-1"></div>
-            <div class="col-8">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 offset-md-4">
+                
                 {% for forecast in forecast_list %}
                 <div class="card text-center" style="background-color:#36474f;">
                     <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{forecast.race.race_park}}{{forecast.race.race_number}}R&nbsp;&nbsp;{{forecast.race.race_name}}</h2>
