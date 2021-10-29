@@ -6,7 +6,6 @@
 
 {% block content %}
     <div class="container">
-
         <div class="row">
             <div class="col-3 sidebar" style="padding: 0;">
                 <h1 class="text-center" style="color:#EFFBFF;">レース予想一覧</h1>
@@ -43,8 +42,7 @@
                 </div>
             </div>
             <div class="col-1"></div>
-            <div class="col-8 main">
-                
+            <div class="col-8">
                 {% for forecast in forecast_list %}
                 <div class="card text-center" style="background-color:#36474f;">
                     <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{forecast.race.race_park}}{{forecast.race.race_number}}R&nbsp;&nbsp;{{forecast.race.race_name}}</h2>
