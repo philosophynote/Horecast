@@ -207,7 +207,7 @@ def insert_result(race_id_list):
 def umaren(df):
     new_df = pd.DataFrame(columns=['win_1','win_2','win_3','win_4','return_1','return_2'])
     umaren = df[df[0]=='馬連'][[1,2]]
-    if 3 in umaren.columns :
+    if umaren[2].str.contains('br').any():
         new_df[['win_1','win_2','win_3','win_4']] = umaren[1].str.split(expand=True)[[0,1,2,3]]
         new_df[['return_1','return_2']] = umaren[2].str.split('br',expand=True)[[0,1]]
 
@@ -249,8 +249,7 @@ def umaren(df):
 def umatan(df):
     new_df = pd.DataFrame(columns=['win_1','win_2','win_3','win_4','return_1','return_2'])
     umatan = df[df[0]=='馬単'][[1,2]]
-    print(umatan)
-    if 3 in umatan.columns :
+    if umatan[2].str.contains('br').any():
         new_df[['win_1','win_2','win_3','win_4']] = umatan[1].str.split(expand=True)[[0,1,2,3]]
         new_df[['return_1','return_2']] = umatan[2].str.split('br',expand=True)[[0,1]]
 
@@ -313,7 +312,7 @@ def sanrenpuku(df):
 def sanrentan(df):
     new_df = pd.DataFrame(columns=['win_1','win_2','win_3','win_4','win_5','win_6','return_1','return_2'])
     rentan = df[df[0]=='3連単'][[1,2]]
-    if 4 in rentan.columns :
+    if rentan[2].str.contains('br').any():
         new_df[['win_1','win_2','win_3','win_4','win_5','win_6']] = rentan[1].str.split(expand=True)[[0,1,2,3,4,5]]
         new_df[['return_1','return_2']] = rentan[2].str.split('br',expand=True)[[0,1]]
 
@@ -353,4 +352,3 @@ def sanrentan(df):
           schema="public",
           table_name="sanrentan",
           if_row_exists='update')
-
