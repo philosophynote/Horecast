@@ -134,12 +134,7 @@ class ChoiceRace(LoginRequiredMixin,TemplateView):
         race_list = Race.objects.all().latest('race_date')
         race_date_last = race_list.response_race_date()
         race_list_last= Race.objects.filter(race_date = race_date_last).all()
-        # race_list=[race.race_id for race in race_list_last]
-        race_park_held=[race.race_park for race in race_list_last]
-        race_park_held=list(OrderedDict.fromkeys(race_park_held).keys())
-
         context = {
-            "race_park_held":race_park_held,
             "race_list":race_list_last,
         }
         return context
