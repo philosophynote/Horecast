@@ -60,7 +60,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'forecast.context_processors.race_search',
                 'forecast.context_processors.date',
-                # 'forecast.context_processors.forecast_card',
+                'forecast.context_processors.forecast_card',
             ],
         },
     },
