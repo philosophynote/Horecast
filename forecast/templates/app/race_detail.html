@@ -205,7 +205,6 @@
     let data_pre = {{ data_pre }};
     let data_lat = {{ data_lat }};
     let data_re = {{ data_re }};
-    let hoge = {{ data_pre }};
     {% endautoescape %}
 
     
@@ -233,17 +232,7 @@
         }
         return 0;
     }); 
-    hoge.sort((a, b) => {
-        if (Number(a.horse_number) < Number(b.horse_number)){ 
-            return -1;
-        }
-        if (Number(a.horse_number) > Number(b.horse_number)) {
-            return 1;
-        }
-        return 0;
-    });  
-    let hogehoge = Object.values(hoge);
-    console.log(hogehoge);
+
     
     $("#race_park_hold").text(`${race_list[1]["race_park"]}`);
     $("#race_number_hold").text(`${race_list[1]["race_number"]}R`);
@@ -488,7 +477,15 @@
                 //}else{
                 //    $('#ex1-tab-2').removeProp({'class': 'disabled'});
                 //}
-
+                race_list.sort((a, b) => {
+                    if (Number(a.horse_number) < Number(b.horse_number)){ 
+                        return -1;
+                    }
+                    if (Number(a.horse_number) > Number(b.horse_number)) {
+                        return 1;
+                    }
+                    return 0;
+                }); 
             
                 $("#race_park_hold").text(`${race_list[1]["race_park"]}`);
                 $("#race_number_hold").text(`${race_list[1]["race_number"]}R`);
