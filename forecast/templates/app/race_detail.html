@@ -205,13 +205,15 @@
     let data_pre = {{ data_pre }};
     let data_lat = {{ data_lat }};
     let data_re = {{ data_re }};
+    let hoge = {{ data_pre }};
     {% endautoescape %}
 
     
     let result_list = Object.values(data_lat);
     let return_list = Object.values(data_re);
     let race_list = Object.values(data_pre);
-    
+    let hogehoge = Object.values(hoge);
+    console.log(hogehoge);
 
     let disable_judge = []
     for (let i = 0; i < result_list.length; i++){
@@ -235,7 +237,6 @@
     $("#race_turn_hold").text(`(${race_list[1]["race_turn"]})`);
     $("#race_type_hold").text(`${race_list[1]["race_type"]}`);
     $("#weather_hold").text(`${race_list[1]["weather"]}`);
-
     const pred = race_list.map(race =>race.pred);
     const center = race_list.map(race =>race.center);
     const bet = race_list.map(race =>race.bet);
@@ -257,7 +258,7 @@
         delete race_list[i]["pred"];
         delete race_list[i]["center"];
         delete race_list[i]["bet"];
-    }     
+    } 
     //JSONだと順番を保証できないため、馬番の昇順で並び替える
     race_list.sort((a, b) => {
         if (a.horse_number < b.horse_number){ 
