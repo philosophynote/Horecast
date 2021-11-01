@@ -8,11 +8,11 @@ gunicorn==20.0.4
 idna==2.5
 psycopg2
 pytz==2020.1
-requests==2.21.0
+requests
 setuptools==49.2.0
 sqlparse==0.3.1
 static3==0.7.0
-urllib3==1.26.5
+urllib3
 whitenoise==5.2.0
 django-storages==1.8
 boto3==1.17.46
