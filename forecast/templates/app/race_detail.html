@@ -454,12 +454,12 @@
         event.preventDefault()
         
         let data = new FormData(); // 2
-        console.log(document.getElementById("race_date").value);
-        console.log(document.getElementById("race_park").value);
         data.append("race_date", document.getElementById("race_date").value)  
         data.append("race_park", document.getElementById("race_park").value)
         data.append("race_number", document.getElementById("race_number").value)
-        console.log(data);
+        for (let value of data.entries()) { 
+            console.log(value); 
+        }
         //data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
         axios.defaults.xsrfCookieName = 'csrftoken'
         axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"      

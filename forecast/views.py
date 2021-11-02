@@ -98,7 +98,7 @@ def search(request):
         race_park = request.POST.get("race_park")
         race_number = request.POST.get("race_number")
         race_id,df_pre,df_lat,df_re = search_sql(race_date, race_park, race_number)
-        
+        print(df_pre.head())
         json_records_pre = df_pre.to_json(orient ='records')
         json_records_lat = df_lat.to_json(orient ='records')
         json_records_re = df_re.to_json(orient ='records')
