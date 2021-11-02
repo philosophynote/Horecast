@@ -616,7 +616,16 @@
 
                 var  RaceConcatlist= race_list.slice();
                 Object.assign(RaceConcatlist, result_list);
-
+                //JSONだと順番を保証できないため、馬番の昇順で並び替える
+                RaceConcatlist.sort((a, b) => {
+                    if (Number(a.horse_number) < Number(b.horse_number)){ 
+                        return -1;
+                    }
+                    if (Number(a.horse_number) > Number(b.horse_number)) {
+                        return 1;
+                    }
+                    return 0;
+                });  
                 result_list.sort(function (a, b) {
                     if (a.horse_number < b.horse_number) return -1;
                     if (a.horse_number > b.horse_number) return 1;
