@@ -223,6 +223,7 @@
     }else{
         $('#ex1-tab-2').removeProp({'class': 'disabled'});
     }
+    //JSONだと順番を保証できないため、馬番の昇順で並び替える
     race_list.sort((a, b) => {
         if (Number(a.horse_number) < Number(b.horse_number)){ 
             return -1;
@@ -265,7 +266,7 @@
         delete race_list[i]["center"];
         delete race_list[i]["bet"];
     } 
-    //JSONだと順番を保証できないため、馬番の昇順で並び替える
+    
    
 
     //テーブル作成
