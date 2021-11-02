@@ -91,7 +91,7 @@ def search_sql(race_date, race_park, race_number):
     umatan = read_table(race_id,"umatan")
     sanrenpuku = read_table(race_id,"sanrenpuku")
     sanrentan = read_table(race_id,"sanrentan")
-
+    print(race_df.head())
    
     df = race_df.merge(horse_df,left_on="race_id",right_on="race_id",how="inner")
     df = df.merge(pred_table, left_on=["race_id", "horse_number"], right_on=["race_id", "horse_number"], how="inner")
