@@ -119,15 +119,16 @@
                                 <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
                                     <div id="showBet"></div>
                                     <br>
-                                    <div id="showHorse"></div>
-                                    <div id="CenterHorse" class="fs-4"></div>
-                                    <br>
-                                    <div id="BetHorse_1" class="fs-4"></div>
-                                    <div id="BetHorse_2" class="fs-4"></div>
-                                    <div id="BetHorse_3" class="fs-4"></div>
-                                    <br>
-                                    <br>
-                                    <div id="recommend"></div>
+                                    <div id="showHorse">
+                                        <div id="CenterHorse" class="fs-4"></div>
+                                        <br>
+                                        <div id="BetHorse_1" class="fs-4"></div>
+                                        <div id="BetHorse_2" class="fs-4"></div>
+                                        <div id="BetHorse_3" class="fs-4"></div>
+                                        <br>
+                                        <br>
+                                        <div id="recommend"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -146,17 +147,18 @@
                             <div class="card" style="padding: 0;">
                                 <div class="card-header fs-1" style="background-color:#79d1d5;">軸馬＆紐馬　結果</div>
                                 <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
-                                    <div id="showBet"></div>
+                                    <div id="showBetResult"></div>
                                     <br>
-                                    <div id="showMoney"></div>
-                                    <div id="CenterHorse_r" class="fs-4"></div>
-                                    <br>
-                                    <div id="BetHorse_1_r" class="fs-4"></div>
-                                    <div id="BetHorse_2_r" class="fs-4"></div>
-                                    <div id="BetHorse_3_r" class="fs-4"></div>
-                                    <br>
-                                    <br>
-                                    <div id="result"></div>
+                                    <div id="showMoney">
+                                        <div id="CenterHorse_r" class="fs-4"></div>
+                                        <br>
+                                        <div id="BetHorse_1_r" class="fs-4"></div>
+                                        <div id="BetHorse_2_r" class="fs-4"></div>
+                                        <div id="BetHorse_3_r" class="fs-4"></div>
+                                        <br>
+                                        <br>
+                                        <div id="result"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -561,7 +563,7 @@
                 })
                 let message = document.createElement("h2");
                 if (pred.every(x => x == 1)){
-                    //message.innerHTML = "このレースは購入推奨外レースです"
+                    message.innerHTML = "このレースは購入推奨外レースです"
                     console.log("ああ")
                 }else{
                     message.innerHTML = "このレースの軸及び相手は次の通りです";
@@ -570,8 +572,12 @@
                 JudgeBetMessage.innerHTML = "";
                 JudgeBetMessage.appendChild(message);
                 if (pred.every(x => x == 1)) {
+                    $('#showBet').html('<h2>このレースは購入推奨外レースです</h2>');
+                    $('#showBetResult').html('<h2>このレースは購入推奨外レースです</h2>');
                     $('#showHorse').hide();
+                    $('#showMoney').hide();
                 } else {
+                    $('#showBetResult').html('<h2>このレースの軸及び相手は次の通りです</h2>');
                     $('#showHorse').show();
                     $("#CenterHorse").text(`【軸】${race_list[center_number]["horse_number"]}:${race_list[center_number]["horse_name"]}`);
                     $("#BetHorse_1").text(`【相手１頭目】${race_list[bet_numbers[0]]["horse_number"]}:${race_list[bet_numbers[0]]["horse_name"]}`);
@@ -657,7 +663,10 @@
                 RaceResultTable.appendChild(result);
                 if (pred.every(x => x == 1)) {
                     console.log("aa")
-                    //$('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
+                    $('#showBet').html('<h2>このレースは購入推奨外レースです</h2>');
+                    $('#showBetResult').html('<h2>このレースは購入推奨外レースです</h2>');
+                    $('#showHorse').hide();
+                    $('#showMoney').hide();
                 } else {
                     $('#showMoney').show();
                     $("#CenterHorse_r").text(`【軸馬】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}(${RaceConcatlist[center_number]["favorite"]}人気)  ${RaceConcatlist[center_number]["rank"]}着`);
