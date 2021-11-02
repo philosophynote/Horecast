@@ -91,13 +91,21 @@ def search_sql(race_date, race_park, race_number):
     umatan = read_table(race_id,"umatan")
     sanrenpuku = read_table(race_id,"sanrenpuku")
     sanrentan = read_table(race_id,"sanrentan")
-    print(race_df.head())
+    
    
     df = race_df.merge(horse_df,left_on="race_id",right_on="race_id",how="inner")
+    print("競走馬データとマージ")
+    print(df.head())
     df = df.merge(pred_table, left_on=["race_id", "horse_number"], right_on=["race_id", "horse_number"], how="inner")
+    print("予想データとマージ")
+    print(df.head())  
     df_pre = df[["race_park","race_name","race_number","race_turn","course_len","weather","race_type","race_condition","n_horses","horse_number","horse_name","sex_age","jockey_name","jockey_weight","pred","center","bet"]]
+    print("必要なデータを抽出")
+    print(df_pre.head()) 
     df["horse_number"] = df["horse_number"].astype(str)
     df = df.merge(result, left_on=["race_id", "horse_number"], right_on=["race_id", "horse_number"], how="left")
+    print("レース結果")
+    print(df.head()) 
     df_lat = df[["rank","horse_number","horse_name","sex_age","jockey_name","jockey_weight","favorite","odds"]]
     df_lat["rank"] = pd.to_numeric(df_lat["rank"] ,errors="coerce")
     df_lat["favorite"] = pd.to_numeric(df_lat["favorite"] ,errors="coerce")
