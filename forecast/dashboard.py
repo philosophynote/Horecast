@@ -104,6 +104,7 @@ available_course_len = np.sort(available_course_len)
 
 #グラフのレイアウト調整
 RadioItems = dbc.Card(
+   
     [
         dbc.FormGroup(
             [
@@ -151,11 +152,11 @@ RadioItems = dbc.Card(
 
 
 app.layout = html.Div(
-
+    
     dbc.Container(
         [   
         dbc.Row(
-                [
+                [    
                     html.Div(
                         dbc.Col(RadioItems),  
                     )
@@ -164,6 +165,18 @@ app.layout = html.Div(
                 className="h-30",
                 
             ),       
+            html.Br(),
+            html.Br(),
+            html.Br(),
+            html.Div(
+                children=[
+                    html.H3("表示されるまでしばらく時間がかかります",
+                    style={
+                        'textAlign': 'center',# テキストセンター寄せ
+                        'color': colors['text'],# 文字色
+                    })
+                ]
+            ),
             html.Br(),
             html.Br(),
             html.Br(),
@@ -506,16 +519,21 @@ def update_figure(jsonified_cleaned_data,selected_jockey):
         # fig = px.bar(filtered_df, x="win_rate_1", y="jockey", orientation='h')
 
         jockey_chart = go.Figure()
-
-        jockey_chart.add_trace(go.Bar(name="複勝率", y=filtered_df["騎手"], x=filtered_df["複勝率"],orientation='h'))
-        jockey_chart.add_trace(go.Bar(name="連対率", y=filtered_df["騎手"], x=filtered_df["連対率"],orientation='h'))
-        jockey_chart.add_trace(go.Bar(name="勝率", y=filtered_df["騎手"], x=filtered_df["勝率"],orientation='h'))
+        jockey_chart.add_trace(go.Bar(name="複勝率", y=filtered_df["騎手"], x=filtered_df["複勝率"]))
+        jockey_chart.add_trace(go.Bar(name="連対率", y=filtered_df["騎手"], x=filtered_df["連対率"]))
+        jockey_chart.add_trace(go.Bar(name="勝率", y=filtered_df["騎手"], x=filtered_df["勝率"]))
+        jockey_chart.update_traces(width=0.25,
+                  hovertemplate='%{y}: %{x:0.2f}%',
+                  texttemplate='%{x:0.2f}%',
+                  textposition='outside',
+                  orientation='h')
                     # plot_bgcolor=colors['background'],
                     # paper_bgcolor=colors['background'],
                     # font_color=colors['text'],
                     # barmode='group',
         jockey_chart.update_layout(height=550, width=1100, showlegend=True,
-                                        autosize=True, title_text='騎手ごとの成績（2011年~2021年）')
+                                        autosize=True, title_text='騎手ごとの成績（2011年~2021年）',legend_traceorder='reversed')
+
         return jockey_chart
     # ################
 @app.callback(
@@ -566,16 +584,16 @@ def update_figure(jsonified_cleaned_data,selected_trainer):
         filtered_df = df_t.query("調教師 in @selected_trainer")
 
         trainer_chart = go.Figure()
-
-        trainer_chart.add_trace(go.Bar(name="複勝率", y=filtered_df["調教師"], x=filtered_df["複勝率"],orientation='h'))
-        trainer_chart.add_trace(go.Bar(name="連対率", y=filtered_df["調教師"], x=filtered_df["連対率"],orientation='h'))
-        trainer_chart.add_trace(go.Bar(name="勝率", y=filtered_df["調教師"], x=filtered_df["勝率"],orientation='h'))
-                    # plot_bgcolor=colors['background'],
-                    # paper_bgcolor=colors['background'],
-                    # font_color=colors['text'],
-                    # barmode='group',
+        trainer_chart.add_trace(go.Bar(name="複勝率", y=filtered_df["調教師"], x=filtered_df["複勝率"]))   
+        trainer_chart.add_trace(go.Bar(name="連対率", y=filtered_df["調教師"], x=filtered_df["連対率"]))
+        trainer_chart.add_trace(go.Bar(name="勝率", y=filtered_df["調教師"], x=filtered_df["勝率"]))
+        trainer_chart.update_traces(width=0.25,
+                  hovertemplate='%{y}: %{x:0.2f}%',
+                  texttemplate='%{x:0.2f}%',
+                  textposition='outside',
+                  orientation='h')
         trainer_chart.update_layout(height=550, width=1100, showlegend=True,
-                                        autosize=True, title_text='調教師ごとの成績（2011年~2021年）')
+                                        autosize=True, title_text='調教師ごとの成績（2011年~2021年）',legend_traceorder='reversed')
         
         return trainer_chart
     # ################################################################
@@ -628,12 +646,17 @@ def update_figure(jsonified_cleaned_data,selected_stallion):
         filtered_df = df_s.query("種牡馬 in @selected_stallion")
 
         stallion_chart = go.Figure()
+        stallion_chart.add_trace(go.Bar(name="複勝率", y=filtered_df["種牡馬"], x=filtered_df["複勝率"])) 
+        stallion_chart.add_trace(go.Bar(name="連対率", y=filtered_df["種牡馬"], x=filtered_df["連対率"]))
+        stallion_chart.add_trace(go.Bar(name="勝率", y=filtered_df["種牡馬"], x=filtered_df["勝率"]))   
+        stallion_chart.update_traces(width=0.25,
+                  hovertemplate='%{y}: %{x:0.2f}%',
+                  texttemplate='%{x:0.2f}%',
+                  textposition='outside',
+                  orientation='h')
 
-        stallion_chart.add_trace(go.Bar(name="複勝率", y=filtered_df["種牡馬"], x=filtered_df["複勝率"],orientation='h'))
-        stallion_chart.add_trace(go.Bar(name="連対率", y=filtered_df["種牡馬"], x=filtered_df["連対率"],orientation='h'))
-        stallion_chart.add_trace(go.Bar(name="勝率", y=filtered_df["種牡馬"], x=filtered_df["勝率"],orientation='h'))   
         stallion_chart.update_layout(height=400, width=1100, showlegend=True,
-                                        autosize=True, title_text='種牡馬ごとの成績（2011年~2021年）')
+                                        autosize=True, title_text='種牡馬ごとの成績（2011年~2021年）',legend_traceorder='reversed')
         
         return stallion_chart
 
