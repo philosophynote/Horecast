@@ -12,7 +12,7 @@
                         <p style="margin: 0; ">他のレースの予想を見る</p>
                     </div>
                     <div class="card-body" style="background-color:#36474f; color:#EFFBFF;">
-                        <form action="{% url 'forecast:search' %}" method="POST" id="search">
+                        <form action="" method="POST" id="search">
                             {% csrf_token %}
                             {{ form.non_field_errors }}
                             <p>
@@ -454,7 +454,8 @@
         event.preventDefault()
         
         let data = new FormData(); // 2
-
+        console.log(document.getElementById("race_date").value);
+        console.log(document.getElementById("race_park").value);
         data.append("race_date", document.getElementById("race_date").value)  
         data.append("race_park", document.getElementById("race_park").value)
         data.append("race_number", document.getElementById("race_number").value)
@@ -465,6 +466,7 @@
         axios.post('{% url "forecast:search" %}', data)
             .then(function (response){
                 res = response.data;
+                console.log(res);
                 let race_list = Object.values(res["data_pre"]);
                 let result_list = Object.values(res["data_lat"]);
                 let return_list = Object.values(res["data_re"]);
