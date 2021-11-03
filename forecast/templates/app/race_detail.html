@@ -315,18 +315,21 @@
     bet_numbers = bet_numbers.filter(function (value){
         return value!=center_number
     })
-    let message = document.createElement("h2");
+    const BetMessage_1 = document.createElement("h2");
     if (pred.every(x => x == 1)){
-        message.innerHTML = "このレースは購入推奨外レースです"
+        BetMessage_1.innerHTML = "このレースは購入推奨外レースです"
     }else{
-        message.innerHTML = "このレースの軸及び相手は次の通りです";
+        BetMessage_1.innerHTML = "このレースの軸及び相手は次の通りです";
     } 
-    let JudgeBetMessage = document.getElementById("showBet");
-    JudgeBetMessage.innerHTML = "";
-    JudgeBetMessage.appendChild(message);
+    const JudgeBetMessage_1 = document.getElementById("showBet");
+    JudgeBetMessage_1.innerHTML = "";
+    JudgeBetMessage_1.appendChild(BetMessage_1);
+
     if (pred.every(x => x == 1)) {
         $('#showHorse').hide();
     } else {
+        console.log(BetMessage_1)
+        console.log(JudgeBetMessage_1)
         $('#showHorse').show();
         $("#CenterHorse").text(`【軸】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}`);
         $("#BetHorse_1").text(`【相手１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}`);
@@ -409,10 +412,20 @@
         return 0;
     });     
     console.log(RaceConcatlist);
+    const BetMessage_2 = document.createElement("h2");
+    if (pred.every(x => x == 1)){
+        BetMessage_2.innerHTML = "このレースは購入推奨外レースです"
+    }else{
+        BetMessage_2.innerHTML = "このレースの軸及び相手は次の通りです";
+    } 
+    let JudgeBetMessage_2 = document.getElementById("showBetResult");
+    JudgeBetMessage_2.innerHTML = "";
+    JudgeBetMessage_2.appendChild(BetMessage_2);
 
     if (pred.every(x => x == 1)) {
-        $('#showMoney').html('<h2>このレースは購入推奨外レースです</h2>');
+        $('#showMoeny').empty();
     } else {
+        $('#showMoeny').show();
         $("#CenterHorse_r").text(`【軸馬】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}(${RaceConcatlist[center_number]["favorite"]}人気)  ${RaceConcatlist[center_number]["rank"]}着`);
         $("#BetHorse_1_r").text(`【紐馬１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}(${RaceConcatlist[bet_numbers[0]]["favorite"]}人気)  ${RaceConcatlist[bet_numbers[0]]["rank"]}着`);
         $("#BetHorse_2_r").text(`【紐馬２頭目】${RaceConcatlist[bet_numbers[1]]["horse_number"]}:${RaceConcatlist[bet_numbers[1]]["horse_name"]}(${RaceConcatlist[bet_numbers[1]]["favorite"]}人気)  ${RaceConcatlist[bet_numbers[1]]["rank"]}着`);
@@ -561,16 +574,15 @@
                 bet_numbers = bet_numbers.filter(function (value){
                     return value!=center_number
                 })
-                let message = document.createElement("h2");
+                const BetMessage_3 = document.createElement("h2");
                 if (pred.every(x => x == 1)){
-                    message.innerHTML = "このレースは購入推奨外レースです"
-                    console.log("ああ")
+                    BetMessage_3.innerHTML = "このレースは購入推奨外レースです"
                 }else{
-                    message.innerHTML = "このレースの軸及び相手は次の通りです";
+                    BetMessage_3.innerHTML = "このレースの軸及び相手は次の通りです";
                 } 
-                let JudgeBetMessage = document.getElementById("showBet");
-                JudgeBetMessage.innerHTML = "";
-                JudgeBetMessage.appendChild(message);
+                const JudgeBetMessage_3 = document.getElementById("showBet");
+                JudgeBetMessage_3.innerHTML = "";
+                JudgeBetMessage_3.appendChild(BetMessage_3);
                 if (pred.every(x => x == 1)) {
                     $('#showBet').html('<h2>このレースは購入推奨外レースです</h2>');
                     $('#showBetResult').html('<h2>このレースは購入推奨外レースです</h2>');
@@ -661,15 +673,18 @@
                 let RaceResultTable = document.getElementById("showResult");
                 RaceResultTable.innerHTML = "";
                 RaceResultTable.appendChild(result);
+                const BetMessage_4 = document.createElement("h2");
+                if (pred.every(x => x == 1)){
+                    BetMessage_4.innerHTML = "このレースは購入推奨外レースです"
+                }else{
+                    BetMessage_4.innerHTML = "このレースの軸及び相手は次の通りです";
+                } 
+                const JudgeBetMessage_4 = document.getElementById("showBet");
+                JudgeBetMessage_4.innerHTML = "";
+                JudgeBetMessage_4.appendChild(BetMessage_4);
                 if (pred.every(x => x == 1)) {
-                    console.log("aa")
-                    $('#showBet').html('<h2>このレースは購入推奨外レースです</h2>');
-                    $('#showBetResult').html('<h2>このレースは購入推奨外レースです</h2>');
-                    $('#showHorse').hide();
                     $('#showMoney').hide();
                 } else {
-                    $('#showBet').hide();
-                    $('#showBetResult').hide();
                     $('#showMoney').show();
                     $("#CenterHorse_r").text(`【軸馬】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}(${RaceConcatlist[center_number]["favorite"]}人気)  ${RaceConcatlist[center_number]["rank"]}着`);
                     $("#BetHorse_1_r").text(`【紐馬１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}(${RaceConcatlist[bet_numbers[0]]["favorite"]}人気)  ${RaceConcatlist[bet_numbers[0]]["rank"]}着`);
