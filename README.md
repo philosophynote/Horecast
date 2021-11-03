@@ -17,6 +17,7 @@
 - Django 3.2
 - Dash 2.0.0
 - PostgreSQL　12.4
+![プロダクト構成図 001](https://user-images.githubusercontent.com/78991083/140001898-4c6687f6-8b6b-4784-a6e3-4f62a016678a.jpeg)
 
 (モデル部分)
 - Python 3.8.8
