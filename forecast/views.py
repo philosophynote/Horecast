@@ -283,7 +283,7 @@ def upload(request):
         if upload.is_valid():
             df = pd.read_csv(io.StringIO(
                 request.FILES['testfile'].read().decode('utf-8')), delimiter=',')
-            filename = bz2.BZ2File('forecast/HorecastModel_3.bz2', 'rb')
+            filename = bz2.BZ2File('forecast/HorecastModel_4.bz2', 'rb')
             lgb_clf = pickle.load(filename)
             pred, proba = calc_predict(lgb_clf,df)
             race_df = select_sql_r(df,"race")
