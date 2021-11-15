@@ -33,10 +33,10 @@ class BeforeCommentForm(forms.ModelForm):
         model = BeforeComment
         fields = ['race','favorite_horse', 'longshot_horse_1','longshot_horse_2','longshot_horse_3','forecast_reason']
 
-    favorite_horse = forms.ModelChoiceField(queryset=None)
-    longshot_horse_1 = forms.ModelChoiceField(label='紐馬１',queryset=None, required=False)
-    longshot_horse_2 = forms.ModelChoiceField(label='紐馬２',queryset=None, required=False)
-    longshot_horse_3 = forms.ModelChoiceField(label='紐馬３',queryset=None, required=False)
+    favorite_horse = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') )
+    longshot_horse_1 = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') , label='紐馬１',required=False)
+    longshot_horse_2 = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') , label='紐馬２', required=False)
+    longshot_horse_3 = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') , label='紐馬３', required=False)
 
 
     def __init__(self,*args ,**kwargs):

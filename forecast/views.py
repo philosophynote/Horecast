@@ -62,7 +62,6 @@ class Racelist(TemplateView):
         context = {
             "race_list":race_list_last,
         }
-
         return context
 
 #race_detail
@@ -132,7 +131,7 @@ class ChoiceRace(LoginRequiredMixin,TemplateView):
         context = super().get_context_data(**kwargs)
         race_list = Race.objects.all().latest('race_date')
         race_date_last = race_list.response_race_date()
-        race_list_last= Race.objects.filter(race_date = race_date_last).all()
+        race_list_last= Race.objects.filter(race_date = race_date_last).all().order_by('race_id')
         context = {
             "race_list":race_list_last,
         }
@@ -153,7 +152,6 @@ class CreateBeforeComment(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         return super(CreateBeforeComment,self).form_valid(form)
-
 
     def get_success_url(self):
         messages.success(self.request,"予想を投稿しました")
