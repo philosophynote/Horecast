@@ -33,10 +33,10 @@ class BeforeCommentForm(forms.ModelForm):
         model = BeforeComment
         fields = ['race','favorite_horse', 'longshot_horse_1','longshot_horse_2','longshot_horse_3','forecast_reason']
 
-    favorite_horse = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') )
-    longshot_horse_1 = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') , label='紐馬１',required=False)
-    longshot_horse_2 = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') , label='紐馬２', required=False)
-    longshot_horse_3 = forms.ModelChoiceField(queryset = Horse.objects.order_by('-pk') , label='紐馬３', required=False)
+    favorite_horse = forms.ModelChoiceField(queryset = None )
+    longshot_horse_1 = forms.ModelChoiceField(queryset = None , label='紐馬１',required=False)
+    longshot_horse_2 = forms.ModelChoiceField(queryset = None , label='紐馬２', required=False)
+    longshot_horse_3 = forms.ModelChoiceField(queryset = None , label='紐馬３', required=False)
 
 
     def __init__(self,*args ,**kwargs):
@@ -48,10 +48,10 @@ class BeforeCommentForm(forms.ModelForm):
 
         self.fields['race'].initial = race_id
         
-        self.fields['favorite_horse'].queryset = Horse.objects.filter(race_id=race_id)
-        self.fields['longshot_horse_1'].queryset = Horse.objects.filter(race_id=race_id)
-        self.fields['longshot_horse_2'].queryset = Horse.objects.filter(race_id=race_id)
-        self.fields['longshot_horse_3'].queryset = Horse.objects.filter(race_id=race_id)
+        self.fields['favorite_horse'].queryset = Horse.objects.filter(race_id=race_id).order_by('horse_number')
+        self.fields['longshot_horse_1'].queryset = Horse.objects.filter(race_id=race_id).order_by('horse_number')
+        self.fields['longshot_horse_2'].queryset = Horse.objects.filter(race_id=race_id).order_by('horse_number')
+        self.fields['longshot_horse_3'].queryset = Horse.objects.filter(race_id=race_id).order_by('horse_number')
         self.fields['race'].widget = forms.HiddenInput()
 
 class AfterCommentForm(forms.ModelForm):
@@ -69,7 +69,7 @@ class AfterCommentForm(forms.ModelForm):
         print(race_id)
         super().__init__(*args,**kwargs)
         self.fields['race'].initial = race_id
-        self.fields['attention_horse'].queryset = Horse.objects.filter(race_id=race_id)
+        self.fields['attention_horse'].queryset = Horse.objects.filter(race_id=race_id).order_by('horse_number')
         self.fields['race'].widget = forms.HiddenInput()
 
 class SearchForm(forms.Form):
