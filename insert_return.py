@@ -3,8 +3,8 @@ import time
 from urllib.request import urlopen
 from forecast.func import umaren,umatan,sanrenpuku,sanrentan,insert_result
 
-race_id_list_a = ['2021050507{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_b = ['2021090507{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_a = ['2021050508{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_b = ['2021090508{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
 # race_id_list_c = ['2021030206{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
 # race_id_list = race_id_list_a  + race_id_list_b + race_id_list_c
 race_id_list = race_id_list_a  + race_id_list_b
