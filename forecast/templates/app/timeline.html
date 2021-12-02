@@ -5,7 +5,6 @@
 {% load boost %}
     
 {% block content %}
-    
     <div class="container">
         <h1 class="text-center" style="color:#EFFBFF;">レース予想一覧</h1> 
         <br>
@@ -31,10 +30,8 @@
                     <div class="card-body">
                         <form action="{% url 'forecast:forecast_search' %}" method="POST" id="search">
                             {% csrf_token %}
-
                             <label class="form-label" for="form1" style="color:#EFFBFF;">レース名/馬名検索</label>
                             <input type="text" id="form1" class="form-control" name="freeword" />
-
                             <br>
                             <div class="text-center">
                                 <button id="show" type="submit" class="btn fs-6" style="color:#3E484C; background-color:#EFFBFF;">検索</button>
@@ -48,7 +45,7 @@
                 
                 {% for forecast in forecast_list %}
                 <div class="card text-center" style="background-color:#36474f;">
-                    <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{forecast.race.race_park}}{{forecast.race.race_number}}R&nbsp;&nbsp;{{forecast.race.race_name}}</h2>
+                    <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{forecast.race.race_date}}&nbsp;&nbsp;{{forecast.race.race_park}}{{forecast.race.race_number}}R&nbsp;&nbsp;{{forecast.race.race_name}}</h2>
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-evenly" style="color:#EFFBFF;">
                             <p class="fs-3">{{forecast.author}}さんの予想</p>

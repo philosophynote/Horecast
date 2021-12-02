@@ -69,7 +69,7 @@
             <a href="{% url 'forecast:create_aftercomment' object.pk %}" class="btn fs-5" style="background-color:#00acb5; color:#EFFBFF;">レース回顧を投稿する</a>                         
             <a href="{% url 'forecast:delete_beforecomment' object.pk %}" class="btn fs-5 btn-danger">削除</a>
             {% endif %}
-            <a href="javascript:void(0);" onclick="window.history.back();" class="btn fs-5 btn-dark">戻る</a>
+            <a href="{% url 'forecast:timeline'%}" class="btn fs-5 btn-dark">戻る</a>
         </div>
     </div>
     <br>

@@ -6,37 +6,36 @@
 
 {% block content %}
     <div class="container">
-        <h1 class="text-center">レース予想一覧</h1>
+        <h1 class="text-center" style="color:#EFFBFF;">レース予想一覧</h1>
         <br>
         <br>
-        <div class="row ">
-                <div class="col-3 sticky" style="top: 200px;">
-                    <div class="card ml-3"  >
-                        <div class="card-header">
+        <div class="row">
+                <div class="col-md-3" style="padding: 0; position:fixed; height:100%; overflow-y:auto;">
+                    <div class="card ml-3"  style="background-color:#36474f;">
+                        <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
                             <h3 class="text-center">予想を投稿しよう</h3> 
                         </div>
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <!-- Button trigger modal -->
-                            <a href="{% url 'forecast:choice_race' %}" type="button" class="btn fs-5" style="background-color: #79d1d5;">
+                            <a href="{% url 'forecast:choice_race' %}" type="button" class="btn fs-5" style="color:#3E484C; background-color:#EFFBFF;">
                                 予想を投稿する
                             </a>
                         </div>
                     </div>
                     <br>
-                    <div class="card">
-                        <div class="card-header">
+                    <div class="card" style="background-color:#36474f;">
+                        <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
                             <h3 class="text-center">予想を検索しよう</h3> 
                         </div>
                         <div class="card-body">
-                            <form action="{% url 'forecast:search' %}" method="POST" id="search">
+                            <form action="{% url 'forecast:forecast_search' %}" method="POST" id="search">
                                 {% csrf_token %}
-                                {{ form.non_field_errors }}
-                                <table>
-                                {{ form.as_p }}
-                                </table>
+                                <label class="form-label" for="form1" style="color:#EFFBFF;">レース名/馬名検索</label>
+                                <input type="text" id="form1" class="form-control" name="freeword" />
+
                                 <br>
                                 <div class="text-center">
-                                    <button id="show" type="submit" class="btn fs-6" style="background-color: #79d1d5;">検索</button>
+                                    <button id="show" type="submit" class="btn fs-6" style="color:#3E484C; background-color:#EFFBFF;">検索</button>
                                 </div>
                             </form>                  
                         </div>

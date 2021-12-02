@@ -10,76 +10,88 @@
         <br>
         <br>
         <div class="row">
-               <div class="col-3 sticky" style="top: 200px;">
-                    <div class="card ml-3" style="background-color:#36474f;">
-                        <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
-                            <h3 class="text-center">予想を投稿しよう</h3> 
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <!-- Button trigger modal -->
-                            <a href="{% url 'forecast:choice_race' %}" type="button" class="btn fs-5" style="color:#3E484C; background-color:#EFFBFF;">
-                                予想を投稿する
-                            </a>
-                        </div>
+            <div class="col-md-3" style="padding: 0; position:fixed; height:100%; overflow-y:auto;">
+                <div class="card ml-3" style="background-color:#36474f;">
+                    <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
+                        <h3 class="text-center">予想を投稿しよう</h3> 
                     </div>
-                    <br>
-                    <div class="card" style="background-color:#36474f;">
-                        <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
-                            <h3 class="text-center">予想を検索しよう</h3> 
-                        </div>
-                        <div class="card-body">
-                            <form action="{% url 'forecast:forecast_search' %}" method="POST" id="search">
-                                {% csrf_token %}
-
-                                <label class="form-label" for="form1" style="color:#EFFBFF;">レース名/馬名検索</label>
-                                <input type="text" id="form1" class="form-control" name="freeword" />
-
-                                <br>
-                                <div class="text-center">
-                                    <button id="show" type="submit" class="btn fs-6" style="color:#3E484C; background-color:#EFFBFF;">検索</button>
-                                </div>
-                            </form>                  
-                        </div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <a href="{% url 'forecast:choice_race' %}" type="button" class="btn fs-5" style="color:#3E484C; background-color:#EFFBFF;">
+                            予想を投稿する
+                        </a>
                     </div>
                 </div>
-                
-                <div class="col-9">
-                    {% for forecast in search_list %}
-                    <div class="card text-center" style="background-color:#36474f;">
-                        <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{forecast.race.race_park}}{{forecast.race.race_number}}R&nbsp;&nbsp;{{forecast.race.race_name}}</h2>
-                        <div class="card-body">
-                            <div class="card-footer d-flex align-items-center justify-content-evenly" style="color:#EFFBFF;">
-                                <p class="fs-3">{{forecast.author}}さんの予想</p>
-                            </div>    
-                            <div class="card" style="background-color: #EFFBFF; color:#3E484C;">
-                                <div class="card-body">
-                                    <ul class="card-text list-unstyled" >
-                                        <li class="fw-bold">軸馬：{{forecast.favorite_horse}}</li>
-                                        <li class="fw-bold">紐馬１：{{forecast.longshot_horse_1}}</li>
-                                        <li class="fw-bold">紐馬２：{{forecast.longshot_horse_2}}</li>
-                                        <li class="fw-bold">紐馬３：{{forecast.longshot_horse_3}}</li>
-                                    </ul>
-                                    <p class="fs-5 fw-bold">予想理由</p>
-                                    <p>{{forecast.forecast_reason}}</p>
-                                </div>
+                <br>
+                <div class="card" style="background-color:#36474f;">
+                    <div class="card-header" style="background-color:#00acb5; color:#EFFBFF;">
+                        <h3 class="text-center">予想を検索しよう</h3> 
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'forecast:forecast_search' %}" method="POST" id="search">
+                            {% csrf_token %}
+
+                            <label class="form-label" for="form1" style="color:#EFFBFF;">レース名/馬名検索</label>
+                            <input type="text" id="form1" class="form-control" name="freeword" />
+
+                            <br>
+                            <div class="text-center">
+                                <button id="show" type="submit" class="btn fs-6" style="color:#3E484C; background-color:#EFFBFF;">検索</button>
+                            </div>
+                        </form>                  
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-7 offset-md-5">
+                {% for forecast in search_list %}
+                <div class="card text-center" style="background-color:#36474f;">
+                    <h2 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{forecast.race.race_date}}&nbsp;&nbsp;{{forecast.race.race_park}}{{forecast.race.race_number}}R&nbsp;&nbsp;{{forecast.race.race_name}}</h2>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-evenly" style="color:#EFFBFF;">
+                            <p class="fs-3">{{forecast.author}}さんの予想</p>
+                        </div>    
+                        <div class="card" style="background-color: #EFFBFF; color:#3E484C;">
+                            <div class="card-body">
+                                <ul class="card-text list-unstyled" >
+                                    <li class="fw-bold">軸馬：{{forecast.favorite_horse}}</li>
+                                    <li class="fw-bold">紐馬１：{{forecast.longshot_horse_1}}</li>
+                                    <li class="fw-bold">紐馬２：{{forecast.longshot_horse_2}}</li>
+                                    <li class="fw-bold">紐馬３：{{forecast.longshot_horse_3}}</li>
+                                </ul>
+                                <p class="fs-5 fw-bold">予想理由</p>
+                                <p>{{forecast.forecast_reason |truncatechars_html:30}} </p>
                             </div>
                         </div>
-                        
-
-                        <div class="d-flex align-items-center justify-content-evenly">
-                            <a href="{% url 'forecast:detail_beforecomment' forecast.pk %}" class="btn fs-5"
-                                style="color:#3E484C; background-color:#EFFBFF;">詳細</a>
-                        </div>
-                        <br>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-evenly">
+                        <a href="{% url 'forecast:detail_beforecomment' forecast.pk %}" class="btn fs-5"
+                            style="color:#3E484C; background-color:#EFFBFF;">詳細</a>
                     </div>
                     <br>
-                    <br>
-                    {% endfor %}
                 </div>
-                
-                
+                <br>
+                <br>
+                {% endfor %}
+                <div class="d-flex align-items-center justify-content-evenly fs-3">
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a class="fw-bold" style="color:#EFFBFF;" href="?page=1">&laquo; first</a>
+                                <a class="fw-bold" style="color:#EFFBFF;" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
 
-                
+                            <span style="color:#EFFBFF;" class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a class="fw-bold" style="color:#EFFBFF;" href="?page={{ page_obj.next_page_number }}">next</a>
+                                <a class="fw-bold" style="color:#EFFBFF;" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>     
         </div>
     </div>
 {% endblock %}
