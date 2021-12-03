@@ -50,8 +50,6 @@
                         <p>{{ comment.attention_horse}}</p>
                         <p class="fs-5 fw-bold">注目理由</p>
                         <p>{{ comment.attention_reason}}</p>
-                        {% comment %} <a href="{% url 'forecast:update_aftercomment' comment.pk %}" class="btn fs-5"
-                            style="background-color: #79d1d5;">変更</a> {% endcomment %}
                         {% if object.author == request.user %}
                         <a href="{% url 'forecast:delete_aftercomment' comment.pk %}" class="btn fs-5 btn-danger">削除</a>          
                         {% endif %}

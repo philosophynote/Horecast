@@ -230,8 +230,6 @@ class CreateAfterComment(OnlyMyPostMinin,CreateView):
 class DeleteAfterComment(OnlyMyPostMinin,DeleteView):
     template_name = 'app/aftercomment_confirm_delete.html' 
     model = AfterComment
-
-
     def get_success_url(self):
         messages.info(self.request,"コメントを削除しました。")
         return resolve_url('forecast:timeline')
