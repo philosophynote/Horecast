@@ -66,7 +66,7 @@
                             </div>
                         {% else %}
                             <div class="row">
-                                {% for race in race_list|slice:"12:13" %}
+                                {% for race in race_list|slice:"11:12" %}
                                 <div class="col-md-6" style=" background-color:#36474f; padding: 0;">
                                     
                                     <h3 class="card-header" style="background-color:#00acb5; color:#EFFBFF;">{{ race.race_park }}競馬場&nbsp;&nbsp;&nbsp;&nbsp;天気：{{ race.weather }}<br></h3>
@@ -118,7 +118,7 @@
                         </div>
                         {% else %}
                         <div class="row">
-                            {% for race in race_list|slice:"24:25" %}
+                            {% for race in race_list|slice:"23:24" %}
                             <div class="col-md-6" style="background-color:#36474f; padding: 0;">
                                 <img class="img-fluid" src="{% static 'img/one_horse.jpg' %}"  alt="" style="width:42rem; height:20rem; filter: grayscale(100%);">
                             </div>
