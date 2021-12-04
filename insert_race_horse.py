@@ -1,9 +1,9 @@
 from forecast.func import insert_race_card
 from forecast.race_card import ShutubaTable as st
 
-race_id_list_a = ['2021060501{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_b = ['2021090601{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_c = ['2021070601{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_a = ['2021060502{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_b = ['2021090602{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_c = ['2021070602{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
 race_id_list = race_id_list_a  + race_id_list_b + race_id_list_c
 # race_id_list = race_id_list_a  + race_id_list_b 
 
