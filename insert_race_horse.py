@@ -9,7 +9,7 @@ race_id_list = race_id_list_a  + race_id_list_b + race_id_list_c
 
 
 
-rc = st.scrape(race_id_list,"2021/12/04")
+rc = st.scrape(race_id_list,"2021/12/05")
 rc.data.reset_index(inplace=True)
 rc.data.rename(columns={"index":"race_id"},inplace=True)
 insert_race_card(rc.data)
