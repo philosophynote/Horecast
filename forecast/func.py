@@ -6,7 +6,7 @@ from django.conf import settings
 import psycopg2
 import time
 from pangres import upsert
-
+import numpy as np
 
 user = settings.DATABASES["default"]["USER"]
 password = settings.DATABASES["default"]["PASSWORD"]
@@ -33,6 +33,7 @@ def calc_predict(model,df):
     pred = pd.DataFrame(pred, columns=["pred"])
     proba = model.predict_proba(df.drop(
         ["horse_id", "date", "jockey_id", "trainer_id"], axis=1))
+    
     return pred,proba
 
 def select_sql_r(df,tablename):
@@ -52,6 +53,7 @@ def making_predtable(pred,proba,race):
     pred_table = pd.concat(
         [race[["race_id", "horse_number"]], pred], axis=1)
     pred_table['pred_proba'] = proba[:, 0]
+    pred_table['pred_proba'] = np.where(pred_table['pred_proba'] < 0.3, pred_table['pred_proba'],0) 
     rank_d = pd.DataFrame(pred_table.groupby("race_id").rank(ascending=False)[
         "pred_proba"]).rename(columns={"pred_proba": "rank_d"})
     pred_table = pd.concat([pred_table, rank_d.astype(int)], axis=1)
