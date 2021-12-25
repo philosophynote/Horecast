@@ -50,38 +50,4 @@
 
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-    <script>
-        //a = document.getElementById("race_result").value
-        //console.log(a) 
-        $(document).ready(function(event){
-            //event.preventDefault()
-            console.log(document.getElementById("race_result").value)
-            let data = new FormData();
-            data.append("race_id", document.getElementById("race_result").value)
-            console.log(data)
-            axios.defaults.xsrfCookieName = 'csrftoken'
-            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"    
-            console.log(data.get('race_id'));
-            axios.post('{% url "forecast:judgecomment" %}', data)
-            .then(function (response){
-                res = response.data;
-                console.log(res)
-                let rank_list  = res["rank_list"];
-                if (rank_list.every(x => x == '*')){
-                    $('#afterrace').prop('disabled',true);
-                }else{
-                    $('#afterrace').prop('disabled',false);
-                    $('#beforerace').prop('disabled',true);
-                }
-
-
-            })
-            .catch(errors => console.log(errors))
-        })
-
-        
-    </script>
 {% endblock %}
