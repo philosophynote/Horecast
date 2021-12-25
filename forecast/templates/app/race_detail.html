@@ -328,8 +328,7 @@
     if (pred.every(x => x == 1)) {
         $('#showHorse').hide();
     } else {
-        console.log(BetMessage_1)
-        console.log(JudgeBetMessage_1)
+        console.log(RaceConcatlist)
         $('#showHorse').show();
         $("#CenterHorse").text(`【軸】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}`);
         $("#BetHorse_1").text(`【相手１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}`);
