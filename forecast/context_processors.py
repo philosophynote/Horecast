@@ -17,14 +17,14 @@ def date(request):
     }
     return context
 
-# def forecast_card(request):
-#     forecast = BeforeComment.objects.all().order_by('-created_at').first()
-#     race_date = datetime.datetime.strptime(forecast.race.race_date, "%Y/%m/%d")
-#     forecast_list = {
-#         "FORECAST":forecast,
-#         "forecast_date":race_date,
-#     }
-#     return forecast_list
+def forecast_card(request):
+    forecast = BeforeComment.objects.all().order_by('-created_at').first()
+    race_date = datetime.datetime.strptime(forecast.race.race_date, "%Y/%m/%d")
+    forecast_list = {
+        "FORECAST":forecast,
+        "forecast_date":race_date,
+    }
+    return forecast_list
 
 
 
