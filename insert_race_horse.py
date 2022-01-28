@@ -3,7 +3,7 @@ from forecast.race_card import ShutubaTable as st
 
 race_id_list_a = ['2022050101{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
 race_id_list_b = ['2022070109{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_c = ['2021100501{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
+race_id_list_c = ['2022100501{}'.format(str(i).zfill(2)) for i in range(1, 13, 1)]
 race_id_list = race_id_list_a  + race_id_list_b + race_id_list_c
 # race_id_list = race_id_list_a  + race_id_list_b 
 
