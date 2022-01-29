@@ -235,7 +235,6 @@
         }
         return 0;
     }); 
-    console.log(race_list)
     
     $("#race_park_hold").text(`${race_list[1]["race_park"]}`);
     $("#race_number_hold").text(`${race_list[1]["race_number"]}R`);
@@ -305,7 +304,7 @@
 
     //予想表示、centerは軸馬か否かの判定（0or1）
     let center_number = center.indexOf(1) //軸馬のindexを取得
-    console.log(center);
+    console.log(bet);
     let bet_numbers = [];
     var idx = bet.indexOf(1);
     while (idx != -1) {

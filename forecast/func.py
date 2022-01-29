@@ -53,8 +53,7 @@ def making_predtable(pred,proba,race):
     pred_table = pd.concat(
         [race[["race_id", "horse_number"]], pred], axis=1)
     pred_table['pred_proba'] = proba[:, 0]
-    print(pred_table['pred_proba'])
-    pred_table['pred_proba'] = np.where(pred_table['pred_proba'] > 0.3, pred_table['pred_proba'],0) 
+    pred_table['pred_proba'] = np.where(pred_table['pred_proba'] < 0.3, pred_table['pred_proba'],0) 
     rank_d = pd.DataFrame(pred_table.groupby("race_id").rank(ascending=False)[
         "pred_proba"]).rename(columns={"pred_proba": "rank_d"})
     pred_table = pd.concat([pred_table, rank_d.astype(int)], axis=1)
@@ -62,6 +61,8 @@ def making_predtable(pred,proba,race):
     pred_table['bet'] = 0
     pred_table['center'] = pred_table.apply(
         lambda x: x["center"] + 1 if x['pred'] == 0 and x['rank_d'] == 1 else x["center"], axis=1)
+    print("--------")
+    print(pred_table["rank_d"].head(30))
     pred_table["bet"].mask(pred_table["rank_d"] <= 4, 1, inplace=True)
     return pred_table
 

@@ -6,7 +6,6 @@ app_name = 'forecast'
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
-    path('concept', views.Concept.as_view(), name='concept'),
     path('race', views.Racelist.as_view(), name='race'),
     path('manage', views.manage, name='manage'),
     path('search', views.search, name='search'),
