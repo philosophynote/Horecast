@@ -235,7 +235,7 @@
         }
         return 0;
     }); 
-
+    console.log(race_list)
     
     $("#race_park_hold").text(`${race_list[1]["race_park"]}`);
     $("#race_number_hold").text(`${race_list[1]["race_number"]}R`);
@@ -329,6 +329,7 @@
         $('#showHorse').hide();
     } else {
         console.log(RaceConcatlist)
+        console.log(bet_numbers)
         $('#showHorse').show();
         $("#CenterHorse").text(`【軸】${RaceConcatlist[center_number]["horse_number"]}:${RaceConcatlist[center_number]["horse_name"]}`);
         $("#BetHorse_1").text(`【相手１頭目】${RaceConcatlist[bet_numbers[0]]["horse_number"]}:${RaceConcatlist[bet_numbers[0]]["horse_name"]}`);
