@@ -71,7 +71,7 @@ class RaceDetail(LoginRequiredMixin,DetailView):
 
     def get_context_data(self, *args ,**kwargs):
         detail_data = Race.objects.get(race_id = self.kwargs['race_id'])
-        print(detail_data.head())
+        print(detail_data)
         race_date = detail_data.race_date
         race_park = detail_data.race_park
         race_number = detail_data.race_number 

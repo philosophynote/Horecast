@@ -61,9 +61,8 @@ def making_predtable(pred,proba,race):
     pred_table['bet'] = 0
     pred_table['center'] = pred_table.apply(
         lambda x: x["center"] + 1 if x['pred'] == 0 and x['rank_d'] == 1 else x["center"], axis=1)
-    print("--------")
-    print(pred_table["rank_d"].head(30))
     pred_table["bet"].mask(pred_table["rank_d"] <= 4, 1, inplace=True)
+    pred_table["bet"].mask(len(pred_table["bet"]) < 4, 1, inplace=True)
     return pred_table
 
 
