@@ -1,4 +1,4 @@
-from forecast.connect_s3 import ConnectS3
+from forecast.connect_s3 import download_csv
 
-ConnectS3.download_csv()
+download_csv()
 print("予想結果をDBに格納しました")
