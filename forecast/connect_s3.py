@@ -16,7 +16,8 @@ class ConnectS3():
     self.bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     self.src_file_encoding = settings.SRC_FILE_ENCODING
 
-  def download_csv():
+  @classmethod
+  def download_csv(self):
       s3 = boto3.resource('s3', aws_access_key_id=self.accesskey,
                           aws_secret_access_key=self.secretkey,
                           region_name=self.region)
