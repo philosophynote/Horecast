@@ -9,22 +9,15 @@ from .func import calc_predict, select_sql_r, select_sql_h, making_predtable, in
 from django.conf import settings
 
 class ConnectS3():
-  def __init__(self):
-    self.accesskey = settings.AWS_ACCESS_KEY_ID
-    self.secretkey = settings.AWS_SECRET_ACCESS_KEY
-    self.region = settings.AWS_S3_REGION_NAME
-    self.bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    self.src_file_encoding = settings.SRC_FILE_ENCODING
-
   @classmethod
-  def download_csv(self):
-      s3 = boto3.resource('s3', aws_access_key_id=self.accesskey,
-                          aws_secret_access_key=self.secretkey,
-                          region_name=self.region)
+  def download_csv():
+      s3 = boto3.resource('s3', aws_access_key_id = settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key = settings.AWS_SECRET_ACCESS_KEY,
+                          region_name = settings.AWS_S3_REGION_NAME)
       
-      src_obj = s3.Object(self.bucket_name, "inputdata_0807.csv")
+      src_obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAM, "inputdata_0807.csv")
       body_in = src_obj.get()['Body'].read().decode(
-          self.src_file_encoding
+          settings.SRC_FILE_ENCODING
       )
       buffer_in = io.StringIO(body_in)
       df_in = pd.read_csv(
