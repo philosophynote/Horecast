@@ -16,6 +16,7 @@ class DataProcessor:
         # 馬の過去成績データから、n_sample_listで指定されたレース分の特徴量の平均を追加してdata_hに返す
         self.data_h = self.data_p.copy()
         self.data_h = hr.merge_all(self.data_h)
+        self.data_h['date'] = pd.to_datetime(self.data_h['date'])
         self.data_h['interval'] = (
             self.data_h['date'] - self.data_h['date_1R_before']).dt.days
         self.data_h['course_len_dif'] = (
