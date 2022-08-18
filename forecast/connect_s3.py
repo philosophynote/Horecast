@@ -13,7 +13,7 @@ def download_csv():
                         aws_secret_access_key = settings.AWS_SECRET_ACCESS_KEY,
                         region_name = settings.AWS_S3_REGION_NAME)
     
-    src_obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAM, "inputdata_0807.csv")
+    src_obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAME, "inputdata_0807.csv")
     body_in = src_obj.get()['Body'].read().decode(
         settings.SRC_FILE_ENCODING
     )
