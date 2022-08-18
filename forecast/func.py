@@ -208,7 +208,6 @@ def insert_result(race_id_list):
     data = pd.DataFrame()
     for race_id in race_id_list:
         try:
-            print(race_id)
             url = "https://race.netkeiba.com/race/result.html?race_id=" + race_id
             df = pd.read_html(url)[0]
             df["race_id"] = [race_id] * len(df)

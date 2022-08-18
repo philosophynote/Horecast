@@ -69,7 +69,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Horecast.wsgi.application'
 
 DATABASES = {
-    'default': env.db(),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'horecast_test',
+        'USER': 'workuser',
+        'PASSWORD': 'sundai005107D',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 # Password validation
@@ -177,4 +184,5 @@ if not DEBUG:
     AWS_SECRET_ACCESS_KEY= os.environ['AWS_SECRET_ACCESS_KEY']
     AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
     AWS_S3_REGION_NAME = os.environ['AWS_S3_REGION_NAME']
+    SRC_FILE_ENCODING = os.environ['SRC_FILE_ENCODING']
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

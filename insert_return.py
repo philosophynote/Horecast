@@ -3,15 +3,15 @@ import time
 from urllib.request import urlopen
 from forecast.func import umaren,umatan,sanrenpuku,sanrentan,insert_result
 
-race_id_list_a = ['2022050212{}'.format(
+race_id_list_a = ['2022040204{}'.format(
     str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_b = ['2022070308{}'.format(
+race_id_list_b = ['2022010106{}'.format(
     str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list_c = ['2022040108{}'.format(
-    str(i).zfill(2)) for i in range(1, 13, 1)]
-race_id_list = race_id_list_a + race_id_list_b + race_id_list_c
+# race_id_list_c = ['2022040108{}'.format(
+#     str(i).zfill(2)) for i in range(1, 13, 1)]
+# race_id_list = race_id_list_a + race_id_list_b + race_id_list_c
 
-# race_id_list = race_id_list_a  + race_id_list_b
+race_id_list = race_id_list_a  + race_id_list_b
 
 insert_result(race_id_list)
 print("結果をDBに格納しました")
