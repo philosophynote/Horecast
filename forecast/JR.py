@@ -2,7 +2,6 @@
 import pandas as pd
 
 # スクレイピング用
-from tqdm.notebook import tqdm
 import time
 import re
 import numpy as np
@@ -23,7 +22,7 @@ class JockeyResults:
     @staticmethod
     def scrape(jockey_id_list):
         data = pd.DataFrame()
-        for jockey_id in tqdm(jockey_id_list):
+        for jockey_id in jockey_id_list:
             url = "https://db.netkeiba.com/jockey/result/" + jockey_id
             df = pd.read_html(url)[0]
             df.index = [jockey_id] * len(df)
@@ -71,5 +70,5 @@ class JockeyResults:
 
     def merge_all(self, results):
         date_list = results['date'].unique()
-        merged_df = pd.concat([self.merge(results, date) for date in tqdm(date_list)])
+        merged_df = pd.concat([self.merge(results, date) for date in date_list])
         return merged_df

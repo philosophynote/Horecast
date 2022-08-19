@@ -8,17 +8,11 @@ import time
 from pangres import upsert
 import numpy as np
 
-# user = settings.DATABASES["default"]["USER"]
-# password = settings.DATABASES["default"]["PASSWORD"]
-# database = settings.DATABASES['default']['NAME']
-# host = settings.DATABASES['default']['HOST']
-# port = settings.DATABASES['default']['PORT']
-
-user = 'workuser'
-password = 'sundai005107D'
-database = 'horecast_test'
-host = 'localhost'
-port = '5432'
+user = settings.DATABASES["default"]["USER"]
+password = settings.DATABASES["default"]["PASSWORD"]
+database = settings.DATABASES['default']['NAME']
+host = settings.DATABASES['default']['HOST']
+port = settings.DATABASES['default']['PORT']
 
 connection_config = {
     "user": user,

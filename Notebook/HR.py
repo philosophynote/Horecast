@@ -49,8 +49,8 @@ class HorseResults:
                 time.sleep(1)
 
                 # メールアドレスとパスワードの指定
-                USER = "adverdest@gmail.com"
-                PASS = "sundai005107D"
+                USER = ""
+                PASS = ""
 
                 login_info = {
                     "login_id": USER,

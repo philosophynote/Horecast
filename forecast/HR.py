@@ -2,7 +2,6 @@
 import pandas as pd
 
 # スクレイピング用
-from tqdm.notebook import tqdm
 import time
 import re
 import numpy as np
@@ -10,6 +9,7 @@ import requests
 from sklearn.impute import SimpleImputer
 from bs4 import BeautifulSoup
 
+from django.conf import settings
 
 # map関数で使用
 # place_dict = {"札幌": "01", "函館": "02", "福島": "03", "新潟": "04", "東京": "05", "中山": "06", "中京": "07", "京都": "08", "阪神": "09", "小倉": "10", "園田": "11",
@@ -34,7 +34,7 @@ class HorseResults:
 
         # horse_idをkeyにしてDataFrame型を格納
         horse_results = {}
-        for horse_id in tqdm(horse_id_list):
+        for horse_id in horse_id_list:
             try:
                 url = 'https://db.netkeiba.com/horse/' + horse_id
                 df = pd.read_html(url)[3]
@@ -49,12 +49,10 @@ class HorseResults:
                 time.sleep(1)
 
                 # メールアドレスとパスワードの指定
-                USER = "adverdest@gmail.com"
-                PASS = "sundai005107D"
 
                 login_info = {
-                    "login_id": USER,
-                    "pswd": PASS,
+                    "login_id": settings.NETKEIBA_USER,
+                    "pswd": settings.NETKEIBA_PASS,
                 }
                 # セッションを開始
                 session = requests.session()
@@ -284,5 +282,5 @@ class HorseResults:
     def merge_all(self, results):
         date_list = results['date'].unique()
         merged_df = pd.concat([self.merge(results, date)
-                              for date in tqdm(date_list)])
+                              for date in date_list])
         return merged_df
